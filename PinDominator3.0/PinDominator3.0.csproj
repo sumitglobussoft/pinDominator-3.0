@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3CAE5199-C891-4F24-B8A0-57967D10076E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PinDominator3</RootNamespace>
+    <AssemblyName>PinDominator3</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PinDominator3._0.App</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirstFloor.ModernUI">
+      <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Libs\32 Bit dlls\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs2\Libs\32 Bit dlls\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AccountUserControl\AddSingleAccount_UploadAccount.xaml.cs">
+      <DependentUpon>AddSingleAccount_UploadAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="AccountUserControl\AddSingleAccount_UploadAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControl\UserControl_CommentByKeyword_DivideData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControl\UserControl_FollowByUsername_DivideData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControl\UserControl_Like_DivideData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControl\UserControl_RePin_DivideData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LicensingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Classes\NotifyPropertyChange.cs" />
+    <Compile Include="Classes\Validation.cs" />
+    <Compile Include="CustomUserControl\UserControl_CommentByKeyword_DivideData.xaml.cs">
+      <DependentUpon>UserControl_CommentByKeyword_DivideData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControl\UserControl_FollowByUsername_DivideData.xaml.cs">
+      <DependentUpon>UserControl_FollowByUsername_DivideData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControl\UserControl_Like_DivideData.xaml.cs">
+      <DependentUpon>UserControl_Like_DivideData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControl\UserControl_RePin_DivideData.xaml.cs">
+      <DependentUpon>UserControl_RePin_DivideData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LicenseManager.cs" />
+    <Compile Include="LicensingWindow.xaml.cs">
+      <DependentUpon>LicensingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PageLoader.cs" />
+    <Compile Include="Pages\PageAccount\AccountCreator.xaml.cs">
+      <DependentUpon>AccountCreator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageAccount\AccountProfile.xaml.cs">
+      <DependentUpon>AccountProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageAccount\AcountChecker.xaml.cs">
+      <DependentUpon>AcountChecker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageAccount\ProfileUpload.xaml.cs">
+      <DependentUpon>ProfileUpload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageAccount\UploadAccount.xaml.cs">
+      <DependentUpon>UploadAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageBlog\Blog.xaml.cs">
+      <DependentUpon>Blog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Pageboard\AddBoardName.xaml.cs">
+      <DependentUpon>AddBoardName.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Pageboard\AddUsersToBoard.xaml.cs">
+      <DependentUpon>AddUsersToBoard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Pageboard\Boards.xaml.cs">
+      <DependentUpon>Boards.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageComment\Comment.xaml.cs">
+      <DependentUpon>Comment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageComment\CommentByKeyword.xaml.cs">
+      <DependentUpon>CommentByKeyword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageFollow\FollowByKeyword.xaml.cs">
+      <DependentUpon>FollowByKeyword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageFollow\FollowByUsername.xaml.cs">
+      <DependentUpon>FollowByUsername.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageFollow\UnFollow.xaml.cs">
+      <DependentUpon>UnFollow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageInvite\Invite.xaml.cs">
+      <DependentUpon>Invite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageLike\Like.xaml.cs">
+      <DependentUpon>Like.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageMessage\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagePin\AddPinWithnewBoard.xaml.cs">
+      <DependentUpon>AddPinWithnewBoard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagePin\EditPinDiscription.xaml.cs">
+      <DependentUpon>EditPinDiscription.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagePin\AddNewPin.xaml.cs">
+      <DependentUpon>AddNewPin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagePin\PinScraper.xaml.cs">
+      <DependentUpon>PinScraper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagePin\RePin.xaml.cs">
+      <DependentUpon>RePin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageProxy\Proxy.xaml.cs">
+      <DependentUpon>Proxy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageScraper\Scraper.xaml.cs">
+      <DependentUpon>Scraper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageScheduler\Scheduler.xaml.cs">
+      <DependentUpon>Scheduler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\setting\Appearance.xaml.cs">
+      <DependentUpon>Appearance.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\setting\AppearanceViewModel.cs" />
+    <Compile Include="Pages\setting\Setting.xaml.cs">
+      <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="Pages\PageAccount\AccountCreator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageAccount\AccountProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageAccount\AcountChecker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageAccount\ProfileUpload.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageAccount\UploadAccount.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageBlog\Blog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Pageboard\AddBoardName.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Pageboard\AddUsersToBoard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Pageboard\Boards.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageComment\Comment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageComment\CommentByKeyword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageFollow\FollowByKeyword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageFollow\FollowByUsername.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageFollow\UnFollow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageInvite\Invite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageLike\Like.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageMessage\Message.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PagePin\AddPinWithnewBoard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PagePin\EditPinDiscription.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PagePin\AddNewPin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PagePin\PinScraper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PagePin\RePin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageProxy\Proxy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageScraper\Scraper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageScheduler\Scheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\setting\Appearance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\setting\Setting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AccountManager\AccountManager.csproj">
+      <Project>{97b6243e-f112-41d1-96da-ef48b2b236c2}</Project>
+      <Name>AccountManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseLib\BaseLib.csproj">
+      <Project>{85977246-de21-44cc-b798-ee7cacef001f}</Project>
+      <Name>BaseLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BasePD\BasePD.csproj">
+      <Project>{81b3eb7d-1f25-4630-b2a1-ddcb2099c1f3}</Project>
+      <Name>BasePD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BoardManager\BoardManager.csproj">
+      <Project>{9630be0c-1318-4a3a-94f4-f272efe11c6e}</Project>
+      <Name>BoardManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommentManager\CommentManager.csproj">
+      <Project>{d88af0b6-342b-43fd-9168-079d0efa84db}</Project>
+      <Name>CommentManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FollowManagers\FollowManagers.csproj">
+      <Project>{489664e5-c483-4e79-aeb9-d9069f8155f7}</Project>
+      <Name>FollowManagers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InviteManager\InviteManager.csproj">
+      <Project>{07b7a51c-0cfa-439f-bd07-1945d19a4515}</Project>
+      <Name>InviteManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LikeManager\LikeManager.csproj">
+      <Project>{c9886eb5-090f-49e2-b590-2ef21c6be100}</Project>
+      <Name>LikeManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinsManager\PinsManager.csproj">
+      <Project>{29824913-c16f-4d23-8386-6b80486babd4}</Project>
+      <Name>PinsManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScraperManagers\ScraperManagers.csproj">
+      <Project>{b8cc0edb-fac2-4678-a454-cd3e6a575ed2}</Project>
+      <Name>ScraperManagers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControl\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

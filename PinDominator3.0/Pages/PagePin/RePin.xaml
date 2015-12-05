@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="PinDominator3.Pages.PagePin.RePin"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:app="clr-namespace:PinDominator3.Classes"
+             mc:Ignorable="d">
+
+    <ScrollViewer>
+
+        <Grid>
+            <Grid.DataContext>
+                <app:Validation x:Name="objform" />
+            </Grid.DataContext>
+
+            <Grid.RowDefinitions>
+
+                <RowDefinition Height="178*"/>
+                <RowDefinition Height="131*"/>
+                <RowDefinition Height="191*"/>
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>        
+                <GroupBox Header="User Input" BorderBrush="Black">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" MinHeight="29"/>
+                            <RowDefinition Height="0"/>
+                            <RowDefinition Height="Auto" MinHeight="1"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="69*"/>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="43*"/>
+                            <ColumnDefinition Width="22*"/>
+                            <ColumnDefinition Width="23*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="39*"/>
+                            <ColumnDefinition Width="64*"/>
+                            <ColumnDefinition Width="12*"/>
+                            <ColumnDefinition Width="22*"/>
+                            <ColumnDefinition Width="68*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                        <Label Content="Repin No :" Margin="0,18,0,0" Height="25" RenderTransformOrigin="0.5,0.08" VerticalAlignment="Top" Grid.Row="3" HorizontalAlignment="Left" Width="69"/>
+                        <TextBox Name="txtRepinNo_Repin" Height="27" Margin="0,16,0,0" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}" VerticalAlignment="Top" Grid.ColumnSpan="6" Grid.Column="2" Grid.Row="3"/>
+                        <Button BorderBrush="Green" Name="btnRepinUrlUplaod" Content="Browse" Grid.Column="9" Margin="0,14,0,0" VerticalAlignment="Top" Height="25" Click="btu_UploadRepinNo_Click" HorizontalAlignment="Left" Width="90" Grid.Row="3" Grid.ColumnSpan="2">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <RadioButton Content="RandomUseRepin" Grid.Column="5" GroupName="Repin" Name="rbo_RepinUserRepin" Height="22" Grid.ColumnSpan="4" RenderTransformOrigin="0.5,1.045" VerticalAlignment="Bottom" Checked="rbo_RepinUserRepin_Checked"/>
+                        <RadioButton Content="UsePinNo" Grid.Column="9" GroupName="Repin" Name="rdo_UsePinNo"  Margin="1,0,0,2" RenderTransformOrigin="0.519,0.04" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="17" Checked="rdo_UsePinNo_Checked"/>
+                        <RadioButton Content="NormalRepin" GroupName="Repin" Name="rbo_RepinNormalType" Grid.Column="1" VerticalAlignment="Bottom" Height="20" Grid.ColumnSpan="4" Margin="1,0,0,1" RenderTransformOrigin="0.544,0.2" Checked="rbo_RepinNormalType_Checked" IsChecked="True" />
+                        <Label Content="Message :" Margin="0,48,0,0" VerticalAlignment="Top" Height="23" Grid.Row="3" RenderTransformOrigin="0.531,1.261"/>
+                        <TextBox Name="txtRepinMessage_Repin" Grid.ColumnSpan="6" Grid.Column="2" Height="25" Margin="0,48,0,0" TextWrapping="Wrap" Text="{Binding TxtField_two,Mode=TwoWay,ValidatesOnDataErrors=True}" Grid.Row="3" VerticalAlignment="Top"/>
+                        <Button BorderBrush="Green" Name="Brow_Repin_Messge" Content="Browse" Grid.Column="9" HorizontalAlignment="Left" Margin="0,48,0,0" VerticalAlignment="Top" Height="25" Width="90" Click="btu_UploadMessageRepin_Click" Grid.Row="3" Grid.ColumnSpan="2">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Label Content="Repin Type :" HorizontalAlignment="Left" Margin="0,9,0,0" VerticalAlignment="Top" Width="69" Height="16" RenderTransformOrigin="0.456,0.75"/>
+
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="104*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="82*"/>
+                            <ColumnDefinition Width="81*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="19*"/>
+                            <RowDefinition Height="26*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="No. of threads :" Height="21" VerticalAlignment="Bottom"  Grid.Column="0" Grid.Row="0" Margin="0,0,0,10" HorizontalAlignment="Left" Width="102"  />
+                        <TextBox Name="txtRepinNoOfThreads_RePin"  TextWrapping="Wrap" Text="5" Height="26" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" />
+                        <Label Content="Delay :"  VerticalAlignment="Center" Height="26" Grid.Column="0" Grid.Row="1" Margin="0,23,0,0" />
+                        <TextBox Name="txtRepin_DelayMin" Height="26" TextWrapping="Wrap" Text="20" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,23,0,0" />
+                        <Label Content="To" VerticalAlignment="Center" HorizontalAlignment="Center" Height="26" Grid.Column="2" Grid.Row="1" Margin="19,26,10,-3" Width="20" />
+                        <TextBox Name="txtRepin_DelayMax" Height="26" TextWrapping="Wrap" Text="30" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="3" Grid.Row="1" Margin="0,23,0,0"/>
+                        <Label Content="(In Seconds)"  VerticalAlignment="Center" Height="26" Grid.Column="4" Grid.Row="1" Margin="0,26,0,-3"/>
+                        <Label Content="Repin Count :" Height="21" VerticalAlignment="Center"  Grid.Column="3" Grid.Row="0"  Margin="0,4,0,10"  />
+                        <TextBox x:Name="txtRepinCount"  TextWrapping="Wrap" Text="5" Height="26" VerticalAlignment="Center" Grid.Column="4" Grid.Row="0" Margin="0,4,0,5" />
+                        <CheckBox Name="chkDivideData_Repin" Content="Divide Data" VerticalAlignment="Top" Grid.Row="1" Width="102" HorizontalAlignment="Left" Checked="chkDivideData_Repin_Checked" />
+
+                    </Grid>
+                </GroupBox>
+            <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*"/>
+                        <ColumnDefinition Width="135*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="135*"/>
+                        <ColumnDefinition Width="41*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button  BorderBrush="Green" Name="btnStartRepin" Content="START" Height="26"  Grid.Column="1" Click="btnStartRepin_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button  BorderBrush="Red" Name="btnStopRepin" Content="STOP" Grid.Column="3" Height="26" Click="btnStopRepin_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+                <DataGrid Name="dtGrdMessage_Repin_AccountsReport"/>
+            </GroupBox>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

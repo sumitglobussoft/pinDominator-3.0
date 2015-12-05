@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="PinDominator3.Pages.PageScraper.Scraper"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:app="clr-namespace:PinDominator3.Classes"
+             mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Grid>
+            <Grid.DataContext>
+                <app:Validation x:Name="objform" />
+            </Grid.DataContext>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="69*"/>
+                <RowDefinition Height="79*"/>
+                <RowDefinition Height="102*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>         
+                <GroupBox Header="User Input" BorderBrush="Black">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="54*"/>
+                            <RowDefinition Height="31*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="94*"/>
+                            <ColumnDefinition Width="90*"/>
+                            <ColumnDefinition Width="38*"/>
+                            <ColumnDefinition Width="59*"/>
+                            <ColumnDefinition Width="13*"/>
+                            <ColumnDefinition Width="40*"/>
+                            <ColumnDefinition Width="47*"/>
+                            <ColumnDefinition Width="17*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                        <Label Content="User Name :" Margin="0,18,0,0" Height="25" RenderTransformOrigin="0.5,0.08"/>
+                        <TextBox Name="txtScraperUsername" Height="25" Margin="0,18,0,0" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}" Grid.ColumnSpan="4" Grid.Column="1"/>
+                        <RadioButton Content="Following" Grid.Column="2" GroupName="Scraper" Name="rdoFollowingScraper" Height="22" Grid.Row="1" Grid.ColumnSpan="3" Checked="rdoFollowingScraper_Checked"/>
+                        <RadioButton Content="Follower" GroupName="Scraper" Name="rdoFollowerScraper" Grid.Column="1" Grid.Row="1"  Checked="rdoFollowerScraper_Checked"/>
+
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="104*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="42*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="49*"/>
+                            <RowDefinition Height="29*"/>
+                            <RowDefinition Height="39*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="No. of threads :" Height="26"  Grid.Column="0" Grid.Row="0" Margin="0,10,0,13"  />
+                        <TextBox Name="txtScraper_NoOfThreads"  TextWrapping="Wrap" Text="5" Height="26" Grid.Column="1" Grid.Row="0" Margin="0,10,0,13" />
+                        <Label Content="Delay :" Height="26" Grid.Column="0" Grid.Row="1" Margin="0,21" Grid.RowSpan="2" />
+                        <TextBox Name="txtScraper_DelayMin" Height="26" TextWrapping="Wrap" Text="20 " Grid.Column="1" Grid.Row="1" Margin="0,19,0,23" Grid.RowSpan="2" />
+                        <Label Content="To" Height="26" Grid.Column="3" Grid.Row="1" Margin="8,19,10,23" Width="24" Grid.RowSpan="2" />
+                        <TextBox Name="txtScraper_DelayMax" Height="26" TextWrapping="Wrap" Text="30" Grid.Column="4" Grid.Row="1" Margin="0,19,0,23" Grid.RowSpan="2"/>
+                        <Label Content="(In Seconds)" Height="26" Grid.Column="5" Grid.Row="1" Margin="0,19,0,23" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                        <Label Content="No.of User To Scrape :" Height="26"   Grid.Column="3" Grid.Row="0"  Margin="2,10,0,13" Grid.ColumnSpan="2"  />
+                        <TextBox x:Name="txtUserScraperCount"  TextWrapping="Wrap" Text="5" Height="26" Grid.Column="5" Grid.Row="0" Margin="0,10,0,13" Grid.ColumnSpan="2" />
+
+                    </Grid>
+                </GroupBox>
+            <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="91*"/>
+                        <ColumnDefinition Width="36*"/>
+                        <ColumnDefinition Width="91*"/>
+                        <ColumnDefinition Width="36*"/>
+                        <ColumnDefinition Width="91*"/>
+                        <ColumnDefinition Width="25*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button  BorderBrush="Green" Name="btnScraperStart" Content="START" Height="26"  Grid.Column="1" Click="btnScraperStart_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button  BorderBrush="Red" Name="btnScraperStop" Content="STOP" Grid.Column="3" Height="26" Click="btnScraperStop_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button BorderBrush="Green" Name="btnScraperExport" Content="EXPORT" Grid.Column="5" Height="26" Click="btnScraperExport_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1">
+                    <Grid>
+                        <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="Scraper_progess"/>
+
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+                    <DataGrid Name="dtGrdScraper_AccountsReport" />
+                </GroupBox>
+            
+        </Grid>
+    </ScrollViewer>
+</UserControl>

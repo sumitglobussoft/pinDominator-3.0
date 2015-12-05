@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29824913-C16F-4D23-8386-6B80486BABD4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PinsManager</RootNamespace>
+    <AssemblyName>PinsManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Libs\32 Bit dlls\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddNewPinManager.cs" />
+    <Compile Include="AddPinWithNewBoardManager.cs" />
+    <Compile Include="EditPinDiscriptionManager.cs" />
+    <Compile Include="RePinManager.cs" />
+    <Compile Include="ScrapePinManagers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AccountManager\AccountManager.csproj">
+      <Project>{97b6243e-f112-41d1-96da-ef48b2b236c2}</Project>
+      <Name>AccountManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseLib\BaseLib.csproj">
+      <Project>{85977246-de21-44cc-b798-ee7cacef001f}</Project>
+      <Name>BaseLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BasePD\BasePD.csproj">
+      <Project>{81b3eb7d-1f25-4630-b2a1-ddcb2099c1f3}</Project>
+      <Name>BasePD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommentManager\CommentManager.csproj">
+      <Project>{d88af0b6-342b-43fd-9168-079d0efa84db}</Project>
+      <Name>CommentManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FollowManagers\FollowManagers.csproj">
+      <Project>{489664e5-c483-4e79-aeb9-d9069f8155f7}</Project>
+      <Name>FollowManagers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InviteManager\InviteManager.csproj">
+      <Project>{07b7a51c-0cfa-439f-bd07-1945d19a4515}</Project>
+      <Name>InviteManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LikeManager\LikeManager.csproj">
+      <Project>{c9886eb5-090f-49e2-b590-2ef21c6be100}</Project>
+      <Name>LikeManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScraperManagers\ScraperManagers.csproj">
+      <Project>{b8cc0edb-fac2-4678-a454-cd3e6a575ed2}</Project>
+      <Name>ScraperManagers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
