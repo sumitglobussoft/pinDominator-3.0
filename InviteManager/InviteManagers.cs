@@ -11,8 +11,11 @@ using System.Threading.Tasks;
 
 namespace InviteManager
 {
+    public delegate void AccountReport_Invite();
     public class InviteManagers
     {
+        public static AccountReport_Invite objInviteDelegate;
+
         #region Global Variable
 
         public  int Nothread_Invite = 5;
@@ -22,10 +25,12 @@ namespace InviteManager
         public static int Invitedata_count = 0;      
         public static readonly object InviteObjThread = new object();
         public bool _IsfevoriteInvite = false;
+        public bool rdbSingleUserInvite = false;
+        public bool rdbMultipleUserInvite = false;
+        public string SingleUsername_Invite = string.Empty;
 
         string InvitePostData = string.Empty;
         string InvitedPageSource = string.Empty;
-
 
         public int minDelayInvite
         {
@@ -50,6 +55,7 @@ namespace InviteManager
 
         #endregion
 
+        QueryManager qm = new QueryManager();
         public void StartInvite()
         {
             try
@@ -108,14 +114,7 @@ namespace InviteManager
             catch(Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
-            finally
-            {
-                GlobusLogHelper.log.Info(" => [ Invite Process Finished ]");
-                GlobusLogHelper.log.Info(" [ PROCESS COMPLETED ]");
-                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
-            }
-
+            }         
         }
 
         public void StartInviteMultiThreaded(object objparameters)
@@ -147,46 +146,49 @@ namespace InviteManager
 
                         if (!objPinUser.isloggedin)
                         {
-
                             GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
-
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = httpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                    }
-                                    catch { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
+                                string checklogin = httpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadInvite(ref objPinUser);
                             }
-
                             catch { };
                         }
-                        #endregion
-
-                        GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                        StartActionMultithreadInvite(ref objPinUser);
+                        else if (objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadInvite(ref objPinUser);
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                            }
+                        }
+                        #endregion                      
                     }
                     catch (Exception ex)
                     {
                         GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
-                } 
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
@@ -203,7 +205,6 @@ namespace InviteManager
                         }
                         Invitedata_count--;
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -215,7 +216,7 @@ namespace InviteManager
                 //{
 
                 GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
-                    GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
 
                 //}
 
@@ -268,6 +269,15 @@ namespace InviteManager
 
                     if (InvitedPageSource.Contains("error\": null"))
                     {
+                        #region AccountReport
+
+                        string module = "Invite";
+                        string status = "Invitation Sent";
+                        qm.insertAccRePort(objPinUser.Username, module, "", "", "", Email, "", "", status, "", "", DateTime.Now);
+                        objInviteDelegate();
+
+                        #endregion
+
                         GlobusLogHelper.log.Info(" => [ " + objPinUser.Username + " Successfully invited to  " + Email + " ]");
                     }
                     else

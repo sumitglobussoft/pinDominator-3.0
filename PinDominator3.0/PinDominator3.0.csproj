@@ -41,12 +41,17 @@
       <HintPath>..\Libs\32 Bit dlls\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+    <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs2\Libs\32 Bit dlls\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\16_12_15\Libs\32 Bit dlls\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,12 +63,19 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AccountUserControl\AddNewUserAgen_UploadAccount.xaml.cs">
+      <DependentUpon>AddNewUserAgen_UploadAccount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AccountUserControl\AddSingleAccount_UploadAccount.xaml.cs">
       <DependentUpon>AddSingleAccount_UploadAccount.xaml</DependentUpon>
     </Compile>
@@ -71,6 +83,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="AccountUserControl\AddNewUserAgen_UploadAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AccountUserControl\AddSingleAccount_UploadAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,6 +107,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomUserControl\UserControl_SingleUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControl\UserControl_UnFollow_UploadUnFollowList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LicensingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,8 +123,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Classes\NotifyPropertyChange.cs" />
-    <Compile Include="Classes\Validation.cs" />
+    <Compile Include="Classes\AccountNotifyPropertyChanged.cs" />
+    <Compile Include="Classes\AccountViewModel.cs" />
     <Compile Include="CustomUserControl\UserControl_CommentByKeyword_DivideData.xaml.cs">
       <DependentUpon>UserControl_CommentByKeyword_DivideData.xaml</DependentUpon>
     </Compile>
@@ -112,6 +136,12 @@
     </Compile>
     <Compile Include="CustomUserControl\UserControl_RePin_DivideData.xaml.cs">
       <DependentUpon>UserControl_RePin_DivideData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControl\UserControl_SingleUser.xaml.cs">
+      <DependentUpon>UserControl_SingleUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControl\UserControl_UnFollow_UploadUnFollowList.xaml.cs">
+      <DependentUpon>UserControl_UnFollow_UploadUnFollowList.xaml</DependentUpon>
     </Compile>
     <Compile Include="LicenseManager.cs" />
     <Compile Include="LicensingWindow.xaml.cs">
@@ -131,8 +161,8 @@
     <Compile Include="Pages\PageAccount\AcountChecker.xaml.cs">
       <DependentUpon>AcountChecker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\PageAccount\ProfileUpload.xaml.cs">
-      <DependentUpon>ProfileUpload.xaml</DependentUpon>
+    <Compile Include="Pages\PageAccount\ManageAccount.xaml.cs">
+      <DependentUpon>ManageAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageAccount\UploadAccount.xaml.cs">
       <DependentUpon>UploadAccount.xaml</DependentUpon>
@@ -170,6 +200,9 @@
     <Compile Include="Pages\PageLike\Like.xaml.cs">
       <DependentUpon>Like.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PageLike\LikeByKeyword.xaml.cs">
+      <DependentUpon>LikeByKeyword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PageMessage\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
@@ -188,6 +221,9 @@
     <Compile Include="Pages\PagePin\RePin.xaml.cs">
       <DependentUpon>RePin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PagePin\RepinByKeyword.xaml.cs">
+      <DependentUpon>RepinByKeyword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PageProxy\Proxy.xaml.cs">
       <DependentUpon>Proxy.xaml</DependentUpon>
     </Compile>
@@ -201,6 +237,9 @@
       <DependentUpon>Appearance.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\setting\AppearanceViewModel.cs" />
+    <Compile Include="Pages\setting\Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\setting\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
@@ -217,7 +256,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\PageAccount\ProfileUpload.xaml">
+    <Page Include="Pages\PageAccount\ManageAccount.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -269,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\PageLike\LikeByKeyword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PageMessage\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -293,6 +336,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\PagePin\RepinByKeyword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PageProxy\Proxy.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -306,6 +353,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\setting\Appearance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\setting\Help.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -351,6 +402,10 @@
       <Project>{c9886eb5-090f-49e2-b590-2ef21c6be100}</Project>
       <Name>LikeManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ManageAccountManager\ManageAccountManager.csproj">
+      <Project>{a41158fb-7046-40e1-9c3c-2049853059fc}</Project>
+      <Name>ManageAccountManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinsManager\PinsManager.csproj">
       <Project>{29824913-c16f-4d23-8386-6b80486babd4}</Project>
       <Name>PinsManager</Name>
@@ -360,8 +415,9 @@
       <Name>ScraperManagers</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="UserControl\" />
+    <Content Include="resource\favicon%281%29.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

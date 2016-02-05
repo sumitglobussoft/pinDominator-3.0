@@ -4,114 +4,122 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:app="clr-namespace:PinDominator3.Classes"
-              mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight ="600">
+              mc:Ignorable="d">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Grid.Column="0" Margin="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="66*"/>
+                    <RowDefinition Height="85*"/>
+                    <RowDefinition Height="56*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="82*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="122*"/>
+                    <ColumnDefinition Width="58*"/>
+                    <ColumnDefinition Width="12*"/>
+                    <ColumnDefinition Width="83*"/>
+                    <ColumnDefinition Width="17*"/>
+                </Grid.ColumnDefinitions>
+                <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                <Label Name="lblPinFile_AddPinWithnewBoard" Content="Pin File :" Height="25" VerticalContentAlignment="Center" Grid.Row="1" HorizontalContentAlignment="Right" />
+                <TextBox Name="txtaddPinwithNewBoard" Height="25" TextWrapping="Wrap" Text=""  Grid.Column="2" IsReadOnly="True" Grid.Row="1" Grid.ColumnSpan="2"/>
+                <Button BorderBrush="Green" Name="btnUploadPinFile_AddPinWithnewBoard" Content="Browse" Grid.Column="5"  Height="26" Click="btnUploadPinFile_AddPinWithnewBoard_Click" Grid.Row="1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Label Name="lblHint_AddPinWithnewBoard" Content="eg: BoardName,Description,ImageUrl" Grid.Column="2" Height="20" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" Grid.Row="1" />
+                <Label Content="User Type :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <RadioButton Content="Single User" Grid.Column="2" Height="25" Name="rdbSingleUser_AddPinWithNewBoard" Checked="rdbSingleUser_AddPinWithNewBoard_Checked"/>
+                <RadioButton Content="Multiple User" Grid.Column="3" Height="25" Grid.ColumnSpan="3" Name="rdbMultipleUser_AddPinWithNewBoard" Checked="rdbMultipleUser_AddPinWithNewBoard_Checked"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1" Grid.Column="0" Margin="0,0,1,0">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="62*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="28*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="19*"/>
+                    <RowDefinition Height="26*"/>
+                </Grid.RowDefinitions>
 
-    <ScrollViewer>
-        <Grid>
-            <Grid.DataContext>
-                <app:Validation x:Name="objform" />
-            </Grid.DataContext>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="139*"/>
-                <RowDefinition Height="201*"/>
-                <RowDefinition Height="260*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
+                <Label Content="No. of threads :"  Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtAddPinwithnewBoard_NoOfThreads"  TextWrapping="Wrap" Text="25" HorizontalContentAlignment="Center"  Grid.Column="2" Grid.Row="0" Height="25" />
+                <Label Content="Delay :" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" Height="25" HorizontalContentAlignment="Right" />
+                <TextBox Name="txtAddPinwithnewBoard_DelayMin" TextWrapping="Wrap" Text="20" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="1" Height="25" />
+                <Label Content="To" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="3" Grid.Row="1" Height="25" />
+                <TextBox Name="txtAddPinwithnewBoard_DelayMax" TextWrapping="Wrap" Text="30" HorizontalContentAlignment="Center" Grid.Column="4" Grid.Row="1" Height="25"/>
+                <Label Content="(In Seconds)"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="5" Grid.Row="1" Height="25"/>
 
-            <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Grid.Column="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="74*"/>
-                        <ColumnDefinition Width="148*"/>
-                        <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="69*"/>
-                        <ColumnDefinition Width="14*"/>
-                    </Grid.ColumnDefinitions>
-                    <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
-                    <Label Content="Pin File :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                    <TextBox Name="txtaddPinwithNewBoard" Height="25" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}"  Grid.Column="1" IsReadOnly="True"/>
-                    <Button BorderBrush="Green" Name="btnUploadPinFile_AddPinWithnewBoard" Content="Browse" Grid.Column="3"  Height="25" Click="btnUploadPinFile_AddPinWithnewBoard_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Label Content="eg: BoardName,Description,ImageUrl" Grid.Column="1" Height="20" Margin="0,86,0,32"  Grid.ColumnSpan="3" />
-
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1" Grid.Column="0">
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="104*"/>
-                        <ColumnDefinition Width="81*"/>
-                        <ColumnDefinition Width="50*"/>
-                        <ColumnDefinition Width="82*"/>
-                        <ColumnDefinition Width="81*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="19*"/>
-                        <RowDefinition Height="26*"/>
-                    </Grid.RowDefinitions>
-
-                    <Label Content="No. of threads :" Height="25"  Grid.Column="0" Grid.Row="0"  />
-                    <TextBox Name="txtAddPinwithnewBoard_NoOfThreads"  TextWrapping="Wrap" Text="5" Height="25" HorizontalContentAlignment="Center"  Grid.Column="1" Grid.Row="0" />
-                    <Label Content="Delay :"  Height="25" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                    <TextBox Name="txtAddPinwithnewBoard_DelayMin" Height="25" TextWrapping="Wrap" Text="20" HorizontalContentAlignment="Center" Grid.Column="1" Grid.Row="1" />
-                    <Label Content="To" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="25" Grid.Column="2" Grid.Row="1" />
-                    <TextBox Name="txtAddPinwithnewBoard_DelayMax" Height="25" TextWrapping="Wrap" Text="30" HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="1"/>
-                    <Label Content="(In Seconds)"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" Grid.Column="4" Grid.Row="1"/>
-
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2" Grid.Column="0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="32*"/>
-                        <ColumnDefinition Width="137*"/>
-                        <ColumnDefinition Width="20*"/>
-                        <ColumnDefinition Width="137*"/>
-                        <ColumnDefinition Width="41*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button  BorderBrush="Green" Name="btnAddPinWithnewBoard_Start" Content="START" Height="26"  Grid.Column="1" Click="btnAddPinWithnewBoard_Start_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Button  BorderBrush="Red" Name="btnAddPinWithnewBoard_Stop" Content="STOP" Grid.Column="3" Height="26" Click="btnAddPinWithnewBoard_Stop_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </Grid>
-            </GroupBox>          
-                <GroupBox Header="Module Description" BorderBrush="Black" Grid.Column="1" Grid.Row="0">
-                    <Grid>
-                        <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="AddPinWithnewBoard_progess"/>
-
-                    </Grid>
-                </GroupBox>
-            <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-                <DataGrid Name="dtGrdMessage_AddPinWithnewBoard_AccountsReport" />
-            </GroupBox>
-        </Grid>
-    </ScrollViewer>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2" Grid.Column="0" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Button  BorderBrush="Green" Name="btnAddPinWithnewBoard_Start" Content="START" Height="27"  Grid.Column="1" Click="btnAddPinWithnewBoard_Start_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button  BorderBrush="Red" Name="btnAddPinWithnewBoard_Stop" Content="STOP" Height="27" Grid.Column="3" Click="btnAddPinWithnewBoard_Stop_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Module Description" BorderBrush="Black" Grid.Column="1" Grid.Row="0">
+            <Grid>
+                <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="AddPinWithnewBoard_progess"/>
+                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="Welcome to  PinDominator3.0   &#x0a;  &#x0a;Add Pin With New Board Module:- &#x0a;You Can Add Pin To Targeted Board And Comment On It or If Targeted Board is Not Present Then Create New Board."/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <DataGrid Name="dgvAddPinWithnewBoard_AccountsReport" GridLinesVisibility="All" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export Data" Click="clkExportData_AddPinWithBoard"/>
+                        <MenuItem Header="Delete Data" Click="clkDeleteAccReport_AddPinWithBoard"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
 </UserControl>
 

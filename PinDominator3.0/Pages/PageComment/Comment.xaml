@@ -3,130 +3,185 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:app="clr-namespace:PinDominator3.Classes"
-             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight ="600">
-
-    <ScrollViewer>
-        <Grid>
-            <Grid.DataContext>
-                <app:Validation x:Name="objform" />
-            </Grid.DataContext>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
+             xmlns:viewmodel="clr-namespace:PinDominator3.Classes"             
+             mc:Ignorable="d" >
+    <Grid>
+        <Grid.DataContext>
+            <viewmodel:AccountViewModel x:Name="objAccountViewModel"/>
+        </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Grid.Column="0" Margin="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="107*"/>
-                    <RowDefinition Height="131*"/>
-                    <RowDefinition Height="162*"/>
+                    <RowDefinition Height="59*"/>
+                    <RowDefinition Height="51*"/>
+                    <RowDefinition Height="34*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="User Input" BorderBrush="Black">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="94*"/>
-                            <ColumnDefinition Width="90*"/>
-                            <ColumnDefinition Width="38*"/>
-                            <ColumnDefinition Width="59*"/>
-                            <ColumnDefinition Width="13*"/>
-                            <ColumnDefinition Width="40*"/>
-                            <ColumnDefinition Width="47*"/>
-                            <ColumnDefinition Width="17*"/>
-                        </Grid.ColumnDefinitions>
-                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
-                        <Label Content="Message :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                        <TextBox Name="txtCommentMessage" Height="25" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}"  Grid.ColumnSpan="3" Grid.Column="1"  />
-                        <Button BorderBrush="Green" Name="btnMessage_Comment_Browse" Content="Browse" Grid.Column="5" Grid.ColumnSpan="2" Height="25" Click="btnMessage_Comment_Browse_Click" >
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="104*"/>
-                            <ColumnDefinition Width="81*"/>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="30*"/>
-                            <ColumnDefinition Width="82*"/>
-                            <ColumnDefinition Width="81*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="19*"/>
-                            <RowDefinition Height="26*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Content="No. of threads :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-                        <TextBox Name="txtComment_NoOfThreads"  TextWrapping="Wrap" Text="5" Height="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="0"/>
-                        <Label Content="Delay :" Height="25" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-                        <TextBox Name="txtComment_DelayMin" Height="25" TextWrapping="Wrap" Text="20" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" />
-                        <Label Content="To" Height="26" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" HorizontalContentAlignment="Center" />
-                        <TextBox Name="txtComment_DelayMax" Height="25" TextWrapping="Wrap" Text="30"  Grid.Column="4" Grid.Row="1" HorizontalContentAlignment="Center"/>
-                        <Label Content="(In Seconds)" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" Grid.Column="5" Grid.Row="1"/>
-                        <Label Content="Comment Count :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="0"  Grid.ColumnSpan="2"  />
-                        <TextBox x:Name="txtCommentCount"  TextWrapping="Wrap" Text="5" Height="25" HorizontalContentAlignment="Center" Grid.Column="5" Grid.Row="0"/>
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Submit Action" BorderBrush="Black"  Grid.Row="2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="32*"/>
-                            <ColumnDefinition Width="137*"/>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="137*"/>
-                            <ColumnDefinition Width="41*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button  BorderBrush="Green" Name="btnComment_Start" Content="START"  Height="26"  Grid.Column="1" Click="btnComment_Start_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button  BorderBrush="Red" Name="btnComment_Stop" Content="STOP"   Grid.Column="3" Height="26" Click="btnComment_Stop_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                    </Grid>
-                </GroupBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="93*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="124*"/>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="12*"/>
+                    <ColumnDefinition Width="84*"/>
+                    <ColumnDefinition Width="17*"/>
+                </Grid.ColumnDefinitions>
+                <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                <Label Content="Message :" Name="lbMsg_Comment" Height="25" VerticalContentAlignment="Center" Grid.Row="1" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtCommentMessage" Height="25" TextWrapping="Wrap" Text="" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="2"/>
+                <Button BorderBrush="Green" Name="btnMessage_Comment_Browse" Content="Browse" Grid.Column="5" Height="26" Click="btnMessage_Comment_Browse_Click" Grid.Row="1" Grid.ColumnSpan="2">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <RadioButton Name="rdbSingleUser_Comment" Content="Use Single User" Height="25" Checked="rdbSingleUser_Comment_Checked" ToolTip="You Could Comment Only Single Pins Just By Enter Comment Message To Software." Grid.Column="2"/>
+                <RadioButton Name="rdbMultipleUser_Comment" Content="Use Multiple User" Grid.Column="3" Height="25" Grid.ColumnSpan="3" IsChecked="True" Checked="rdbMultipleUser_Comment_Checked" ToolTip="You Could Comment On Multiple Pins Just By Loading Comment Message To Software." />
+                <Label Content="User Type :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
             </Grid>
-            <Grid Margin="0,0,10,0" Grid.Column="1">
+        </GroupBox>
+        <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1" Grid.Column="0" Margin="0,0,1,0">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="94*"/>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="18*"/>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="35*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="53*"/>
-                    <RowDefinition Height="147*"/>
+                    <RowDefinition Height="19*"/>
+                    <RowDefinition Height="26*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="Module Description" BorderBrush="Black" >
-                    <Grid>
-                        <ProgressBar Height="8"  VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="Comment_progess"/>
 
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1">
-                    <DataGrid Name="dtGrdComment_AccountsReport" />
-                </GroupBox>
+                <Label Content="No. of threads :" VerticalContentAlignment="Center"  Grid.Column="0" Grid.Row="0"  Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtComment_NoOfThreads"  TextWrapping="Wrap" Text="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" Grid.Row="0" Height="25"/>
+                <Label Content="Delay :" Grid.Column="0" Grid.Row="1"  VerticalContentAlignment="Center"  Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtComment_DelayMin" TextWrapping="Wrap" Text="20" Grid.Column="2" Grid.Row="1" HorizontalContentAlignment="Center" Height="25" />
+                <Label Content="To" Grid.Column="3" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Height="25" Grid.ColumnSpan="2" />
+                <TextBox Name="txtComment_DelayMax" TextWrapping="Wrap" Text="30"  Grid.Column="5" Grid.Row="1" HorizontalContentAlignment="Center"  Height="25"/>
+                <Label Content="(In Seconds)" VerticalContentAlignment="Center" Grid.Column="6" Grid.Row="1"  Height="25" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" />
+                <Label Content="Comment Count :" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Column="4" Grid.Row="0"  Height="25"  Grid.ColumnSpan="2"/>
+                <TextBox x:Name="txtCommentCount"  TextWrapping="Wrap" Text="5" HorizontalContentAlignment="Center" Grid.Column="7" Grid.Row="0" Height="25" />
+
             </Grid>
-        </Grid>
-    </ScrollViewer>
+        </GroupBox>
+        <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Column="0" Grid.Row="2" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Button  BorderBrush="Green" Name="btnComment_Start" Content="START"  Grid.Column="1" Click="btnComment_Start_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button  BorderBrush="Red" Name="btnComment_Stop" Content="STOP"   Grid.Column="3" Click="btnComment_Stop_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1" >
+            <Grid>
+                <ProgressBar Height="8"  VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="Comment_progess"/>
+                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="Welcome to  PinDominator3.0   &#x0a;  &#x0a;Comment Module:- &#x0a;You Can Comment By Single Message or Multiple Message On Any Random Pins."/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <DataGrid Name="dgvComment_AccountsReport" GridLinesVisibility="All" ItemsSource="{Binding ListAccReportComment}"  ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export Data" Click="clkExportData_Comment"/>
+                        <MenuItem Header="Delete Data" Click="clkDeleteData_Comment"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Id">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding ID}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Account Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding AccName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Module Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding ModuleName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridHyperlinkColumn Header="Pin" Binding="{Binding PinNo}" ContentBinding="{Binding PinNo}">
+                        <DataGridHyperlinkColumn.ElementStyle>
+                            <Style>
+                                <EventSetter Event="Hyperlink.Click" Handler="WebPageClick"/>
+                            </Style>
+                        </DataGridHyperlinkColumn.ElementStyle>
+                    </DataGridHyperlinkColumn>
+
+                    <DataGridTemplateColumn Header="Message">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Message}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Status">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Status}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="DateAndTime">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding DateTime}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
 </UserControl>

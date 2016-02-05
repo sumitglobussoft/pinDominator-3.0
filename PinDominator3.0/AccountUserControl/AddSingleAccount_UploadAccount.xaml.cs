@@ -40,9 +40,10 @@ namespace PinDominator3.AccountUserControl
                 string proxyPort = string.Empty;
                 string proxyUserName = string.Empty;
                 string proxyPassword = string.Empty;
-                string Useragent = string.Empty;
+                //string Useragent = string.Empty;
                 string BoardsName = string.Empty;
                 string ScreenName = string.Empty;
+                string LoginStatus = string.Empty;
 
                 if (string.IsNullOrEmpty(txtEmail_AddSingleAcc.Text))
                 {
@@ -124,8 +125,9 @@ namespace PinDominator3.AccountUserControl
                 {
                     GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                 }
+                LoginStatus = "NotChecked";
 
-                QM.AddAccountInDataBase(accountUser, accountPass, niches, proxyAddress, proxyPort, proxyUserName, proxyPassword, Useragent, BoardsName, ScreenName);
+                QM.AddAccountInDataBase(accountUser, accountPass, niches, proxyAddress, proxyPort, proxyUserName, proxyPassword, ScreenName,LoginStatus);
                 UploadAccount objUploadAccount = new UploadAccount();
                 objUploadAccount.AccounLoad();
 

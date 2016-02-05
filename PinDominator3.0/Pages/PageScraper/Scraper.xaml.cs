@@ -5,6 +5,7 @@ using Globussoft;
 using ScraperManagers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,15 +31,29 @@ namespace PinDominator3.Pages.PageScraper
         public Scraper()
         {
             InitializeComponent();
+            ScraperManager.objScraperDelegate = new AccountReport_Scraper(AccountReport_Scraper);
+            AccountReport_Scraper();
         }
-
 
         ScraperManager objScraperManager = new ScraperManager();
         Utils.Utils objUtils = new Utils.Utils();
+        QueryManager QM = new QueryManager();
 
         private void btnScraperStart_Click(object sender, RoutedEventArgs e)
         {
-            try 
+            try
+            {
+                startScraper();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void startScraper()
+        {
+            try
             {
                 if (PDGlobals.listAccounts.Count > 0)
                 {
@@ -95,6 +110,7 @@ namespace PinDominator3.Pages.PageScraper
                             {
                                 threads = 25;
                             }
+                            GlobusLogHelper.log.Info(" => [ Process Starting ] ");
                             objScraperManager.NoOfThreadsScraper = threads;
 
                             Thread ScraperThread = new Thread(objScraperManager.StartScraper);
@@ -118,11 +134,10 @@ namespace PinDominator3.Pages.PageScraper
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
-
         }
 
         private void rdoFollowerScraper_Checked(object sender, RoutedEventArgs e)
@@ -137,7 +152,7 @@ namespace PinDominator3.Pages.PageScraper
 
         private void btnScraperExport_Click(object sender, RoutedEventArgs e)
         {
-            try 
+            try
             {
                 ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
                 GlobusLogHelper.log.Info(" => [ Start User Export Process ]");
@@ -164,13 +179,26 @@ namespace PinDominator3.Pages.PageScraper
                 GlobusLogHelper.log.Info(" => [ User Exported Successfully ]");
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
         }
 
         private void btnScraperStop_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Thread objStopScraper = new Thread(stopScraper);
+                objStopScraper.Start();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void stopScraper()
         {
             try
             {
@@ -182,7 +210,7 @@ namespace PinDominator3.Pages.PageScraper
                     {
                         item.Abort();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                     }
                 }
@@ -196,10 +224,201 @@ namespace PinDominator3.Pages.PageScraper
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
         }
-   
-         
-    
+
+        private void chkExportScrapeData_Scraper_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
+                GlobusLogHelper.log.Info(" => [ Start User Export Process ]");
+                try
+                {
+                    if (rdoFollowerScraper.IsChecked == true)
+                    {
+                        string item = "Followers";
+                        // lstTotalUserScraped.Insert(0, item);
+                        GlobusFileHelper.WriteListtoTextfile(ClGlobul.lstTotalUserScraped, PDGlobals.UserScrapedFollower);
+                        GlobusLogHelper.log.Info(" => [ File Path " + PDGlobals.UserScrapedFollower + " ]");
+                    }
+                    else
+                    {
+                        string item = "Followings";
+                        //  lstTotalUserScraped.Insert(0, item);
+                        GlobusFileHelper.WriteListtoTextfile(ClGlobul.lstTotalUserScraped, PDGlobals.UserScrapedFollowing);
+                        GlobusLogHelper.log.Info(" => [ File Path " + PDGlobals.UserScrapedFollowing + " ]");
+                    }
+                }
+                catch { }
+
+
+                GlobusLogHelper.log.Info(" => [ User Exported Successfully ]");
+
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+        public void AccountReport_Scraper()
+        {
+            try
+            {
+                int id = 0;
+                int count = 0;
+                DataSet DS = null; ;
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Id");
+                dt.Columns.Add("ModuleName");
+                dt.Columns.Add("UserName");            
+                dt.Columns.Add("Status");
+                dt.Columns.Add("Date&Time");
+                DS = new DataSet();
+                DS.Tables.Add(dt);
+                try
+                {
+                    DS = QM.SelectAddReport("Scraper");
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
+
+                foreach (DataRow dt_item in DS.Tables[0].Rows)
+                {
+                    try
+                    {
+                        count++;
+                        id = int.Parse(dt_item.ItemArray[0].ToString());
+                       // string AccountName = dt_item.ItemArray[1].ToString();
+                        string ModuleName = dt_item.ItemArray[2].ToString();
+                        string UserName = dt_item.ItemArray[5].ToString();                
+                        string Status = dt_item.ItemArray[9].ToString();
+                        string DateAndTime = dt_item.ItemArray[12].ToString();
+                        dt.Rows.Add(count, ModuleName, UserName, Status, DateAndTime);
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    }
+                }
+                try
+                {
+                    DataView dv;
+                    this.Dispatcher.Invoke(new Action(delegate
+                    {
+                        dgvScraper_AccountsReport.ItemsSource = dt.DefaultView;
+
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        private void clkDeleteAccReport_Scraper(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ModernDialog.ShowMessage("Are You Really Want To Delete This Data Permanently?", " Delete Account ", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    QM.DeleteAccountReport("Scraper");
+                    GlobusLogHelper.log.Info(" => [ All Data is Deleted ] ");
+                }
+                AccountReport_Scraper();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        private void clkExportData_Scraper(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ExportAccReportScraper();
+            }
+            catch(Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void ExportAccReportScraper()
+        {
+            try
+            {
+                if (dgvScraper_AccountsReport.Items.Count == 1)
+                {
+                    GlobusLogHelper.log.Info("=> [ Data Is Not Found In Account Report ]");
+                    ModernDialog.ShowMessage("Data Is Not Found In Account Report", "Data Is Not Found", MessageBoxButton.OK);
+                    return;
+                }
+                else if (dgvScraper_AccountsReport.Items.Count > 1)
+                {
+                    try
+                    {
+                        string CSV_Header = string.Join(",", "ModuleName", "UserName", "Status", "Date&Time");
+                        string CSV_Content = "";
+                        var result = ModernDialog.ShowMessage("Are you want to Export Report Data ", " Export Report Data ", MessageBoxButton.YesNo);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            try
+                            {
+                                string FilePath = string.Empty;
+                                FilePath = Utils.Utils.UploadFolderData(PDGlobals.Pindominator_Folder_Path);
+                                FilePath = FilePath + "\\Scraper.csv";
+                                GlobusLogHelper.log.Info("Export Data File Path :" + FilePath);
+                                GlobusLogHelper.log.Debug("Export Data File Path :" + FilePath);
+                                string ExportDataLocation = FilePath;
+                                PDGlobals.Pindominator_Folder_Path = FilePath;
+                                DataSet ds = QM.SelectAddReport("Scraper");
+                                foreach (DataRow item in ds.Tables[0].Rows)
+                                {
+                                    try
+                                    {
+                                        string ModuleName = item.ItemArray[2].ToString();
+                                        string UserName = item.ItemArray[5].ToString();
+                                        string Status = item.ItemArray[9].ToString();
+                                        string DateAndTime = item.ItemArray[12].ToString();
+                                        CSV_Content = string.Join(",", ModuleName.Replace("'", ""), UserName.Replace("'", ""), Status.Replace("'", ""), DateAndTime.Replace("'", ""));
+                                        PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Content, ExportDataLocation);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
+                            }
+
+                        }
+                    }
+                    catch(Exception Ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + Ex.StackTrace);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+
+
+
+
     }
-
-
 }

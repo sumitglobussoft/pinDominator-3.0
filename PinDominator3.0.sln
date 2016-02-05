@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinDominator3.0", "PinDominator3.0\PinDominator3.0.csproj", "{3CAE5199-C891-4F24-B8A0-57967D10076E}"
 EndProject
@@ -25,7 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinsManager", "PinsManager\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardManager", "BoardManager\BoardManager.csproj", "{9630BE0C-1318-4A3A-94F4-F272EFE11C6E}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PinDominator_Setup", "PinDominator_Setup\PinDominator_Setup.vdproj", "{1008C059-F843-4869-BEBB-5CADEC81EC10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageAccountManager", "ManageAccountManager\ManageAccountManager.csproj", "{A41158FB-7046-40E1-9C3C-2049853059FC}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PinDominator_Setup", "PinDominator_Setup\PinDominator_Setup.vdproj", "{9A050D66-1800-45F6-A566-606DCFCFB783}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,10 +105,16 @@ Global
 		{9630BE0C-1318-4A3A-94F4-F272EFE11C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9630BE0C-1318-4A3A-94F4-F272EFE11C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9630BE0C-1318-4A3A-94F4-F272EFE11C6E}.Release|x86.ActiveCfg = Release|Any CPU
-		{1008C059-F843-4869-BEBB-5CADEC81EC10}.Debug|Any CPU.ActiveCfg = Debug
-		{1008C059-F843-4869-BEBB-5CADEC81EC10}.Debug|x86.ActiveCfg = Debug
-		{1008C059-F843-4869-BEBB-5CADEC81EC10}.Release|Any CPU.ActiveCfg = Release
-		{1008C059-F843-4869-BEBB-5CADEC81EC10}.Release|x86.ActiveCfg = Release
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A050D66-1800-45F6-A566-606DCFCFB783}.Debug|Any CPU.ActiveCfg = Debug
+		{9A050D66-1800-45F6-A566-606DCFCFB783}.Debug|x86.ActiveCfg = Debug
+		{9A050D66-1800-45F6-A566-606DCFCFB783}.Release|Any CPU.ActiveCfg = Release
+		{9A050D66-1800-45F6-A566-606DCFCFB783}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

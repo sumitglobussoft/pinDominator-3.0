@@ -19,6 +19,8 @@ using System.Text.RegularExpressions;
 using BasePD;
 using PinsManager;
 using FirstFloor.ModernUI.Windows.Controls;
+using System.Data;
+using PinDominator3.CustomUserControl;
 
 
 namespace PinDominator3.Pages.PagePin
@@ -31,7 +33,12 @@ namespace PinDominator3.Pages.PagePin
         public AddPinWithnewBoard()
         {
             InitializeComponent();
+            AddPinWithNewBoardManager.objAddPinWithBoardDelegate = new AccountReport_AddPinWithBoard(AccountReport_AddPinWithBoard);
+            AccountReport_AddPinWithBoard();
         }
+        AddPinWithNewBoardManager objAddPinWithNewBoardManager = new AddPinWithNewBoardManager();
+        Utils.Utils objUtils = new Utils.Utils();
+        QueryManager QM = new QueryManager();
 
         private void btnUploadPinFile_AddPinWithnewBoard_Click(object sender, RoutedEventArgs e)
         {
@@ -122,10 +129,21 @@ namespace PinDominator3.Pages.PagePin
             }
         }
 
-        AddPinWithNewBoardManager objAddPinWithNewBoardManager = new AddPinWithNewBoardManager();
-        Utils.Utils objUtils = new Utils.Utils();
+       
 
         private void btnAddPinWithnewBoard_Start_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                startAddPinWithNewBoard();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void startAddPinWithNewBoard()
         {
             try
             {
@@ -133,14 +151,23 @@ namespace PinDominator3.Pages.PagePin
                 {
                     try
                     {
-
-                        if (string.IsNullOrEmpty(txtaddPinwithNewBoard.Text))
+                        if (rdbSingleUser_AddPinWithNewBoard.IsChecked == true || rdbMultipleUser_AddPinWithNewBoard.IsChecked == true)
                         {
-                            GlobusLogHelper.log.Info("Please Upload Pin File");
-                            ModernDialog.ShowMessage("Please Upload Pin File", "Upload Pin File", MessageBoxButton.OK);
-                            return;
-                        }
-
+                            if (rdbSingleUser_AddPinWithNewBoard.IsChecked == true)
+                            {
+                                AddNewPinsListofAddNewBoardWithNewPin(lstBoardDesc);
+                            }
+                            if (rdbMultipleUser_AddPinWithNewBoard.IsChecked == true)
+                            {
+                                if (string.IsNullOrEmpty(txtaddPinwithNewBoard.Text))
+                                {
+                                    GlobusLogHelper.log.Info("Please Upload Pin File");
+                                    ModernDialog.ShowMessage("Please Upload Pin File", "Upload Pin File", MessageBoxButton.OK);
+                                    return;
+                                }
+                            }
+                            
+                        }                   
                     }
                     catch (Exception ex)
                     {
@@ -156,7 +183,7 @@ namespace PinDominator3.Pages.PagePin
 
                     Regex checkNo = new Regex("^[0-9]*$");
 
-                    ClGlobul.addNewPinWithBoard = GlobusFileHelper.ReadFile(txtaddPinwithNewBoard.Text.Trim());                   
+                    //ClGlobul.addNewPinWithBoard = GlobusFileHelper.ReadFile(txtaddPinwithNewBoard.Text.Trim());
 
                     int processorCount = objUtils.GetProcessor();
 
@@ -169,14 +196,14 @@ namespace PinDominator3.Pages.PagePin
                         {
                             objAddPinWithNewBoardManager.minDelayAddPinWithNewBoard = Convert.ToInt32(txtAddPinwithnewBoard_DelayMin.Text);
                             objAddPinWithNewBoardManager.maxDelayAddPinWithNewBoard = Convert.ToInt32(txtAddPinwithnewBoard_DelayMax.Text);
-                            objAddPinWithNewBoardManager.Nothread_AddPinWithNewBoard = Convert.ToInt32(txtAddPinwithnewBoard_NoOfThreads.Text);                           
+                            objAddPinWithNewBoardManager.Nothread_AddPinWithNewBoard = Convert.ToInt32(txtAddPinwithnewBoard_NoOfThreads.Text);
                         }
                         catch (Exception ex)
                         {
                             GlobusLogHelper.log.Info("Enter in Correct Format");
                             return;
                         }
-                      
+
                         if (!string.IsNullOrEmpty(txtAddPinwithnewBoard_NoOfThreads.Text) && checkNo.IsMatch(txtAddPinwithnewBoard_NoOfThreads.Text))
                         {
                             threads = Convert.ToInt32(txtAddPinwithnewBoard_NoOfThreads.Text);
@@ -186,6 +213,7 @@ namespace PinDominator3.Pages.PagePin
                         {
                             threads = 25;
                         }
+                        GlobusLogHelper.log.Info(" => [ Process Starting ] ");
                         objAddPinWithNewBoardManager.NoOfThreadsAddPinWithNewBoard = threads;
 
                         Thread AddPinWithNewBoardThread = new Thread(objAddPinWithNewBoardManager.StartAddPinWithNewBoard);
@@ -204,13 +232,26 @@ namespace PinDominator3.Pages.PagePin
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
         }
 
         private void btnAddPinWithnewBoard_Stop_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Thread objStopAddPinWithNewBoard = new Thread(stopAddPinWithNewBoard);
+                objStopAddPinWithNewBoard.Start();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
+            }
+        }
+
+        public void stopAddPinWithNewBoard()
         {
             try
             {
@@ -222,7 +263,7 @@ namespace PinDominator3.Pages.PagePin
                     {
                         item.Abort();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                     }
                 }
@@ -237,9 +278,260 @@ namespace PinDominator3.Pages.PagePin
             }
         }
 
+        public void AccountReport_AddPinWithBoard()
+        {
+            try
+            {
+                int id = 0;
+                int count = 0;
+                DataSet DS = null; ;
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Id");
+                dt.Columns.Add("AccountName");
+                dt.Columns.Add("ModuleName");
+                dt.Columns.Add("BoardName");
+                dt.Columns.Add("Message");
+                dt.Columns.Add("Status");
+                dt.Columns.Add("ImageUrl");
+                dt.Columns.Add("Date&Time");
+                DS = new DataSet();
+                DS.Tables.Add(dt);
+                try
+                {
+                    DS = QM.SelectAddReport("AddPinWithNewBoard");
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
 
+                foreach (DataRow dt_item in DS.Tables[0].Rows)
+                {
+                    try
+                    {
+                        count++;
+                        id = int.Parse(dt_item.ItemArray[0].ToString());
+                        string AccountName = dt_item.ItemArray[1].ToString();
+                        string ModuleName = dt_item.ItemArray[2].ToString();
+                        string BoardName = dt_item.ItemArray[4].ToString();
+                        string Message = dt_item.ItemArray[6].ToString();
+                        string Status = dt_item.ItemArray[9].ToString();
+                        string ImageUrl = dt_item.ItemArray[8].ToString();
+                        string DateAndTime = dt_item.ItemArray[12].ToString();
+                        dt.Rows.Add(count, AccountName, ModuleName, BoardName, Message, Status, ImageUrl, DateAndTime);
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    }
+                }
+                try
+                {
+                    DataView dv;
+                    this.Dispatcher.Invoke(new Action(delegate
+                    {
+                        dgvAddPinWithnewBoard_AccountsReport.ItemsSource = dt.DefaultView;
 
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
 
+        private void clkDeleteAccReport_AddPinWithBoard(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ModernDialog.ShowMessage("Are You Really Want To Delete This Data Permanently?", " Delete Account ", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    QM.DeleteAccountReport("AddPinWithNewBoard");
+                    GlobusLogHelper.log.Info(" => [ All Data is Deleted ] ");
+                }
+                AccountReport_AddPinWithBoard();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        private void clkExportData_AddPinWithBoard(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ExportAccReportAddPinWithBoard();
+            }
+            catch(Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void ExportAccReportAddPinWithBoard()
+        {
+            try
+            {
+                if (dgvAddPinWithnewBoard_AccountsReport.Items.Count == 1)
+                {
+                    GlobusLogHelper.log.Info("=> [ Data Is Not Found In Account Report ]");
+                    ModernDialog.ShowMessage("Data Is Not Found In Account Report", "Data Is Not Found", MessageBoxButton.OK);
+                    return;
+                }
+                else if (dgvAddPinWithnewBoard_AccountsReport.Items.Count > 1)
+                {
+                    try
+                    {
+                        string CSV_Header = string.Join(",", "AccountName", "ModuleName", "BoardName", "Message", "Status", "ImageUrl", "Date&Time");
+                        string CSV_Content = "";
+                        var result = ModernDialog.ShowMessage("Are you want to Export Report Data ", " Export Report Data ", MessageBoxButton.YesNo);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            try
+                            {
+                                string FilePath = string.Empty;
+                                FilePath = Utils.Utils.UploadFolderData(PDGlobals.Pindominator_Folder_Path);
+                                FilePath = FilePath + "\\AddPinWithNewBoard.csv";
+                                GlobusLogHelper.log.Info("Export Data File Path :" + FilePath);
+                                GlobusLogHelper.log.Debug("Export Data File Path :" + FilePath);
+                                string ExportDataLocation = FilePath;
+                                PDGlobals.Pindominator_Folder_Path = FilePath;
+                                DataSet ds = QM.SelectAddReport("AddPinWithNewBoard");
+                                foreach (DataRow item in ds.Tables[0].Rows)
+                                {
+                                    try
+                                    {
+                                        string AccountName = item.ItemArray[1].ToString();
+                                        string ModuleName = item.ItemArray[2].ToString();
+                                        string BoardName = item.ItemArray[4].ToString();
+                                        string Message = item.ItemArray[6].ToString();
+                                        string Status = item.ItemArray[9].ToString();
+                                        string ImageUrl = item.ItemArray[8].ToString();
+                                        string DateAndTime = item.ItemArray[12].ToString();
+                                        CSV_Content = string.Join(",", AccountName.Replace("'", ""), ModuleName.Replace("'", ""), BoardName.Replace("'", ""), Message.Replace("'", ""), Status.Replace("'", ""), ImageUrl.Replace("'", ""), DateAndTime.Replace("'", ""));
+                                        PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Content, ExportDataLocation);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
+                            }
+                        }
+                    }
+                    catch(Exception Ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + Ex.StackTrace);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void closeEvent()
+        {
+
+        }
+
+        private void rdbSingleUser_AddPinWithNewBoard_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SingleUserAddPinWithNewBoard();
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        List<string> lstBoardDesc = new List<string>();
+        public void SingleUserAddPinWithNewBoard()
+        {
+            try
+            {
+                btnUploadPinFile_AddPinWithnewBoard.Visibility = Visibility.Hidden;
+                txtaddPinwithNewBoard.Visibility = Visibility.Hidden;
+                lblPinFile_AddPinWithnewBoard.Visibility = Visibility.Hidden;
+                lblHint_AddPinWithnewBoard.Visibility = Visibility.Hidden;
+                lstBoardDesc.Clear();
+
+                UserControl_SingleUser obj = new UserControl_SingleUser();
+                obj.UserControlHeader.Text = "Enter User Here ";
+                obj.txtEnterSingleMessages.ToolTip = "Format :- BoardName,Description,ImageUrl";
+                var window = new ModernDialog
+                {
+
+                    Content = obj
+                };
+                window.ShowInTaskbar = true;
+                window.MinWidth = 100;
+                window.MinHeight = 300;
+                Button customButton = new Button() { Content = "SAVE" };
+                customButton.Click += (ss, ee) => { closeEvent(); window.Close(); };
+                window.Buttons = new Button[] { customButton };
+
+                window.ShowDialog();
+
+                MessageBoxButton btnC = MessageBoxButton.YesNo;
+                var result = ModernDialog.ShowMessage("Are you sure want to save ?", "Message Box", btnC);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    TextRange textRange = new TextRange(obj.txtEnterSingleMessages.Document.ContentStart, obj.txtEnterSingleMessages.Document.ContentEnd);
+
+                    if (!string.IsNullOrEmpty(textRange.Text))
+                    {
+                        string enterText = textRange.Text;
+                        string[] arr = Regex.Split(enterText, "\r\n");
+
+                        foreach (var arr_item in arr)
+                        {
+                            if (!string.IsNullOrEmpty(arr_item) || !arr_item.Contains(""))
+                            {
+                                lstBoardDesc.Add(arr_item);
+                            }
+
+                        }
+                    }
+                    GlobusLogHelper.log.Info(" => [ User Loaded : " + lstBoardDesc.Count + " ]");
+                    GlobusLogHelper.log.Debug("User : " + lstBoardDesc.Count);
+                } 
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        private void rdbMultipleUser_AddPinWithNewBoard_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                btnUploadPinFile_AddPinWithnewBoard.Visibility = Visibility.Visible;
+                txtaddPinwithNewBoard.Visibility = Visibility.Visible;
+                lblPinFile_AddPinWithnewBoard.Visibility = Visibility.Visible;
+                lblHint_AddPinWithnewBoard.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
 
 
 

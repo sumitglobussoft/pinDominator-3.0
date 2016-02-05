@@ -34,6 +34,7 @@ namespace PinDominator3.CustomUserControl
             try
             {
                 FollowByUsernameManager.rdbDivideEquallyFollowByUsername = true;
+                FollowByUsernameManager.rdbDivideGivenByUserFollowByUsername = false;
                 rdbDivideByUser_FollowByUsername.IsEnabled = false;
                 txtCountGivenByUser_FollowByUsername.Visibility = Visibility.Hidden;
             }
@@ -47,6 +48,7 @@ namespace PinDominator3.CustomUserControl
         {
             try
             {
+                FollowByUsernameManager.rdbDivideEquallyFollowByUsername = false;
                 FollowByUsernameManager.rdbDivideGivenByUserFollowByUsername = true;
                 rdbDivideEqually_FollowByUsername.IsEnabled = false;
             }
@@ -56,29 +58,29 @@ namespace PinDominator3.CustomUserControl
             }
         }
 
-        private void btnSave_FollowByUsername_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (FollowByUsernameManager.rdbDivideGivenByUserFollowByUsername == true)
-                {
-                    if (!string.IsNullOrEmpty(txtCountGivenByUser_FollowByUsername.Text))
-                    {
-                        FollowByUsernameManager.CountGivenByUserFollowByUsename = Convert.ToInt32(txtCountGivenByUser_FollowByUsername.Text); 
-                    }
-                    else
-                    {
-                        GlobusLogHelper.log.Info("Please Give Count Given By User");
-                        ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
-                        return;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
-        }
+        //private void btnSave_FollowByUsername_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (FollowByUsernameManager.rdbDivideGivenByUserFollowByUsername == true)
+        //        {
+        //            if (!string.IsNullOrEmpty(txtCountGivenByUser_FollowByUsername.Text))
+        //            {
+        //                FollowByUsernameManager.CountGivenByUserFollowByUsename = Convert.ToInt32(txtCountGivenByUser_FollowByUsername.Text); 
+        //            }
+        //            else
+        //            {
+        //                GlobusLogHelper.log.Info("Please Give Count Given By User");
+        //                ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
+        //                return;
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+        //    }
+        //}
 
 
 

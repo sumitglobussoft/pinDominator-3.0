@@ -4,146 +4,145 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:app="clr-namespace:PinDominator3.Classes"
-              mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600">
+              mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Grid>
-            <Grid.DataContext>
-                <app:Validation x:Name="objform" />
-            </Grid.DataContext>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="165*"/>
-                <RowDefinition Height="117*"/>
-                <RowDefinition Height="118*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.RowSpan="3">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Margin="0,0,1,0">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="185*"/>
-                    <RowDefinition Height="131*"/>
-                    <RowDefinition Height="135*"/>
+                    <RowDefinition Height="45*"/>
+                    <RowDefinition Height="68*"/>
+                    <RowDefinition Height="61*"/>
+                    <RowDefinition Height="52*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="User Input" BorderBrush="Black">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="9*"/>
-                            <RowDefinition Height="29*"/>
-                            <RowDefinition Height="31*"/>
-                            <RowDefinition Height="19*"/>
-                            <RowDefinition Height="22*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="88*"/>
-                            <ColumnDefinition Width="122*"/>
-                            <ColumnDefinition Width="65*"/>
-                            <ColumnDefinition Width="18*"/>
-                            <ColumnDefinition Width="32*"/>
-                            <ColumnDefinition Width="57*"/>
-                            <ColumnDefinition Width="8*"/>
-                        </Grid.ColumnDefinitions>
-                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
-                        <Label Content="User Name :" Margin="0,3,0,2" Height="24" RenderTransformOrigin="0.5,0.08" Grid.Row="1"/>
-                        <TextBox Name="txtUsernameUpload" Height="25" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="0,2"/>
-                        <Button BorderBrush="Green" Name="btnUsername_FollowByUsername_Browse" Content="Browse" Height="25" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" Margin="0.25,0,0.25,4" Click="btnUsername_FollowByUsername_Browse_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <RadioButton Content="Follow Upload User" GroupName="FollowByUserName" Name="rdoFollowFollowers"  VerticalAlignment="Bottom" Height="17" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4" Checked="rdoFollowFollowers_Checked"/>
-                        <RadioButton Content="Follow User Follower's" GroupName="FollowByUserName" Name="rdoFollowUserUploaded" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"  Margin="0,2" Checked="rdoFollowUserUploaded_Checked"/>
-                        <RadioButton Content="Follow User" GroupName="FollowByUserName" Name="rdoFollowUser" VerticalAlignment="Bottom" Height="19" Grid.Column="1" Grid.Row="3" Checked="rdoFollowUser_Checked"/>
-                        <Label Content="Follow Users :" Margin="0,4,0,1" VerticalAlignment="Center" RenderTransformOrigin="0.179,1.5" Height="26" Grid.Row="2"/>
-                        <TextBox Name="txtFollowUserUpload" Height="25" Margin="0,4,0,2" TextWrapping="Wrap" Text="{Binding TxtField_two,Mode=TwoWay,ValidatesOnDataErrors=True}" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2"/>
-                        <Button BorderBrush="Green" Name="btnFollowUser_FollowByUsername_Browse" Content="Browse" Margin="0,5,0,1"  Height="25" Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Click="btnFollowUser_FollowByUsername_Browse_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Label Content="Follow Type :" Margin="0,2,0,0" Height="17" Grid.Row="3" VerticalAlignment="Center"/>
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="82*"/>
-                            <ColumnDefinition Width="64*"/>
-                            <ColumnDefinition Width="26*"/>
-                            <ColumnDefinition Width="13*"/>
-                            <ColumnDefinition Width="63*"/>
-                            <ColumnDefinition Width="67*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="32*"/>
-                            <RowDefinition Height="17*"/>
-                            <RowDefinition Height="27*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Content="No. of threads :" Height="26" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                        <TextBox Name="txtFollowByUsername_NoOfThreads"  TextWrapping="Wrap" Text="5" Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" />
-                        <Label Content="Delay :"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="2" Height="25" />
-                        <TextBox Name="txtFollowByUsername_DelayMin" TextWrapping="Wrap" Text="25" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" />
-                        <Label Content="To"  Height="25" Grid.Column="2" Grid.Row="2"  Grid.ColumnSpan="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  />
-                        <TextBox Name="txtFollowByUsername_DelayMax" TextWrapping="Wrap" Text="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="4" Grid.Row="2" Height="25" />
-                        <Label Content="(In Seconds)"  Height="26" Grid.Column="5" Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                        <Label Content="Follower Count :" Height="26" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="0"  Grid.ColumnSpan="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                        <TextBox x:Name="txtFollowerCount"  TextWrapping="Wrap" Text="5"  Grid.Column="5" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" />
-                        <CheckBox Content="Divide Data" Name="chkDivideData_FollowByUsername" Height="25" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Checked="chkDivideData_FollowByUsername_Checked"/>
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="32*"/>
-                            <ColumnDefinition Width="147*"/>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="158*"/>
-                            <ColumnDefinition Width="41*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button  BorderBrush="Green"  Name="btnFollowByUsername_Start" Content="START"  Height="26"  Grid.Column="1" Click="btnFollowByUsername_Start_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button  BorderBrush="Red" Name="btnFollowByUsername_Stop" Content="STOP" Grid.Column="3" Height="26" Click="btnFollowByUsername_Stop_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                    </Grid>
-                </GroupBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="136*"/>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="18*"/>
+                    <ColumnDefinition Width="87*"/>
+                    <ColumnDefinition Width="7*"/>
+                </Grid.ColumnDefinitions>
+                <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                <Label Name="lblUsername" Content="User Name :" VerticalContentAlignment="Center" Grid.Column="0" Height="25" Grid.Row="1" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtUsernameUpload" TextWrapping="Wrap" Text=""  Grid.Column="2" Height="25" Grid.ColumnSpan="2" Grid.Row="1"  />
+                <Button BorderBrush="Green" Name="btnUsername_FollowByUsername_Browse" Content="Browse" Grid.Column="5" Click="btnUsername_FollowByUsername_Browse_Click" Height="26"  Grid.Row="1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <RadioButton Content="Follow Upload User" GroupName="FollowByUserName" Name="rdoFollowFollowers" Grid.Column="2" Grid.Row="0" Checked="rdoFollowFollowers_Checked" Height="25" ToolTip="You Could Follow Users Of Follower's."/>
+                <RadioButton Content="Follow User Follower's" GroupName="FollowByUserName" Name="rdoFollowUserUploaded" Grid.Row="0" Grid.Column="3" Checked="rdoFollowUserUploaded_Checked" Height="25" Grid.ColumnSpan="3" ToolTip="You Could Follow Enter or Loaded UserName Of Follower's"/>
+                <!--<RadioButton Content="Follow User" GroupName="FollowByUserName" Name="rdoFollowUser"  Height="25" Grid.Column="1" Grid.Row="3" Checked="rdoFollowUser_Checked"/>-->
+                <Label Name="lblFollowUsers" Content="Follow Users :" VerticalContentAlignment="Center" Height="25"  Grid.Row="2" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtFollowUserUpload"  TextWrapping="Wrap" Text=""  Grid.Column="2" Height="25" Grid.ColumnSpan="2" Grid.Row="2"/>
+                <Button BorderBrush="Green" Name="btnFollowUser_FollowByUsername_Browse" Content="Browse"  Height="26" Grid.Column="5" VerticalAlignment="Center" Click="btnFollowUser_FollowByUsername_Browse_Click"  Grid.Row="2">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Label Content="Follow Type :" VerticalContentAlignment="Center" Grid.Row="0" Height="25" HorizontalContentAlignment="Right"/>
+                <RadioButton Name="rdbSingleUser_FollowByUsername" Content="Use Single User" Height="25" Checked="rdbSingleUser_FollowByUsername_Checked" ToolTip="Follow Any Users From Single UserName." Grid.Column="2" Grid.Row="3"/>
+                <RadioButton Name="rdbMultipleUser_FollowByUsername" Content="Use Multiple Users" Height="25"  Grid.Column="3" Grid.ColumnSpan="3" IsChecked="True" Checked="rdbMultipleUser_FollowByUsername_Checked" ToolTip="Follow Any Users From Multiple UserName." Grid.Row="3"/>
+                <Label Content="User Type :" Height="25" VerticalContentAlignment="Center" Grid.Row="3" HorizontalContentAlignment="Right"/>
             </Grid>
-            <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1" >
-                <Grid>
-                    <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="PhotoDwonload_progess"/>
+        </GroupBox>
+        <GroupBox Header="Settings" BorderBrush="Black"  Grid.Row="1" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="82*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="56*"/>
+                    <ColumnDefinition Width="26*"/>
+                    <ColumnDefinition Width="36*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="56*"/>
+                    <ColumnDefinition Width="11*"/>
+                    <ColumnDefinition Width="48*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55*"/>
+                    <RowDefinition Height="58*"/>
+                    <RowDefinition Height="44*"/>
+                </Grid.RowDefinitions>
 
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-                <DataGrid Name="dtGrdMessage_LikePhoto_AccountsReport" />
-            </GroupBox>
-        </Grid>
-    </ScrollViewer>
+                <Label Content="No. of threads :" Height="24" Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtFollowByUsername_NoOfThreads" Height="25"  TextWrapping="Wrap" Text="25" Grid.Column="2" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                <Label Content="Delay :"  VerticalContentAlignment="Center"  Grid.Column="0" Grid.Row="1" Height="25" HorizontalContentAlignment="Right" />
+                <TextBox Name="txtFollowByUsername_DelayMin" TextWrapping="Wrap" Text="25" Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Height="25"/>
+                <Label Content="To" Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" Grid.ColumnSpan="2"/>
+                <TextBox Name="txtFollowByUsername_DelayMax" TextWrapping="Wrap" Text="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="5" Grid.Row="1" Height="25"/>
+                <Label Content="(In Seconds)" Grid.Column="6" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" Grid.ColumnSpan="3"/>
+                <Label Content="Follower Count :" Height="25"  Grid.Column="4" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.ColumnSpan="2" />
+                <TextBox x:Name="txtFollowerCount"  TextWrapping="Wrap" Text="5"  Grid.Column="7" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" />
+                <CheckBox Content="Divide Data" Name="chkDivideData_FollowByUsername" Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Checked="chkDivideData_FollowByUsername_Checked" Height="25" ToolTip="Divide Data Equally Or Given By User To Loaded Account." Grid.ColumnSpan="2"/>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Button  BorderBrush="Green"  Name="btnFollowByUsername_Start" Content="START"  Grid.Column="1" Click="btnFollowByUsername_Start_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button  BorderBrush="Red" Name="btnFollowByUsername_Stop" Content="STOP" Grid.Column="3" Click="btnFollowByUsername_Stop_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="PhotoDwonload_progess"/>
+                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="Welcome to  PinDominator3.0   &#x0a;  &#x0a;Follow By Username Module:- &#x0a;You Can Give Single or Multiple Users To Follow Its Follower's or Follow User's."/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+            <DataGrid Name="dgvFollowByUsername_AccountsReport" GridLinesVisibility="All" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export Data" Click="clkExportData_FollowByUsername"/>
+                        <MenuItem Header="Delete Data" Click="clkDeleteData_FollowByUsername"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
 </UserControl>
 

@@ -8,8 +8,10 @@ using System.Collections;
 using System.Data;
 using System.Net.NetworkInformation;
 using BaseLib;
+using PinDominator3;
 using System.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
+using BasePD;
 
 namespace LicensingManager
 {
@@ -46,7 +48,7 @@ namespace LicensingManager
             }
             catch (Exception ex)
             {
-               // MessageBox.Show(ex.Message);
+            
             }
             return macAddresses;
         }
@@ -79,8 +81,6 @@ namespace LicensingManager
         /// Checks the status of the CPUID from Database
         /// If status is Active, MainFrm starts
         /// </summary>
-        /// 
-        MessageBoxButton btnC = MessageBoxButton.OK;
         public bool ValidateCPUID(ref string statusMessage, string cpuID)
          {
             //string cpuID = getCPUID();
@@ -178,7 +178,7 @@ namespace LicensingManager
                     else if (status.ToLower() == "nonactive")
                     {
                         statusMessage = "nonactive";
-                   
+                        MessageBoxButton btnC = MessageBoxButton.OK;
 
                         var result = ModernDialog.ShowMessage("Verification of your txn is under process.\n Please wait for your Transaction to be verified", " Message Box ", btnC);
 
@@ -192,10 +192,7 @@ namespace LicensingManager
                     else if (trimmed_response.Contains("trialexpired"))
                     {
                         statusMessage = "trialexpired";
-                    
-
-                         ModernDialog.ShowMessage("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License", " Message Box ", btnC);
-                       // MessageBox.Show("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License");
+                        MessageBox.Show("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License");
                         return false;
                     }
                     else if (trimmed_response.ToLower() == "suspended")
@@ -239,25 +236,24 @@ namespace LicensingManager
             string res = string.Empty;
             try
             {
-                string regUrl = "http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "";
-                res = HttpHelpr.GetHtml("http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "");
+                string regUrl = "http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "&LicType="+Globals.licType+" ";
+                res = HttpHelpr.GetHtml("http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "&LicType="+Globals.licType+"");
 
                 if (string.IsNullOrEmpty(res))
                 {
                     System.Threading.Thread.Sleep(1000);
-                    res = HttpHelpr.GetHtml("http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "");
+                    res = HttpHelpr.GetHtml("http://" + servr + "/register.php?user=" + Username + "&pass=" + Password + "&cpid=" + cpuID + "&transid=" + TransactionID + "&email=" + Email + "&LicType="+Globals.licType+" ");
                 }
 
                 if (string.IsNullOrEmpty(res))
                 {
-                    ModernDialog.ShowMessage("Error Connecting to Pindominator Server,Please check if www.pindominator.com is opening for you.", " Message Box ", btnC);
-                  //  MessageBox.Show("Error Connecting to Facedominator Server,Please check if www.facedominator.com is opening for you.");
+                    MessageBox.Show("Error Connecting to Facedominator Server,Please check if www.facedominator.com is opening for you.");
                    // Application.Exit();
                 }
             }
             catch (Exception ex)
             {
-               // MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             return res;
         }
@@ -357,6 +353,11 @@ namespace LicensingManager
                             Email = array_status[5].ToLower();
                         }
                         catch { };
+                        try
+                        {
+                            Globals.licType = array_status[6].ToLower();
+                        }
+                        catch { };
 
                         try
                         {
@@ -373,8 +374,8 @@ namespace LicensingManager
 
                         if (trimmed_response.ToLower().Contains(freeTrialKey) && ((activationstatus.ToLower() == "active") || (activationstatus.ToLower() == "nonactive")))
                         {
-                            
-                          //  FBGlobals.Instance.isfreeversion = true;
+
+                            PDGlobals.Instance.isfreeversion = true;
 
                             if (CheckActivationUpdateStatus(cpuID, dateTime, activationstatus, servr))
                             {
@@ -401,7 +402,6 @@ namespace LicensingManager
                                     System.Threading.Thread.Sleep(1000);
                                     updateRes = HttpHelpr.GetHtml("http://" + servr + "/UpdateStatus.php?cpid=" + cpuID + "&status=" + "Active");
                                 }
-                            //  ModernDialog.ShowMessage("Your Free Version is Activated", " Message Box ", btnC);
                                 MessageBox.Show("Your Free Version is Activated");
                                 return true;
                             }
@@ -421,16 +421,15 @@ namespace LicensingManager
                         else if (activationstatus.ToLower() == "nonactive")
                         {
                             statusMessage = "nonactive";
-                          ModernDialog.ShowMessage("Verification of your txn is under process.\n Please wait for your Transaction to be verified.\n Please Contact To Support Team to activate your license,   Skype Id Is :- Facedominatorsupport", " Message Box ", btnC);
                           
+                            MessageBox.Show("Verification of your txn is under process.\n Please wait for your Transaction to be verified.\n Please Contact To Support Team to activate your license,   Skype Id Is :- Facedominatorsupport");
                             return false;
                             //DisableControls();
                         }
                         else if (trimmed_response.Contains("trialexpired"))
                         {
                             statusMessage = "trialexpired";
-                            ModernDialog.ShowMessage("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License", " Message Box ", btnC);
-                         
+                            MessageBox.Show("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License");
                             return false;
                         }
                         else if (trimmed_response.ToLower() == "suspended")
@@ -463,7 +462,7 @@ namespace LicensingManager
             {
                 Console.WriteLine(ex.StackTrace);
                 statusMessage = "Error in License Validation";
-              //  MessageBox.Show(ex.StackTrace);
+                MessageBox.Show(ex.StackTrace);
             }
             return false;
         }
@@ -501,11 +500,6 @@ namespace LicensingManager
                         System.Threading.Thread.Sleep(1000);
                         updateRes = HttpHelpr.GetHtml("http://" + servr + "/UpdateStatus.php?cpid=" + cpuID + "&status=" + "TrialExpired");
                     }
-
-                  
-                      //  ModernDialog.ShowMessage("Your 3 Days Trial Version has Expired. Please visit our site: pindominator.com to purchase your License", " Message Box ", btnC);
-                  
-                  
                     MessageBox.Show("Your 3 Days Trial Version has Expired. Please visit our site: facedominator.com to purchase your License");
                     return false;
                 }
@@ -518,8 +512,7 @@ namespace LicensingManager
                         System.Threading.Thread.Sleep(1000);
                         updateRes = HttpHelpr.GetHtml("http://" + servr + "/UpdateStatus.php?cpid=" + cpuID + "&status=" + "Active");
                     }
-                   // ModernDialog.ShowMessage("Your 3 Days Trial Version is Activated", " Message Box ", btnC);
-                   MessageBox.Show("Your 3 Days Trial Version is Activated");
+                    MessageBox.Show("Your 3 Days Trial Version is Activated");
                     return true;
                 }
 

@@ -9,7 +9,7 @@
         Style="{StaticResource BlankWindow}"         
         LogoData="F1 M 24.9015,43.0378L 25.0963,43.4298C 26.1685,49.5853 31.5377,54.2651 38,54.2651C 44.4623,54.2651 49.8315,49.5854 50.9037,43.4299L 51.0985,43.0379C 51.0985,40.7643 52.6921,39.2955 54.9656,39.2955C 56.9428,39.2955 58.1863,41.1792 58.5833,43.0379C 57.6384,52.7654 47.9756,61.75 38,61.75C 28.0244,61.75 18.3616,52.7654 17.4167,43.0378C 17.8137,41.1792 19.0572,39.2954 21.0344,39.2954C 23.3079,39.2954 24.9015,40.7643 24.9015,43.0378 Z M 26.7727,20.5833C 29.8731,20.5833 32.3864,23.0966 32.3864,26.197C 32.3864,29.2973 29.8731,31.8106 26.7727,31.8106C 23.6724,31.8106 21.1591,29.2973 21.1591,26.197C 21.1591,23.0966 23.6724,20.5833 26.7727,20.5833 Z M 49.2273,20.5833C 52.3276,20.5833 54.8409,23.0966 54.8409,26.197C 54.8409,29.2973 52.3276,31.8106 49.2273,31.8106C 46.127,31.8106 43.6136,29.2973 43.6136,26.197C 43.6136,23.0966 46.127,20.5833 49.2273,20.5833 Z"          
         ContentSource="/Pages/EditProfileName.xaml"
-      WindowStartupLocation="CenterScreen" Width="1050" Height="667.835" >
+      WindowStartupLocation="CenterScreen" Width="1050" Height="667.835" StateChanged="ModernWindow_StateChanged" Activated="ModernWindow_Activated" Closing="ModernWindow_Closing" >
 
     <Grid Margin="0,10,0,0" >
         <Grid.RowDefinitions>
@@ -25,6 +25,8 @@
                     <mui:ModernTab Layout="List" SelectedSource="/Upload Accounts">
                         <mui:ModernTab.Links>
                             <mui:Link DisplayName="Upload Account" Source="/Upload Accounts" />
+                            <mui:Link DisplayName="Manage Account" Source="/Manage Accounts" />
+                            <mui:Link DisplayName="Account Checker" Source="/Account Checker" />
                         </mui:ModernTab.Links>
                         <mui:ModernTab.ContentLoader>
                             <app:PageLoader/>
@@ -32,20 +34,16 @@
                     </mui:ModernTab>
                 </Grid>
             </TabItem>
-            <TabItem Header="       Pin         " >
+            <TabItem Header="     Board      ">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="39*"/>
-                        <ColumnDefinition Width="170*"/>
-                        <ColumnDefinition Width="914*"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <mui:ModernTab Layout="List" SelectedSource="/Repin" Grid.ColumnSpan="3">
+                    <mui:ModernTab Layout="List" SelectedSource="/Board">
                         <mui:ModernTab.Links>
-                            <mui:Link DisplayName=" Repin " Source="/Repin" />
-                            <mui:Link DisplayName=" Add New Pin " Source="/Add New Pin" />
-                            <mui:Link DisplayName=" Add Pin with new Board " Source="/Add Pin with new Board" />
-                            <mui:Link DisplayName=" Edit Pin Discription " Source="/Edit Pin Discription" />
-                            <mui:Link DisplayName=" Pin Scraper " Source="/Pin Scraper" />
+                            <mui:Link DisplayName=" Board " Source="/Board" />
+                            <mui:Link DisplayName=" Add Board Name " Source="/Add Board Name" />
+                            <mui:Link DisplayName=" Add Users To Board " Source="/Add Users To Board" />                        
                         </mui:ModernTab.Links>
                         <mui:ModernTab.ContentLoader>
                             <app:PageLoader/>
@@ -72,6 +70,7 @@
                     <mui:ModernTab Layout="List" SelectedSource="/Like">
                         <mui:ModernTab.Links>
                             <mui:Link DisplayName="Like " Source="/Like" />
+                            <mui:Link DisplayName="Like By Keyword " Source="/Like By Keyword" />
                         </mui:ModernTab.Links>
                         <mui:ModernTab.ContentLoader>
                             <app:PageLoader/>
@@ -94,13 +93,20 @@
                     </mui:ModernTab>
                 </Grid>
             </TabItem>
-            <TabItem Header="     Board      ">
+            <TabItem Header="       Pin         " >
                 <Grid Background="#FFE5E5E5">
-                    <mui:ModernTab Layout="List" SelectedSource="/Board">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="39*"/>
+                        <ColumnDefinition Width="170*"/>
+                        <ColumnDefinition Width="914*"/>
+                    </Grid.ColumnDefinitions>
+                    <mui:ModernTab Layout="List" SelectedSource="/Repin" Grid.ColumnSpan="3">
                         <mui:ModernTab.Links>
-                            <mui:Link DisplayName=" Board " Source="/Board" />
-                            <mui:Link DisplayName=" Add Board Name " Source="/Add Board Name" />
-                            <mui:Link DisplayName=" Add Users To Board " Source="/Add Users To Board" />
+                            <mui:Link DisplayName=" Repin " Source="/Repin" />
+                            <mui:Link DisplayName=" Add New Pin " Source="/Add New Pin" />
+                            <mui:Link DisplayName=" Add Pin with new Board " Source="/Add Pin with new Board" />
+                            <mui:Link DisplayName=" Edit Pin Discription " Source="/Edit Pin Discription" />
+                            <mui:Link DisplayName=" Repin By Keyword " Source="/Repin By Keyword" />
                         </mui:ModernTab.Links>
                         <mui:ModernTab.ContentLoader>
                             <app:PageLoader/>
@@ -125,6 +131,7 @@
                     <mui:ModernTab Layout="List" SelectedSource="/User Scraper">
                         <mui:ModernTab.Links>
                             <mui:Link DisplayName=" User Scraper " Source="/User Scraper" />
+                            <mui:Link DisplayName=" Pin Scraper " Source="/Pin Scraper" />
                         </mui:ModernTab.Links>
                         <mui:ModernTab.ContentLoader>
                             <app:PageLoader/>
@@ -137,7 +144,7 @@
                     <mui:ModernTab Layout="List" SelectedSource="\Pages\setting\Appearance.xaml">
                         <mui:ModernTab.Links>
                             <mui:Link DisplayName=" Color Settings " Source="\Pages\setting\Appearance.xaml" />
-
+                            <mui:Link DisplayName=" Help " Source="\Pages\setting\Help.xaml" />
                             <!-- ensures new LoremIpsum content is loaded for each uri -->
                         </mui:ModernTab.Links>
 

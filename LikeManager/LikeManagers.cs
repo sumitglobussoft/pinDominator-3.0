@@ -12,8 +12,10 @@ using System.Threading;
 
 namespace LikeManager
 {
+    public delegate void AccortReport_Like();
     public class LikeManagers
     {
+        public static AccortReport_Like objLikeDelegate;
 
         #region Global variable
 
@@ -38,6 +40,10 @@ namespace LikeManager
         public static bool rdbDivideEqually = false;
         public static int CountGivenByUser = 0;
         public bool _IsfevoriteLike = false;
+
+
+        public bool rdbSingleUserLike = false;
+        public bool rdbMultipleUserLike = false;
       
         public int NoOfThreadsLike
         {
@@ -54,6 +60,8 @@ namespace LikeManager
      
 
         #endregion variable
+
+        QueryManager Qm = new QueryManager();    
 
         public  void StartLike()
         {
@@ -269,8 +277,7 @@ namespace LikeManager
             catch (Exception ex)
             {
                 GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
-            }
-         
+            }        
         }
 
         public void StartLikeMultiThreaded(object objparameters)
@@ -309,13 +316,18 @@ namespace LikeManager
 
                         }
                         catch { }
-
+                        #region Login
                         if (!objPinUser.isloggedin)
-                        {                           
+                        {
                             GlobusLogHelper.log.Info(" => [ Logging With " + objPinUser.Username + " ]");
-                            bool checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
-                            string checklogin = httpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
+
+                            bool checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                //ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                             // accountManager.Login();
 
@@ -329,10 +341,23 @@ namespace LikeManager
                                     return;
                                 }
                             }
+                            string checklogin = httpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                            GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                            StartActionMultithreadLike(ref objPinUser, list_lstTargetLike_item);
                         }
-
-                        GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                        StartActionMultithreadLike(ref objPinUser, list_lstTargetLike_item);
+                        else if(objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadLike(ref objPinUser, list_lstTargetLike_item);
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
+                            }
+                        }
+                        #endregion
                     }
                     catch (Exception ex)
                     {
@@ -375,7 +400,7 @@ namespace LikeManager
         {
             try
             {
-                int LikeCount = 0;
+                int LikeCount = 0;              
                 if (rbListLikePinUrls == true)
                 {
                     ClGlobul.lstPins = UserLikecount;
@@ -383,6 +408,7 @@ namespace LikeManager
                     {
                         ClGlobul.lstPins.Add("1");
                     }
+                    #region Comment
                     //if (rdbDivideByUser == true)
                     //{
                     //    int splitNo = 0;
@@ -397,7 +423,7 @@ namespace LikeManager
                     //        break;
                     //    }
                     //}
-
+                    #endregion Comment
                 }
                 else
                 {
@@ -413,13 +439,13 @@ namespace LikeManager
                     {
                         GlobusLogHelper.log.Info(" => [ Using Random Url to Like ]");
                         int countLoadEmails = PDGlobals.loadedAccountsDictionary.Count();
-                        lstAllPins = GetPins(ref objPinUser, MaxLike);
+                        lstAllPins = GetPins(ref objPinUser, MaxLike);                      
                         Random Pinrnd = new Random();
                         ClGlobul.lstPins = lstAllPins.OrderBy(X => Pinrnd.Next()).ToList();
 
                     }
                 }
-
+                #region foreach
                 foreach (string Pin in ClGlobul.lstPins)
                 {
                     if (MaxLike > LikeCount)
@@ -434,6 +460,15 @@ namespace LikeManager
 
                                 if (IsLiked)
                                 {
+                                    #region AccountReport
+
+                                    string module = "Like";
+                                    string status = "Liked";
+                                    Qm.insertAccRePort(objPinUser.Username, module, "https://www.pinterest.com/pin/" + Pin, "", "", "", "", "", status, "", "", DateTime.Now);
+                                    objLikeDelegate();
+
+                                    #endregion
+
                                     GlobusLogHelper.log.Info(" => [ Liked : " + Pin + " From " + objPinUser.Username + " ]");
 
                                     try
@@ -488,6 +523,7 @@ namespace LikeManager
                         break;
                     }
                 }
+#endregion
                 if (MaxLike <= LikeCount)
                 {
                     GlobusLogHelper.log.Info(" [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
@@ -609,14 +645,17 @@ namespace LikeManager
                 {
                     ObjAccountManager.LoginPinterestAccount(ref objPinUser);
                 }
-                LikeUrl = "https://www.pinterest.com/resource/PinLikeResource2/create/";
+                string RedirectUrlDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                string newHomePage = RedirectUrlDomain + ".pinterest.com/";
+
+                LikeUrl = RedirectUrlDomain + ".pinterest.com/resource/PinLikeResource2/create/";
 
                 string PostData = "source_url=%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + objPinUser.App_version + "%22%7D%7D&module_path=App()%3EHomePage()%3EAuthHomePage(resource%3DUserResource(username%3D" + objPinUser.Username + "))%3EGrid(resource%3DUserHomefeedResource())%3EGridItems(resource%3DUserHomefeedResource())%3EPin(resource%3DPinResource(id%3D" + PinId + "))%3EPinLikeButton(liked%3Dfalse%2C+class_name%3DlikeSmall%2C+pin_id%3D" + PinId + "%2C+has_icon%3Dtrue%2C+tagName%3Dbutton%2C+text%3DLike%2C+show_text%3Dfalse%2C+ga_category%3Dlike)";
 
-                string AfterLikePageSourceData = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri(LikeUrl), PostData, "https://www.pinterest.com/");
+                string AfterLikePageSourceData = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri(LikeUrl), PostData, newHomePage);
 
 
-                if (AfterLikePageSourceData.Contains("error\": null"))
+                if (!AfterLikePageSourceData.Contains("<div>Uh oh! Something went wrong"))
                 {
                     //Log("[ " + DateTime.Now + " ] => [ Successfully Liked For this User " + pinterestAccountManager.Username + " ]");
                     return true;

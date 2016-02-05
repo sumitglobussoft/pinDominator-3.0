@@ -202,16 +202,21 @@ namespace BaseLib
         public List<string> GetHrefUrlTagsForPinDescription(string HtmlData)
         {
             List<string> lstAnchorUrl = new List<string>();
-            string[] arrHrefLink = Regex.Split(HtmlData, "<a href=");
+            string[] arrHrefLink = Regex.Split(HtmlData, "<a href=");//<a href=
             foreach (string tempLink in arrHrefLink)
             {
-                if (tempLink.Contains("/pins/"))//\" class=\"\">\n ///pin/
+                if (tempLink.Contains("/pin/"))//\" class=\"\">\n ///pin/
                 {
 
-                    string Usrs = getBetween(tempLink, "\"/", "\" class=").Replace("\\", "");
+                    //string Usrs = getBetween(tempLink, "\"/", "\" class=").Replace("\\", "");
+                    string Usrs = getBetween(tempLink, "\\\"", "\"\\n");
+                    if (string.IsNullOrEmpty(Usrs))
+                    {
+                         Usrs = getBetween(tempLink, "\\\"/pin/", "/\\\"\\n");
+                    }
                     lstAnchorUrl.Add(Usrs.Replace("\\", string.Empty));
                 }
-            }
+            }         
             return lstAnchorUrl;
         }
 

@@ -8,14 +8,31 @@ namespace BaseLib
     public class ClGlobul
     {
 
+        //AccountChecker
+        public static List<string> lstAccountForAccountChecker = new List<string>();
+
+        //LikeByKeyword
+        public static List<string> lstLikeByKeyword = new List<string>();
+
+
+        //ManageAccount
+        public static List<string> lstEmailManageAcc = new List<string>();
+        public static List<string> lstPwdManageAcc = new List<string>();
+        public static List<string> lstScreenNameManageAcc = new List<string>();
+
         //Pin Module...
         public static List<Pins> lstListOfPins = new List<Pins>();
+        public static List<string> lstListofFiles = new List<string>();
         public static List<string> lstListOfNewUsers = new List<string>();
         public static List<Pins> lst_AddnewPinWithNewBoard = new List<Pins>();
         public static List<string> CommentNicheMessageList = new List<string>();
         public static List<string> lstRepinUrl = new List<string>();
         public static List<string> addNewPinWithBoard = new List<string>();
         public static List<string> RepinMessagesList = new List<string>();
+        public static List<string> lstBoardNameNiche_AddNewPin = new List<string>();
+
+        public static List<string> lstRepinByKeyword = new List<string>();
+        public static List<string> lstMsgRepinByKeyword = new List<string>();
 
         //Scraper Module....
         public static List<string> lstTotalUserScraped = new List<string>();
@@ -44,8 +61,9 @@ namespace BaseLib
         public static List<string> CommentMessagesList = new List<string>();
         public static List<string> lstMessageKeyword = new List<string>();
      
-        //UbFollow Module...
+        //UnFollow Module...
         public static List<string> lstFollowing_UnFollow = new List<string>();
+        public static List<string> lstUploadUnFollowList = new List<string>();
 
         public static List<string> lstPins = new List<string>();
 

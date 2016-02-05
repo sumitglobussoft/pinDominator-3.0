@@ -4,23 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600">
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
     <ScrollViewer>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="98*"/>
-                <ColumnDefinition Width="97*"/>
-                <ColumnDefinition Width="105*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30*"/>
                 <RowDefinition Height="543*"/>
                 <RowDefinition Height="127*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.ColumnSpan="3">
+            <StackPanel>
                 <TextBlock Text="Add Single Account" Style="{StaticResource Heading2}" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
-            <GroupBox Header="Add Single Account" BorderBrush="Black" Grid.Row="1" Grid.ColumnSpan="3" >
+            <GroupBox Header="Add Single Account" BorderBrush="Black" Grid.Row="1" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="52*"/>
@@ -76,9 +74,7 @@
                         </Button.Template>
                     </Button>
                 </Grid>
-            </GroupBox>
-
-
+            </GroupBox>       
         </Grid>
     </ScrollViewer>
 

@@ -14,7 +14,7 @@ namespace BoardManager
 {
     public class AddBoardNameManager
     {
-        #region VAriable
+        #region Global Variable
 
         public string[] noOfBoard = null;
         public int Nothread_AddBoardName = 5;
@@ -24,6 +24,9 @@ namespace BoardManager
         public static int AddBoardNamedata_count = 0;
         public readonly object AddBoardNameObjThread = new object();
         public bool _Isfevorite = false;
+        public bool rdbSingleUserAddBoardName = false;
+        public bool rdbMultipleUserAddBoardName = false;
+        public string SingleBoardName = string.Empty;
 
         public int minDelayAddBoardName
         {
@@ -144,44 +147,51 @@ namespace BoardManager
                                     if (!objPinUser.isloggedin)
                                     {
                                         GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
+                                        
                                         bool checkLogin;
+                                        if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                                        {
+                                            objPinUser.ProxyPort = "80";
+                                        }
+
                                         try
                                         {
-                                            checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                            string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                            //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                            checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                             if (!checkLogin)
                                             {
-                                                try
-                                                {
-                                                    checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                                }
-                                                catch (Exception ex)
-                                                { };
-                                                if (!checkLogin)
-                                                {
-                                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                                    return;
-                                                }
+                                                GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                                return;
                                             }
-
+                                            string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                             GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            StartActionMultithreadAddBoardName(ref objPinUser);
                                         }
 
                                         catch (Exception ex)
                                         { };
                                     }
+                                    else if(objPinUser.isloggedin == true)
+                                    {
+                                        try
+                                        {
+                                            GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            StartActionMultithreadAddBoardName(ref objPinUser);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                        }
+                                    }
                                 }
-                            }
+                            }                      
                         }
-                        #endregion
-
-                        StartActionMultithreadAddBoardName(ref objPinUser);
+                        #endregion                       
                     }
                     catch (Exception ex)
                     {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
                 }
             }
@@ -195,22 +205,33 @@ namespace BoardManager
         {
             try 
             {
-                string[] arrayKeyword = Regex.Split(array[1], ",");
-                AddPinWithNewBoardManager objAddPin = new AddPinWithNewBoardManager();
+                foreach (string Boardnames in ClGlobul.lstBoardNames)
+                {
+                   string[] array1 = Regex.Split(Boardnames, ":");
+                    string[] arrayKeyword = Regex.Split(array1[1], ",");
 
-                if (arrayKeyword.Length > 0)
-                {
-                    foreach (string name in arrayKeyword)
+                    if (array1.Length == 2)
                     {
-                        objAddPin.CreateBoard_new(name, CategoryName, ref objPinUser);
-                        int delay = RandomNumberGenerator.GenerateRandom(minDelayAddBoardName, maxDelayAddBoardName);
-                        GlobusLogHelper.log.Info(" => [ Delay For " + delay + "Seconds");
-                        Thread.Sleep(delay * 1000);
-                    }                
-                }
-                else
-                {
-                    GlobusLogHelper.log.Info(" => [ No Board Names With Niche " + objPinUser.Username + " ]");
+                        if (array1[0] == objPinUser.Niches)
+                        {
+                            AddPinWithNewBoardManager objAddPin = new AddPinWithNewBoardManager();
+
+                            if (arrayKeyword.Length > 0)
+                            {
+                                foreach (string name in arrayKeyword)
+                                {
+                                    objAddPin.CreateBoard_new(name, CategoryName, ref objPinUser);
+                                    int delay = RandomNumberGenerator.GenerateRandom(minDelayAddBoardName, maxDelayAddBoardName);
+                                    GlobusLogHelper.log.Info(" => [ Delay For " + delay + " Seconds ] ");
+                                    Thread.Sleep(delay * 1000);
+                                }
+                            }
+                            else
+                            {
+                                GlobusLogHelper.log.Info(" => [ No Board Names With Niche " + objPinUser.Username + " ]");
+                            }
+                        }
+                    }
                 }
             }
             catch(Exception ex)
@@ -236,8 +257,8 @@ namespace BoardManager
                     GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                 }
                 countThreadControllerAddBoardName--;
-                GlobusLogHelper.log.Info(" [ PROCESS COMPLETED  ]");
-                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+                GlobusLogHelper.log.Info(" [ PROCESS COMPLETED FOR " + objPinUser.Username + " ]");
+                GlobusLogHelper.log.Info("--------------------------------------------------------------------------------");
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<mui:ModernWindow x:Name="LicenseCheckWindow" x:Class="PinDominator.LicensingWindow"
+﻿<mui:ModernWindow x:Name="LicenseCheckWindow" x:Class="facedominator.LicensingWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,14 +18,19 @@
                 <Label Content="Password : " HorizontalAlignment="Left" Margin="87,73,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
                 <Label Content="Transaction ID : " HorizontalAlignment="Left" Margin="61,101,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
                 <Label Content="Email  :  " HorizontalAlignment="Left" Margin="105,134,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
-                <Label Content="License Status  : " HorizontalAlignment="Left" Margin="61,162,0,0" VerticalAlignment="Top" Width="93" FontStyle="Italic"/>
+                <Label Content="License Status  : " HorizontalAlignment="Left" Margin="61,194,0,0" VerticalAlignment="Top" Width="93" FontStyle="Italic"/>
+                <Label Content="License Type  : " HorizontalAlignment="Left" Margin="53,165,0,0" VerticalAlignment="Top" Width="93" FontStyle="Italic" HorizontalContentAlignment="Right"/>
                 <TextBox BorderBrush="#FF070808"  Name="txtUserName" HorizontalAlignment="Left" Height="23" Margin="179,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="177"/>
-                <PasswordBox BorderBrush="#FF070808"  Name="txtPassword" HorizontalAlignment="Left" Height="23" Margin="180,69,0,0"  VerticalAlignment="Top" Width="176"/>
-                <TextBox BorderBrush="#FF070808"  Name="txtTransactionID" HorizontalAlignment="Left" Height="23" Margin="181,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="175"/>
-                <TextBox BorderBrush="#FF070808"  Name="txtEmail" HorizontalAlignment="Left" Height="23" Margin="181,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="175"/>
-                <Label BorderBrush="Green"  Name="LblActiveStatus"  Background="Red" Content="Not Active" HorizontalAlignment="Left" Margin="184,164,0,0" VerticalAlignment="Top" Width="170" Height="18"/>
-                <Label BorderBrush="Green"  Name="LblActivetedStatus"  Background="Green" Content="Licence Activated" HorizontalAlignment="Left" Margin="184,164,0,0" VerticalAlignment="Top" Width="170" Height="18" Visibility="Hidden"/>
-
+                <PasswordBox BorderBrush="#FF070808"  Name="txtPassword" HorizontalAlignment="Left" Height="23" Margin="179,69,0,0"  VerticalAlignment="Top" Width="177"/>
+                <TextBox BorderBrush="#FF070808"  Name="txtTransactionID" HorizontalAlignment="Left" Height="23" Margin="179,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="177"/>
+                <TextBox BorderBrush="#FF070808"  Name="txtEmail" HorizontalAlignment="Left" Height="23" Margin="179,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="177"/>
+                <Label BorderBrush="Green"  Name="LblActiveStatus"  Background="Red" Content="Not Active" HorizontalAlignment="Left" Margin="184,194,0,0" VerticalAlignment="Top" Width="170" Height="18"/>
+                <Label BorderBrush="Green"  Name="LblActivetedStatus"  Background="Green" Content="Licence Activated" HorizontalAlignment="Left" Margin="184,194,0,0" VerticalAlignment="Top" Width="170" Height="18" Visibility="Hidden"/>
+                <ComboBox Margin="179,163,137,348" Name="cmb_LicType" BorderBrush="#FF070808">
+                    <ComboBoxItem>pdbasic</ComboBoxItem>
+                    <ComboBoxItem>pdpro</ComboBoxItem>
+                    <ComboBoxItem>pdagency</ComboBoxItem>
+                </ComboBox>
                 <TextBlock Name="LblMessage" HorizontalAlignment="Center" Text="Please Click on the button to Validate your license" Margin="10,228,10,273" Width="473"/>
             </Grid>
         </GroupBox>

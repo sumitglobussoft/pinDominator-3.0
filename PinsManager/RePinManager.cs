@@ -14,9 +14,13 @@ using System.Threading.Tasks;
 
 namespace PinsManager
 {
+    public delegate void AccountReport_Repin();
+    public delegate void Repin_Comments_UserPins_Repin(string UserName, ref PinInterestUser objPinUser);
     public class RePinManager
     {
-        #region Variable
+        public static AccountReport_Repin objRepinDelegate;
+
+        #region Global Variable
         public int Nothread_RePin = 5;
         public bool isStopRePin = false;
         public List<Thread> lstThreadsRePin = new List<Thread>();
@@ -29,6 +33,7 @@ namespace PinsManager
         public static bool rdbUsePinNo = false;
         public static bool chkDivideData_RePin = false;
         public bool _IsfevoriteRepin = false;
+        public static Repin_Comments_UserPins_Repin objRepin_Comments_UserPins_Repin;
 
         public int minDelayRePin
         {
@@ -75,6 +80,7 @@ namespace PinsManager
 
         public static object Lock_RepinonBoard = new object();
         Accounts ObjAccountManager = new Accounts();
+        QueryManager Qm = new QueryManager();
 
         #endregion
 
@@ -188,8 +194,6 @@ namespace PinsManager
                         paramsArray = (Array)objParameters;
 
                         objPinUser = (PinInterestUser)paramsArray.GetValue(0);
-
-
                         try
                         {
                             if (chkDivideData_RePin == true)
@@ -213,39 +217,43 @@ namespace PinsManager
                         {
                             GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
-
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);                             
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                    }
-                                    catch { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
-
+                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                 GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadRePin(ref objPinUser, list_lstTargetRePin_item);
                             }
-
                             catch { };
                         }
-                        #endregion
-
-                        StartActionMultithreadRePin(ref objPinUser, list_lstTargetRePin_item);
+                        else if (objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadRePin(ref objPinUser, list_lstTargetRePin_item);
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
+                            }
+                        }
+                        #endregion                     
                     }
                     catch (Exception ex)
                     {
+                        GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
                     }
                 }
             }
@@ -262,15 +270,16 @@ namespace PinsManager
         {
  
             try
-            {
+            {             
                 PinInterestUser objPinUser = (PinInterestUser)objPinUserRepin;
-                string screen_Name = ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
+                string screen_Name = objPinUser.ScreenName;//ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
                 clsSettingDB db = new clsSettingDB();
                 if (ObjAccountManager.Boards.Count <= 0)
                 {
                     try
                     {
-                        new Thread(() => GetBoardsForRepinUpdated(ref objPinUser, screen_Name)).Start(); // Not returning only Board but Pics also
+                        GetBoardsForRepinUpdated(ref objPinUser, screen_Name);
+                        //new Thread(() => GetBoardsForRepinUpdated(ref objPinUser, screen_Name)).Start(); // Not returning only Board but Pics also
                         //GetBoardsForRepinUpdated(ref objPinUser, screen_Name);
                     }
                     catch (Exception Ex)
@@ -278,8 +287,8 @@ namespace PinsManager
 
                     }
                 }
-
-                if (ObjAccountManager.Boards.Count > 0 || ObjAccountManager.Boards.Count == 0) 
+                //string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                if (objPinUser.Boards.Count > 0 || objPinUser.Boards.Count == 0) 
                 {
                     Random Boardrnd = new Random();
                     int BoardNum = 0;
@@ -296,6 +305,7 @@ namespace PinsManager
                     string BoardNumber = string.Empty;
                     try
                     {
+                        BoardNum = Boardrnd.Next(0, objPinUser.Boards.Count - 1);
                         BoardNumber = objPinUser.Boards[BoardNum];
                     }
                     catch (Exception ex)
@@ -320,19 +330,38 @@ namespace PinsManager
                             {
                                 try
                                 {
-                                    GlobusLogHelper.log.Info(" => [ Getting Random Users Pins From Account ]");                               
+                                    GlobusLogHelper.log.Info(" => [ Getting Random Users Pins From Account ]");
 
                                     string userName = objPinUser.ScreenName;
                                     userName = screen_Name;
 
                                     lstFollowings = objScrape.GetUserFollowing_new(userName, 1, maxNoOfRePinCount);
 
-                                    Random rnd = new Random();
-                                    int FollowingNum = rnd.Next(0, lstFollowings.Count - 1);
-                                    FollowingName = lstFollowings[FollowingNum];
+                                    foreach (string FollowName in lstFollowings)
+                                    {
+                                            try
+                                            {
+                                                Random rnd = new Random();
+                                                int FollowingNum = rnd.Next(0, lstFollowings.Count - 1);
+                                                FollowingName = lstFollowings[FollowingNum];
+                                                ClGlobul.lstPins.Clear();
+                                                List<string> lstRepinPin = UserPins_Repin(FollowingName, ref objPinUser);
+                                                ClGlobul.lstPins.AddRange(lstRepinPin);
+                                                ClGlobul.lstPins = ClGlobul.lstPins.Distinct().ToList();
+                                                if (maxNoOfRePinCount < ClGlobul.lstPins.Count)
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                            }                                        
+                                    }
 
-                                    ClGlobul.lstPins = UserPins_Repin(FollowingName, ref objPinUser);
-                                    ClGlobul.lstPins = objLikeManager.GetPins(ref objPinUser, maxNoOfRePinCount);
+                                    //  ClGlobul.lstPins = UserPins_Repin(FollowingName, ref objPinUser);
+                                    //ClGlobul.lstPins = objLikeManager.GetPins(ref objPinUser, maxNoOfRePinCount);
+                                    //checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                 }
                                 catch (Exception ex)
                                 {
@@ -341,8 +370,9 @@ namespace PinsManager
                             }
 
                             string Message = string.Empty;
+                            string[] lstPinsArray = ClGlobul.lstPins.ToArray();
 
-                            foreach (string Pin in ClGlobul.lstPins)
+                            foreach (string Pin in lstPinsArray)
                             {
                                 try
                                 {
@@ -350,7 +380,11 @@ namespace PinsManager
                                     {
                                         try
                                         {
-                                            if (maxNoOfRePinCount > RepinCount)
+                                            if (maxNoOfRePinCount == RepinCount)
+                                            {
+                                                break;
+                                            }
+                                            if (maxNoOfRePinCount >= RepinCount)
                                             {
                                                 Random Messagernd = new Random();
                                                 int MessageNum = 0;
@@ -446,10 +480,20 @@ namespace PinsManager
                                                     }
 
                                                     BoardName = BoardName.Replace(" ", "-").ToLower().Replace("(", "").Replace(")", "").Replace("!", "").Trim();
-                                                  
+                                                    //checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+
                                                     bool IsRePined = RepinwithMessage(Pin, Message, BoardNumber, NoOfPages, ref objPinUser);
                                                     if (IsRePined)
                                                     {
+                                                        #region AccountReport
+
+                                                        string module = "RePin";
+                                                        string status = "Repined";
+                                                        Qm.insertAccRePort(objPinUser.Username, module, "https://www.pinterest.com/pin/" + Pin, "", "", Message, "", "", status, "", "", DateTime.Now);
+                                                        objRepinDelegate();
+
+                                                        #endregion
+
                                                         db.insertRePinRecord(objPinUser.Username, objPinUser.Niches, Pin);
                                                         RepinCount++;
 
@@ -486,13 +530,10 @@ namespace PinsManager
                                                 catch (Exception ex)
                                                 {
                                                     //GlobusFileHelper.AppendStringToTextfileNewLine("Error --> StartRepinMultiThreaded() 3--> " + ex.Message, ApplicationData.ErrorLogFile);
-                                                }                                               
+                                                }
                                             }
 
-                                            else
-                                            {
-                                                break;
-                                            }
+                                           
                                         }
                                         catch (Exception ex)
                                         {
@@ -504,7 +545,7 @@ namespace PinsManager
                                 {
 
                                 }
-                            }
+                            }                          
                         }
                         catch (Exception ex)
                         {
@@ -531,16 +572,14 @@ namespace PinsManager
                                 {
                                     //if (!rdbDivideDataRePin)
                                     //{
-                                        if (RepinCount_ListRepin_New < 0)
+                                        if (RepinCount_ListRepin_New <= 0)
                                         {
                                             break;
                                         }
                                     //}
                                 }
                                 catch { };
-
-                                RepinCount_ListRepin_New--;
-
+                              
                                 string NoOfPages = "0";
 
                                 try
@@ -571,10 +610,19 @@ namespace PinsManager
 
                                 if (IsRepinned)
                                 {
+                                    #region AccountReport
+
+                                    string module = "RePin";
+                                    string status = "Repined";
+                                    Qm.insertAccRePort(objPinUser.Username, module, "https://www.pinterest.com/pin/" + RepinUrl, "", "", Message, "", "", status, "", "", DateTime.Now);
+                                    objRepinDelegate();
+
+                                    #endregion
+
                                     GlobusLogHelper.log.Info(" => [ Repin Pin : " + RepinUrl + " ]");
                                     db.insertRePinRecord(objPinUser.Username, objPinUser.Niches, RepinUrl);
                                     RepinCount++;
-
+                                    RepinCount_ListRepin_New--;
                                     try
                                     {
                                         string CSV_Header = "UserName" + "," + "RepinUrl" + "," + "Message" + "," + "Board Number" + "," + "Date";
@@ -701,12 +749,12 @@ namespace PinsManager
                                                 {
                                                     ac = Dataitem.Substring(0, LastPoint).Replace("\": \"", string.Empty).Replace("\"", "").Replace(", ", string.Empty).Replace("field_set_keygrid_item}}name", string.Empty).Trim();
                                                 }
-                                                if (!Boards.Contains(ac))
+                                                if (!objPinUser.Boards.Contains(ac))
                                                 {
                                                     //I have to validate here so that only BoardId gets through
                                                     if (NumberHelper.ValidateNumber(ac))
                                                     {
-                                                        Boards.Add(ac);
+                                                        objPinUser.Boards.Add(ac);
                                                     }
                                                 }
                                             }
@@ -730,7 +778,8 @@ namespace PinsManager
                         }
                     }
 
-                    objPinUser.Boards.AddRange(Boards);
+                    objPinUser.Boards.Count();
+                    //objPinUser.Boards.AddRange(Boards);
           
                     GlobusLogHelper.log.Info(" => [ Get All Boards for User " + objPinUser.Name + " ]");
                 }
@@ -743,13 +792,19 @@ namespace PinsManager
             }
         }
 
+
+
+
         public List<string> UserPins_Repin(string UserName, ref PinInterestUser objPinUser)
-        {        
+        {
+            List<string> lstUsernamePin = new List<string>();
             try
             {
                 GlobusRegex objGlobusRegex = new GlobusRegex();
+                GlobusHttpHelper objglobusHttpHelper = new GlobusHttpHelper();
                 GlobusLogHelper.log.Info(" => [ Start Getting Pins For this User " + UserName + " ]");
                 string UserPins = string.Empty;
+               
                 if (UserName.Contains("pinterest.com"))
                 {
                     UserUrl = UserName;
@@ -763,8 +818,8 @@ namespace PinsManager
 
                 try
                 {
-                    UserPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(UserUrl), "http://pinterest.com/", string.Empty, objPinUser.UserAgent);
-                    UserPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(UserPins), UserUrl, string.Empty, objPinUser.UserAgent);
+                    UserPageSource = objglobusHttpHelper.getHtmlfromUrl(new Uri(UserUrl), "http://pinterest.com/", string.Empty, objPinUser.UserAgent);
+                    UserPinPageSource = objglobusHttpHelper.getHtmlfromUrl(new Uri(UserPins), UserUrl, string.Empty, objPinUser.UserAgent);
 
                     // List<string> lst = globusRegex.GetHrefUrlTags(UserPinPageSource);
 
@@ -773,6 +828,7 @@ namespace PinsManager
                 {
                 }
                 List<string> lst = objGlobusRegex.GetHrefUrlTagsForPinDescription(UserPinPageSource);
+                lst = lst.Distinct().ToList();
                 string PinUrl = string.Empty;
 
                 foreach (string item in lst)
@@ -780,21 +836,27 @@ namespace PinsManager
                     //if (item.Contains("/pin/") && !item.Contains("edit"))
                     try
                     {
-                        if (item.Contains("/pins/"))
+                        if (item.Contains("/pin/"))
                         {
-                            try
+                            if (!item.Contains("/pin/A"))
                             {
-                                int FirstPinPoint = item.IndexOf("/pins/");
-                                int SecondPinPoint = item.IndexOf("class=");
+                                try
+                                {
+                                    int FirstPinPoint = item.IndexOf("/pins/");
+                                    int SecondPinPoint = item.IndexOf("class=");
 
-                                PinUrl = item.Substring(FirstPinPoint, SecondPinPoint - FirstPinPoint).Replace("\"", string.Empty).Replace("pin", string.Empty).Replace("/", string.Empty).Trim();
-
-                                lstUserPins.Add(PinUrl);
-                            }
-                            catch (Exception ex)
-                            {
-                                PinUrl = item.Replace("/pins/", "");
-                                lstUserPins.Add(PinUrl);
+                                    // PinUrl = item.Substring(FirstPinPoint, SecondPinPoint - FirstPinPoint).Replace("\"", string.Empty).Replace("pin", string.Empty).Replace("/", string.Empty).Trim();
+                                    PinUrl = Utils.Utils.getBetween(item, "/pin/", "/\" class=");
+                                    if (!string.IsNullOrEmpty(PinUrl))
+                                    {
+                                        lstUsernamePin.Add(PinUrl);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    PinUrl = item.Replace("/pins/", "");
+                                    lstUsernamePin.Add(PinUrl);
+                                }
                             }
                         }
                     }
@@ -803,24 +865,265 @@ namespace PinsManager
 
                     }
                 }
+                lstUsernamePin = lstUsernamePin.Distinct().ToList();
+                lstUsernamePin.Reverse();
 
-                lstUserPins = lstUserPins.Distinct().ToList();
-                lstUserPins.Reverse();
-
-                GlobusLogHelper.log.Info(" => [ Total Pin Urls Collected " + lstUserPins.Count + " ]");
+                GlobusLogHelper.log.Info(" => [ Total Pin Urls Collected " + lstUsernamePin.Count + " ]");
             }
             catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
 
-            return lstUserPins;
+            return lstUsernamePin;
         }
 
+
+
+        //public bool RepinwithMessage(string PinId, string myMessage, string Board, string NumberOfPage, ref PinInterestUser objPinUser)
+        //{
+        //    try
+        //    {
+        //        string CsrfMiddleToken = string.Empty;
+        //        string pinUrl = string.Empty;
+        //        string url = "https://www.pinterest.com/pin/" + PinId;
+        //        string CheckPinPageSource123 = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+        //        string CheckPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(url), "", string.Empty, "");
+        //        if (!CheckPinPageSource.Contains("<div>Something went wrong!</div>") && !CheckPinPageSource.Contains("<div>Sorry. We've let our engineers know.</div>") && !CheckPinPageSource.Contains("<div>Whoops! We couldn't find that page.</div>") && !CheckPinPageSource.Contains("<div class=\"suggestionText\">How about these instead?</div>"))
+        //        {
+        //            // lstRePinPin.Add(lstRepinUrl_item);
+        //            pinUrl = "https://www.pinterest.com/pin/" + PinId + "/";
+        //        }
+        //        else
+        //        {
+        //            GlobusLogHelper.log.Info("[ " + DateTime.Now + " ] => [ Pin " + PinId + " Is InCorrect ]");
+        //        }
+
+        //        try
+        //        {
+        //            if (!string.IsNullOrEmpty(Globals.ItemSelect))
+        //            {
+        //                GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + "In" + Globals.ItemSelect + " ]");
+        //            }
+        //            else
+        //            {
+        //                GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " In " + BoardName + "]");
+
+        //            }
+        //        }
+        //        catch { };
+
+        //        try
+        //        {
+        //            getPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(pinUrl), "", "", "");
+        //        }
+        //        catch { };
+
+
+
+        //        try
+        //        {
+        //            if (getPinPageSource.Contains("description_html"))
+        //            {
+        //                description = Utils.Utils.getBetween(getPinPageSource, "description_html\":", ", \"title\":").Replace("\"", "").Replace("&", "%26").Trim();
+        //                description = description.Replace(" ", "+").Replace(",", "%2C").Replace("amp;", "");
+        //            }
+        //            if (getPinPageSource.Contains("serving_link"))
+        //            {
+        //                link = Utils.Utils.getBetween(getPinPageSource, "serving_link\":", ", \"is_promoted").Replace("\"", "").Trim();
+        //                link = link.Replace(":", "%3A").Replace("/", "%2F").Replace("?", "%3F").Replace("=", "%3D").Replace("&", "%26");
+        //            }
+        //            if (getPinPageSource.Contains("board_id"))
+        //            {
+        //                try
+        //                {
+        //                    if (string.IsNullOrEmpty(Board))
+        //                    {
+        //                        Random rnd = new Random();
+        //                        int BoardNum = rnd.Next(0, objPinUser.Boards.Count - 1);
+        //                        boardId = objPinUser.Boards[BoardNum];
+        //                        //objPinUser.Boards
+        //                    }
+        //                    else
+        //                    {
+        //                        boardId = Board;
+
+        //                    }
+
+        //                    if (string.IsNullOrEmpty(boardId.ToString()))
+        //                    {
+        //                        GlobusLogHelper.log.Info(" => [Board is not present in your account , can't repin]");
+        //                        return false;
+        //                    }
+        //                    // Log("[ " + DateTime.Now + " ] => [ Repining " + boardId + " For " + pinterestAccountManager.Username + " ]");
+        //                }
+        //                catch (Exception)
+        //                { };
+
+        //            }
+
+        //            //objPinUser.globusHttpHelper = new GlobusHttpHelper();
+
+        //            lock (Lock_RepinonBoard)
+        //            {
+        //                string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+        //                CsrfMiddleToken = Utils.Utils.getBetween(Checking, "\"csrftoken\": \"", "\", \"");
+        //                if (Checking.Contains("profileName"))
+        //                {
+
+        //                }
+        //                else
+        //                {
+        //                    ObjAccountManager.LoginPinterestAccount(ref objPinUser);
+        //                }
+
+        //                string linkurl = string.Empty;
+
+        //                string RepinpostData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + link + "%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22" + boardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=Modal()%3EPinCreate3(resource%3DPinResource(id%3D" + PinId + "))%3EBoardPicker(resource%3DBoardPickerBoardsResource(filter%3Dall))%3ESelectList(view_type%3DpinCreate3%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+item_module%3D%5Bobject+Object%5D)";
+        //                RepinpostData = "source_url=%2F" + objPinUser.ScreenName + "%2Fpins%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + link + "%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22" + boardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+
+        //                try
+        //                {
+        //                    RepinPagesource = objPinUser.globusHttpHelper.postFormDataProxyPincsrftoken(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), RepinpostData, "https://www.pinterest.com/", CsrfMiddleToken);
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                }
+
+
+        //                if (string.IsNullOrEmpty(RepinPagesource))
+        //                {
+
+        //                    try
+        //                    {
+        //                        if (getPinPageSource.Contains("class=\"sourceFlagWrapper"))
+        //                        {
+        //                            try
+        //                            {
+
+        //                                BaseLib.GlobusRegex rgx = new GlobusRegex();
+
+        //                                string urldata = System.Text.RegularExpressions.Regex.Split(System.Text.RegularExpressions.Regex.Split(getPinPageSource, "sourceFlagWrapper")[1], "</a>")[0];
+
+        //                                linkurl = rgx.GetHrefUrlTag(urldata).Replace("href=\"", string.Empty);
+        //                            }
+        //                            catch (Exception ex)
+        //                            {
+
+        //                            }
+        //                        }
+        //                        else if (string.IsNullOrEmpty(linkurl))
+        //                        {
+        //                            try
+        //                            {
+        //                                string urldata = System.Text.RegularExpressions.Regex.Split(System.Text.RegularExpressions.Regex.Split(getPinPageSource, "sourceFlagWrapper")[1], "</a>")[0];
+
+        //                                string Datavalue = urldata.Substring(urldata.IndexOf("href=\\\""));
+
+        //                                int startindex = Datavalue.IndexOf("href=\\\"");
+        //                                string start = Datavalue.Substring(startindex).Replace("href=\\\"", "");
+        //                                int endindex = start.IndexOf("\\\"");
+        //                                string end = start.Substring(0, endindex);
+
+        //                                linkurl = end;// Datavalue.Substring(0, Datavalue.IndexOf("\\\">")).Replace("\\", string.Empty).Replace("\n", string.Empty).Replace(">", string.Empty).Replace("href=\"", string.Empty);
+        //                            }
+        //                            catch { };
+        //                        }
+
+        //                        try
+        //                        {
+        //                            //objPinUser.globusHttpHelper.gCookies = new System.Net.CookieCollection();
+        //                            //string CookieList = "_b=\"ARdBmc3sRRBC1b7mWyRRCA3QBovSmWHWonr/rL5WVoV3ABT+imiaVF1UnHkaoTAnSzE=\"; sessionFunnelEventLogged=1; __utmt=1; logged_out=True; fba=True; csrftoken=w4YapCH4AAPIlfxhvZR3Mb9XIXVYzMXA; _pinterest_sess=\"TWc9PSZlZU1LQU1EL1pIY3UxbjlhWGYrUGtMSkRwYzc5TFFJS3d4dTU0VEthUVlHK1VhT2NOQkQzcUtkekYzaWNYN212U2lyRlRxd2dYejhoSldadGw5M0ZzK2NyS3Q5ODhSemhUMG5HVlVVOEx6R1RWdkh0aWdFalNuSkxJZmo0ZE9jMG44b2RXZzZOeU83ZVdJWVVNdWZKZFRhOWEwK0ZDckc0NVIwdi8xdytjcDBtVHZtTjZOUUdtQk5acko0ODVaakEwS3dEN0taU2NrQkE3YlZMU3I2Q0VicDRoWTl3RHJpaDVzUnJ3YmlLNmhYbFpMbFp6K2FKTlIyZUNWUDRKN3I3dFNMejQyUVRhb0JtMTk0ajBtcVhUVzlrRVlVQzZwTjRwY3UzdG1tWFpxQ3FGV0ZOeXBNV0FMeURUL0crMmZvVzVNWWlPbjZyUnh2UXN3R3pOT2c2RVNoZFVxZG9lUnlDaHJpS0dORFoydHhZMFgxR0hWWE02OUZDQmdlSkhzRDdjREszcjdvWDBTaFJXM1BFM01VUnRpYjB4U3l6alQ2eWxmQTdrWVdYcWFpOFhETDRWSGlQazR0L2xUNTdiUGdhbG9WUUtLZHdrSVFMN1VaWHk2LytNeWkzcUJJbStUejVMYkljczY1Sk5GQT0mblE0ZXFxTDVyeGk5NVJ2Mmp1SEZVakNxcGNjPQ==\"; c_dpr=1; cm_sub=none; __utma=229774877.1623437774.1450182939.1450182939.1450249426.2; __utmb=229774877.15.9.1450261114039; __utmc=229774877; __utmz=229774877.1450182939.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)";
+        //                            //string[] CookieList1234 = Regex.Split(CookieList, ";");
+        //                            //foreach (string str in CookieList1234)
+        //                            //{
+
+        //                            //    string Cokkiename = Regex.Split(str, "=")[0].Replace(" ","");
+        //                            //    string CokkieValue = Regex.Split(str, "=")[1].Replace(" ", "");
+
+        //                            //    System.Net.Cookie cookie = new System.Net.Cookie();
+        //                            //    cookie.Name = Cokkiename;
+        //                            //    cookie.Value = CokkieValue;
+        //                            //    cookie.Domain = "pinterest.com";
+        //                            //    objPinUser.globusHttpHelper.gCookies.Add(cookie);
+
+        //                            //}
+        //                            string postdata1 = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + objPinUser.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
+        //                            // postdata1 = "source_url=%2F" + objPinUser.ScreenName + "%2Fpins%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + link + "%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22" + Board + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+        //                            // "source_url=%2FPrashant123456%2Fdeveloper%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22350295677243761444%22%2C%22description%22%3A%22%22%2C%22link%22%3Anull%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22350295745955657898%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+
+        //                            postdata1 = "source_url=%2FPrashant123456%2Flovely2%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22350295677245529486%22%2C%22description%22%3A%22Hii%22%2C%22link%22%3A%22http%3A%2F%2Fwebsta.me%2Fp%2F945717296717057301_1591089306%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22350295745955657875%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+
+
+
+        //                            string afterposting = objPinUser.globusHttpHelper.postFormDataProxywithCSRFToken(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), postdata1, "http://www.pinterest.com/", "", 0, "", "", "CsrfMiddleToken");
+        //                            //string afterposting = objPinUser.globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), postdata1, "http://www.pinterest.com/pin/" + PinId + "/", "", 0, "", "", CsrfMiddleToken);
+        //                            if (!afterposting.Contains("<div>Uh oh! Something went wrong."))
+        //                            {
+        //                                return true;
+        //                            }
+        //                            else
+        //                            {
+        //                                return false;
+        //                            }
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+
+        //                        };
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+
+        //                    }
+        //                }
+
+
+
+        //                if (!string.IsNullOrEmpty(RepinPagesource))
+        //                {
+        //                    try
+        //                    {
+        //                        if (!string.IsNullOrEmpty(Globals.ItemSelect))
+        //                        {
+        //                            GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " In " + Globals.ItemSelect + " is Done. ]");
+        //                        }
+        //                        else
+        //                        {
+        //                            GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " is Done. ]");
+        //                        }
+        //                        //string RepinDetails =pinterestAccountManager.Username + "," + PinId.Replace(",","") + "," + boardId.Replace(",","") + "," + myMessage.Replace(",","");
+
+        //                        //GlobusFileHelper.AppendStringToTextfileNewLine(RepinDetails, ApplicationData.path_Repin);
+        //                    }
+        //                    catch { };
+
+        //                    return true;
+        //                }
+        //                else
+        //                {
+        //                    GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " is Failed. ]");
+        //                    return false;
+        //                }
+
+        //            }
+        //        }
+        //        catch { };
+
+        //        return false;
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        #region NEW_REPIN_WITH_MESSAGE
         public bool RepinwithMessage(string PinId, string myMessage, string Board, string NumberOfPage, ref PinInterestUser objPinUser)
         {
             try
             {
+                string getPinPageSource = string.Empty;
                 string pinUrl = string.Empty;
                 string url = "https://www.pinterest.com/pin/" + PinId;
                 string CheckPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(url), "", string.Empty, "");
@@ -832,8 +1135,11 @@ namespace PinsManager
                 else
                 {
                     GlobusLogHelper.log.Info("[ " + DateTime.Now + " ] => [ Pin " + PinId + " Is InCorrect ]");
-                }       
-               
+                }
+                //  Thread.Sleep(10 * 1000);
+                //pinUrl = "https://www.pinterest.com/pin/" + PinId + "/";
+                //string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+
                 try
                 {
                     if (!string.IsNullOrEmpty(Globals.ItemSelect))
@@ -842,7 +1148,7 @@ namespace PinsManager
                     }
                     else
                     {
-                        GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " In " +  BoardName + "]");
+                        GlobusLogHelper.log.Info(" => [ Repining " + PinId + " For " + objPinUser.Username + " ]");
 
                     }
                 }
@@ -850,12 +1156,16 @@ namespace PinsManager
 
                 try
                 {
-                    getPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(pinUrl), "", "", "");
+                    GlobusHttpHelper objhttp = new GlobusHttpHelper();
+                    getPinPageSource = objhttp.getHtmlfromUrl(new Uri(pinUrl), "", "", "");
                 }
                 catch { };
 
-           
-
+                string description = string.Empty;
+                string link = string.Empty;
+                string boardId = string.Empty;
+                string RepinPagesource = string.Empty;
+                string appVersion = string.Empty;
                 try
                 {
                     if (getPinPageSource.Contains("description_html"))
@@ -877,7 +1187,7 @@ namespace PinsManager
                                 Random rnd = new Random();
                                 int BoardNum = rnd.Next(0, objPinUser.Boards.Count - 1);
                                 boardId = objPinUser.Boards[BoardNum];
-                                //objPinUser.Boards
+
                             }
                             else
                             {
@@ -893,28 +1203,43 @@ namespace PinsManager
                             // Log("[ " + DateTime.Now + " ] => [ Repining " + boardId + " For " + pinterestAccountManager.Username + " ]");
                         }
                         catch (Exception)
-                        { };
-                       
+                        {
+
+
+                        }
+
                     }
+                    else if (getPinPageSource.Contains("board"))
+                    {
+                         boardId = Board;
+                    }
+
 
                     lock (Lock_RepinonBoard)
                     {
                         string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                         if (Checking.Contains("profileName"))
                         {
-
+                            if (Checking.Contains("profileName"))
+                            {
+                                appVersion = Utils.Utils.getBetween(Checking, "\"app_version\": \"", "\", \"");
+                            }
                         }
                         else
                         {
                             ObjAccountManager.LoginPinterestAccount(ref objPinUser);
                         }
 
+                        string RedirectUrl = GlobusHttpHelper.valueURl.Split('.')[0];
+                        string newHomePage = RedirectUrl + ".pinterest.com";
+
                         string linkurl = string.Empty;
 
-                        string RepinpostData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + link + "%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22" + boardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=Modal()%3EPinCreate3(resource%3DPinResource(id%3D" + PinId + "))%3EBoardPicker(resource%3DBoardPickerBoardsResource(filter%3Dall))%3ESelectList(view_type%3DpinCreate3%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+item_module%3D%5Bobject+Object%5D)";
+                        string RepinpostData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22pin_id%22%3A%22" + PinId + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + link + "%22%2C%22is_video%22%3Afalse%2C%22board_id%22%3A%22" + Board + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=Modal()%3EPinCreate3(resource%3DPinResource(id%3D" + PinId + "))%3EBoardPicker(resource%3DBoardPickerBoardsResource(filter%3Dall))%3ESelectList(view_type%3DpinCreate3%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+item_module%3D%5Bobject+Object%5D)";
+                        string PostPageUrl = RedirectUrl + ".pinterest.com/resource/RepinResource/create/";
                         try
                         {
-                            RepinPagesource = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), RepinpostData, "https://www.pinterest.com/");
+                            RepinPagesource = objPinUser.globusHttpHelper.postFormDataProxyREPin(new Uri(PostPageUrl), RepinpostData, newHomePage, objPinUser.App_version);
                         }
                         catch (Exception ex)
                         {
@@ -962,10 +1287,34 @@ namespace PinsManager
 
                                 try
                                 {
+                                    #region comment
+                                    //Message = Message.Replace(" ", "+");
+                                    //string PostData = "source_url=%2Fpopular%2F%3Fpage%3D" + NumberOfPage + "&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + (Message.Replace(" ", "+")) + "%22%2C%22link%22%3A%22" + (Uri.EscapeDataString(linkurl)) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%7D%7D&module_path=App()%3EFeedPage()%3EGrid(resource%3DCategoryFeedResource(feed%3Dpopular))%3EGridItems(resource%3DCategoryFeedResource(feed%3Dpopular))%3EPin(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(submodule%3D%5Bobject+Object%5D%2C+color%3Dprimary%2C+text%3DPin+it%2C+primary_on_hover%3Dtrue%2C+extra_options%3D%5Bobject+Object%5D%2C+tagName%3Dbutton%2C+has_icon%3Dtrue%2C+show_text%3Dfalse%2C+ga_category%3Drepin_create%2C+class_name%3DrepinSmall%2C+require_auth%3Dtrue)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + "%2C+view_type%3Drepin)))";
+                                    //string PostData = "source_url=%2Fpopular%2F%3Fpage%3D" + "1" + "&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + (Message.Replace(" ", "+").Replace("\t", "+")) + "%22%2C%22link%22%3A%22" + (Uri.EscapeDataString(linkurl)) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%7D%7D&module_path=App()%3EFeedPage()%3EGrid(resource%3DCategoryFeedResource(feed%3Dpopular))%3EGridItems(resource%3DCategoryFeedResource(feed%3Dpopular))%3EPin(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(submodule%3D%5Bobject+Object%5D%2C+color%3Dprimary%2C+text%3DPin+it%2C+primary_on_hover%3Dtrue%2C+extra_options%3D%5Bobject+Object%5D%2C+tagName%3Dbutton%2C+has_icon%3Dtrue%2C+show_text%3Dfalse%2C+ga_category%3Drepin_create%2C+class_name%3DrepinSmall%2C+require_auth%3Dtrue)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + "%2C+view_type%3Drepin)))";
+                                    //string PostData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + AddDesc + "%22%2C%22link%22%3A%22"+ linkurl +"%2F2011%2F11%2F01%2Fcaribbean-sangria%2F%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22520306563170537867%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%227d82d10%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D520306563170537867))%3EPinActionBar(resource%3DPinResource(id%3D520306563170537867))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D520306563170537867)))";
+                                    //string postdata = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + Message.Replace(" ","+") + "%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22"+ PinId +"%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
+                                    // string postdata = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + (Message.Replace(" ", "+")) + "%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
+
+                                    //My Commented
+                                    //string postdata1 = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22Message%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
+
+                                    //                                                                                                                                                 Have to add Message below here
+                                    //string postdata1 = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + pinterestAccountManager.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
+
+
+
+                                    //source_url=%2Fpin%2F347410558725937380%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%2297460848125134285%22%2C%22description%22%3A%22Butterfly+tattoo%22%2C%22link%22%3A%22http%3A%2F%2Fwww.ruthtattooideas.com%2F2013%2F07%2F23%2Fbutterfly-tattoo%2F%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22347410558725937380%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%228c9869b%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D347410558725937380))%3EPinActionBar(resource%3DPinResource(id%3D347410558725937380))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D347410558725937380)))
+                                    // string postdataa = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22description%22%3A%22" + (Message.Replace(" ", "+")) + "%22%2C%22link%22%3A%22" + SourceUrl + "%22%2C%22id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22" + pinterestAccountManager.App_version + "%3A%226bbb94a%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3ECloseupContent(resource%3DPinResource(id%3D381539399653733768))%3EPin(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinEdit)%23Modal(module%3DPinEdit(resource%3DPinResource(id%3D" + PinId + ")))";
+                                    //string afterposting = pinterestAccountManager.httpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), postdata1, "http://www.pinterest.com/pin/" + PinId + "/", "", 0, "", "");
+
+                                    #endregion
                                     string postdata1 = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + Board + "%22%2C%22description%22%3A%22" + myMessage + "%22%2C%22link%22%3A%22" + Uri.EscapeDataString(linkurl) + "%22%2C%22is_video%22%3Afalse%2C%22pin_id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + objPinUser.App_version + "%22%2C%22https_exp%22%3Afalse%7D%7D&module_path=App()%3ECloseup(resource%3DPinResource(id%3D" + PinId + "))%3EPinActionBar(resource%3DPinResource(id%3D" + PinId + "))%3EShowModalButton(module%3DPinCreate)%23Modal(module%3DPinCreate(resource%3DPinResource(id%3D" + PinId + ")))";
                                     string afterposting = objPinUser.globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/RepinResource/create/"), postdata1, "http://www.pinterest.com/pin/" + PinId + "/", "", 0, "", "");
-
-                                    return true;
+                                    if (!afterposting.Contains("<div>Uh oh! Something went wrong."))
+                                    {
+                                          return true;
+                                    }
+                                    return false;
                                 }
                                 catch (Exception ex)
                                 {
@@ -1006,6 +1355,12 @@ namespace PinsManager
                             return false;
                         }
 
+                        // Log("[ " + DateTime.Now + " ] => [ Repining " + PinId + " For " + pinterestAccountManager.Username + " ]");
+
+                        //string getPinPageSource = pinterestAccountManager.httpHelper.getHtmlfromUrl(new Uri("http://www.pinterest.com/" + PinId + "/"), "", "", "");//(new Uri("http://www.pinterest.com/pin/" + PinId + "/"), "", "", "");
+                        //string getPinPageSource = pinterestAccountManager.httpHelper.getHtmlfromUrl(new Uri(PinId), "", "", "");
+
+
                     }
                 }
                 catch { };
@@ -1017,7 +1372,7 @@ namespace PinsManager
                 return false;
             }
         }
-
+        #endregion
 
         public static List<List<string>> Split(List<string> source, int splitNumber)
         {

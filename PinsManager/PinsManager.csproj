@@ -45,6 +45,7 @@
     <Compile Include="AddNewPinManager.cs" />
     <Compile Include="AddPinWithNewBoardManager.cs" />
     <Compile Include="EditPinDiscriptionManager.cs" />
+    <Compile Include="RepinByKeywordManager.cs" />
     <Compile Include="RePinManager.cs" />
     <Compile Include="ScrapePinManagers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

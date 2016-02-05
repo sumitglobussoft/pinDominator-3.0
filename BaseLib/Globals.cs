@@ -23,6 +23,7 @@ namespace BaseLib
         public static bool IsFreeVersion = false;
         public static bool IsProVersion = false;
         public static bool IsBasicVersion = false;
+        public static bool IsAgencyVersion = false;
 
         public static string DeCaptcherHost = string.Empty;
         public static string DeCaptcherPort = string.Empty;

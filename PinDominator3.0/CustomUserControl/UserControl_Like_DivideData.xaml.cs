@@ -57,30 +57,57 @@ namespace PinDominator3.CustomUserControl
             }
         }
 
-        private void btnDivideData_Like_Save_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (rdbDivideByUser_Like.IsChecked==true)
-                {
-                    if (!string.IsNullOrEmpty(txtGiveByUser_Like.Text))
-                    {
-                        LikeManagers.CountGivenByUser = Convert.ToInt32(txtGiveByUser_Like.Text);
-                    }
-                    else
-                    {
-                        GlobusLogHelper.log.Info("Please Give Count Given By User");
-                        ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
-                        return;
-                    }
-                }
+        //private void btnDivideData_Like_Save_Click(object sender, RoutedEventArgs e)
+        //{
+        //     try
+        //     {
+        //         if (rdbDivideByUser_Like.IsChecked == true)
+        //         {
+        //             if (!string.IsNullOrEmpty(txtGiveByUser_Like.Text))
+        //             {
+        //                 LikeManagers.CountGivenByUser = Convert.ToInt32(txtGiveByUser_Like.Text);
+        //                 ModernDialog.ShowMessage("Notice", "Data Successfully Save", MessageBoxButton.OK);
+        //                 GlobusLogHelper.log.Info("=> [ Your Data Successfully Save ]");
+        //             }
+        //             else
+        //             {
+        //                 GlobusLogHelper.log.Info("Please Give Count Given By User");
+        //                 ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
+        //                 return;
+        //             }
+        //         }
 
-            }
-            catch(Exception ex)
-            {
-                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
-        }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+        //     }
+       // }
+
+        //private void btnDivideData_Like_Save_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (rdbDivideByUser_Like.IsChecked==true)
+        //        {
+        //            if (!string.IsNullOrEmpty(txtGiveByUser_Like.Text))
+        //            {
+        //                LikeManagers.CountGivenByUser = Convert.ToInt32(txtGiveByUser_Like.Text);
+        //            }
+        //            else
+        //            {
+        //                GlobusLogHelper.log.Info("Please Give Count Given By User");
+        //                ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
+        //                return;
+        //            }
+        //        }
+
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+        //    }
+        //}
 
 
 

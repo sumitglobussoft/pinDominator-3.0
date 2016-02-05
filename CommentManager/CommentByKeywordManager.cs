@@ -13,8 +13,11 @@ using System.Threading.Tasks;
 
 namespace CommentManager
 {
+    public delegate void AccountReport_CommentByKeyword();
     public class CommentByKeywordManager
     {
+        public static AccountReport_CommentByKeyword objCommentByKeywordDelegate;
+
         #region Global Variable
 
         public  int Nothread_CommentByKeyword = 5;
@@ -27,6 +30,10 @@ namespace CommentManager
         public List<string> lstCommnet = new List<string>();
         public string Keyword = string.Empty;
         public bool _IsfevoriteCommentByKeyword = false;
+
+        public bool rdbSingleUserCommentByKeyword = false;
+        public bool rdbMultipleUserCommentByKeyword = false;
+        public string SingleKeyword_CommentByKeyword = string.Empty;
 
         public static bool chkDivideDataCommentByKeyword = false;
         public static bool rdbDivideEquallyCommentByKeyword = false;
@@ -73,6 +80,7 @@ namespace CommentManager
 
         #endregion
 
+        QueryManager Qm = new QueryManager();
         public void StartCommentKeyword()
         {
             try
@@ -216,36 +224,38 @@ namespace CommentManager
                             //Obj_AccountManager.httpHelper = httpHelper;
                             GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
-
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-
+                                //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                    }
-                                    catch { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
+                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadCommentByKeyword(ref objPinUser, list_lstTargetCommentByKeyword_item);
                             }
-
                             catch { };
                         }
-                        #endregion
-
-                        GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                        StartActionMultithreadCommentByKeyword(ref objPinUser, list_lstTargetCommentByKeyword_item);
-
+                        else
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadCommentByKeyword(ref objPinUser, list_lstTargetCommentByKeyword_item);
+                            }
+                            catch(Exception ex)
+                            {
+                                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
+                            }
+                        }
+                        #endregion                                          
                     }
                     catch (Exception ex)
                     {
@@ -259,6 +269,316 @@ namespace CommentManager
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
 
+           
+        }
+
+        public void StartActionMultithreadCommentByKeyword(ref PinInterestUser objPinUser, List<string> UserCount_CommentByKeyword)
+        {
+            try
+            {
+               int counter = 0;
+                string[] arrayItem = new string[100];
+
+                foreach (string newItem in UserCount_CommentByKeyword)
+                {
+                    try
+                    {
+                        arrayItem = Regex.Split(newItem, "::");
+                        if (arrayItem.Length == 3 && arrayItem[0] == objPinUser.Niches)
+                        {
+                            if (arrayItem.Length == 3)
+                            {
+                                string[] Keywordarrray = Regex.Split(arrayItem[1], ",");
+                                foreach (string KeywordsItem in Keywordarrray)
+                                {
+                                    lock (this)
+                                    {
+                                        try
+                                        {
+                                            Keyword = KeywordsItem + "::" + arrayItem[2].ToString();
+                                            lstCommnet.Add(Keyword);
+                                            List<string> LstPins = new List<string>();
+                                            LstPins = KeywordPins_New(KeywordsItem, MaxCommentByKeyword, ref objPinUser);
+                                            //PinterestComments Comments = new PinterestComments();                     
+                                            keyword = Utils.Utils.getBetween(KeywordsItem, "", "::");
+                                            GlobusLogHelper.log.Info(" => [ Finding Pins On Keyword : " + KeywordsItem + " For " + objPinUser.Username + " ]");
+                                            GlobusLogHelper.log.Info(" => [ " + LstPins.Count + " Pins On Keyword :" + KeywordsItem + " For " + objPinUser.Username + " ]");
+                                            List<string> lstofPin = new List<string>();
+                                            lstofPin = LstPins.Distinct().ToList();
+                                            string[] lstCommnet_strlist = Regex.Split(newItem, "::");//lstCommnet.ToArray();
+                                            foreach (string pin in lstofPin)
+                                            {
+                                                try
+                                                {
+                                                    clsSettingDB Db = new clsSettingDB();
+                                                    string user = PinterestPins.getUserNameFromPinId(pin, ref objPinUser);
+
+                                                    if (counter >= MaxCommentByKeyword)
+                                                    {
+
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        #region Commented
+                                                        //comment = lstCommnet[RandomNumberGenerator.GenerateRandom(0, lstCommnet.Count)];
+
+                                                        //if (comment.Contains("::"))
+                                                        //{
+                                                        //    comment = Regex.Split(comment, "::")[1];
+                                                        //}
+                                                        //else if (comment.Contains(":"))
+                                                        //{
+                                                        //    if (comment.Contains("http:"))
+                                                        //    {
+                                                        //        comment = comment.Split(':')[comment.Split(':').Count() - 1];
+                                                        //        comment = "http:" + comment.Split(':')[comment.Split(':').Count() - 1];
+                                                        //    }
+                                                        //    else
+                                                        //    {
+                                                        //        comment = comment.Split(':')[comment.Split(':').Count() - 1];
+                                                        //    }
+                                                        //}
+                                                        #endregion
+                                                        #region
+                                                        try
+                                                        {
+                                                            DataSet DS = QM.selectCommentedPinDetails(objPinUser.Username, pin);
+                                                            DataTable Dt = DS.Tables[0];
+
+                                                            string dateTime = Dt.Rows[Dt.Rows.Count - 1].ItemArray[3].ToString();
+                                                            DateTime previousDateTime = Convert.ToDateTime(dateTime);
+                                                            DateTime currentDate = DateTime.Today;
+                                                            TimeSpan dt_Difference = currentDate.Subtract(previousDateTime);
+                                                            double dt_Difference1 = dt_Difference.Days;
+                                                            if (dt_Difference1 < 30)
+                                                            {
+                                                                continue;
+                                                            }
+
+                                                        }
+                                                        catch (Exception Ex)
+                                                        {
+                                                            //CommentAddToLogger("Error ==> " + Ex.StackTrace);
+                                                        }
+
+                                                        #endregion
+                                                        Thread.Sleep(1 * 1000);
+                                                        bool IsCommented = objCommentManagers.Comment_new(ref objPinUser, pin, lstCommnet_strlist[2]);
+                                                        if (IsCommented)
+                                                        {
+                                                            #region AccountReport
+
+                                                            string module = "CommentByKeyword";
+                                                            string status = "Commented";
+                                                            Qm.insertAccRePort(objPinUser.Username, module, "https://www.pinterest.com/pin/" + pin, "", "", lstCommnet_strlist[2], KeywordsItem, "", status, "", "", DateTime.Now);
+                                                            objCommentByKeywordDelegate();
+
+                                                            #endregion
+                                                            counter++;
+                                                            GlobusLogHelper.log.Info(" => [ Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
+                                                            clsSettingDB Databse = new clsSettingDB();
+                                                            Databse.insertMessageDate(objPinUser.Username, user.Replace("/", ""), pin, KeywordsItem, comment);
+                                                            try
+                                                            {
+                                                                QueryManager.insertCommentedPinDetails(objPinUser.Username, pin, DateTime.Now.ToString());
+                                                            }
+                                                            catch { };
+
+                                                            try
+                                                            {
+                                                                string CSV_Header = "Date" + "," + "UserName" + "," + "Comment" + "," + "Keyword" + "," + "Niche" + "," + "PinUrl";
+                                                                string CSV_Data = System.DateTime.Now.ToString() + "," + objPinUser.Username + "," + comment + "," + KeywordsItem + "," + objPinUser.Niches + "," + "https://www.pinterest.com/pin/" + pin;
+                                                                string path = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "Comment");
+                                                                PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, path + "\\CommentBykeyword.csv");
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            GlobusLogHelper.log.Info(" => [ Not Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
+                                                        }
+
+                                                        //if (rdbDivideGivenByUserCommentByKeyword == true)
+                                                        //{
+                                                        //    CountGivenByUserCommentByKeyword--;
+                                                        //    if (CountGivenByUserCommentByKeyword < 0)
+                                                        //    {
+                                                        //        break;
+                                                        //    }
+                                                        //}
+
+                                                        int delay = RandomNumberGenerator.GenerateRandom(minDelayCommentByKeyword, maxDelayCommentByKeyword);
+                                                        GlobusLogHelper.log.Info(" => [ Delay For " + delay + " Seconds ]");
+                                                        Thread.Sleep(delay * 1000);
+
+                                                    }
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    GlobusLogHelper.log.Error(" Error : 3.4" + ex.StackTrace);
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            GlobusLogHelper.log.Error(" Error : 3.4" + ex.StackTrace);
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error : 3.4" + ex.StackTrace);
+                    }
+
+                    #region Comment
+                    // }
+                    //string[] lstCommnet_strlist = lstCommnet.ToArray();
+                    //if (objPinUser.Niches == arrayItem[0])
+                    //{
+                    //    foreach (string FindKeyword in lstCommnet_strlist)
+                    //    {
+                           
+                    //        try
+                    //        {
+                    //            List<string> LstPins = KeywordPins_New(FindKeyword, MaxCommentByKeyword, ref objPinUser);
+                    //            //PinterestComments Comments = new PinterestComments();                     
+                    //            keyword = Utils.Utils.getBetween(FindKeyword, "", "::");
+                    //            GlobusLogHelper.log.Info(" => [ Finding Pins On Keyword : " + FindKeyword + " For " + objPinUser.Username + " ]");
+                    //            GlobusLogHelper.log.Info(" => [ " + LstPins.Count + " Pins On Keyword :" + FindKeyword + " For " + objPinUser.Username + " ]");
+                    //            List<string> lstofPin = LstPins;
+                    //            foreach (string pin in lstofPin)
+                    //            {
+                    //                clsSettingDB Db = new clsSettingDB();
+                    //                string user = PinterestPins.getUserNameFromPinId(pin, ref objPinUser);
+
+                    //                if (counter >= MaxCommentByKeyword)
+                    //                {
+                    //                    GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                    //                    GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");   
+                    //                    break;
+                    //                }
+                    //                else
+                    //                {
+                    //                    comment = lstCommnet[RandomNumberGenerator.GenerateRandom(0, lstCommnet.Count)];
+                    //                    if (comment.Contains("::"))
+                    //                    {
+                    //                        comment = Regex.Split(comment, "::")[1];
+                    //                    }
+                    //                    else if (comment.Contains(":"))
+                    //                    {
+                    //                        if (comment.Contains("http:"))
+                    //                        {
+                    //                            comment = comment.Split(':')[comment.Split(':').Count() - 1];
+                    //                            comment = "http:" + comment.Split(':')[comment.Split(':').Count() - 1];
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            comment = comment.Split(':')[comment.Split(':').Count() - 1];
+                    //                        }
+                    //                    }
+
+                    //                    #region
+                    //                    try
+                    //                    {
+                    //                        DataSet DS = QM.selectCommentedPinDetails(objPinUser.Username, pin);
+                    //                        DataTable Dt = DS.Tables[0];
+
+                    //                        string dateTime = Dt.Rows[Dt.Rows.Count - 1].ItemArray[3].ToString();
+                    //                        DateTime previousDateTime = Convert.ToDateTime(dateTime);
+                    //                        DateTime currentDate = DateTime.Today;
+                    //                        TimeSpan dt_Difference = currentDate.Subtract(previousDateTime);
+                    //                        double dt_Difference1 = dt_Difference.Days;
+                    //                        if (dt_Difference1 < 30)
+                    //                        {
+                    //                            continue;
+                    //                        }
+
+                    //                    }
+                    //                    catch (Exception Ex)
+                    //                    {
+                    //                        //CommentAddToLogger("Error ==> " + Ex.StackTrace);
+                    //                    }
+
+                    //                    #endregion
+
+                    //                    bool IsCommented = objCommentManagers.Comment_new(ref objPinUser, pin, comment);
+                    //                    if (IsCommented)
+                    //                    {
+                    //                        #region AccountReport
+
+                    //                        string module = "CommentByKeyword";
+                    //                        string status = "Commented";
+                    //                        Qm.insertAccRePort(objPinUser.Username, module, pin, "", "", comment, keyword, "", status, "", "", DateTime.Now);
+                    //                        objCommentByKeywordDelegate();
+
+                    //                        #endregion
+
+                    //                        GlobusLogHelper.log.Info(" => [ Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
+                    //                        clsSettingDB Databse = new clsSettingDB();
+                    //                        Databse.insertMessageDate(objPinUser.Username, user.Replace("/", ""), pin, keyword, comment);
+                    //                        try
+                    //                        {
+                    //                            QueryManager.insertCommentedPinDetails(objPinUser.Username, pin, DateTime.Now.ToString());
+                    //                        }
+                    //                        catch { };
+                    //                        counter++;
+
+                    //                        try
+                    //                        {
+                    //                            string CSV_Header = "Date" + "," + "UserName" + "," + "Comment" + "," + "Keyword" + "," + "Niche" + "," + "PinUrl";
+                    //                            string CSV_Data = System.DateTime.Now.ToString() + "," + objPinUser.Username + "," + comment + "," + keyword + "," + objPinUser.Niches + "," + "https://www.pinterest.com/pin/" + pin;
+                    //                            string path = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "Comment");
+                    //                            PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, path + "\\CommentBykeyword.csv");
+                    //                        }
+                    //                        catch (Exception ex)
+                    //                        {
+
+                    //                        }
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        GlobusLogHelper.log.Info(" => [ Not Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
+                    //                    }
+
+                    //                    //if (rdbDivideGivenByUserCommentByKeyword == true)
+                    //                    //{
+                    //                    //    CountGivenByUserCommentByKeyword--;
+                    //                    //    if (CountGivenByUserCommentByKeyword < 0)
+                    //                    //    {
+                    //                    //        break;
+                    //                    //    }
+                    //                    //}
+
+                    //                    int delay = RandomNumberGenerator.GenerateRandom(minDelayCommentByKeyword, maxDelayCommentByKeyword);
+                    //                    GlobusLogHelper.log.Info(" => [ Delay For " + delay + " Seconds ]");
+                    //                    Thread.Sleep(delay * 1000);
+                    //                }
+                    //            }
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+                    //            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    //        }
+
+                    //    }
+                    ////}
+                    #endregion
+                }
+                GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+            
+            }
+            catch(Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
             finally
             {
                 try
@@ -279,161 +599,9 @@ namespace CommentManager
                 }
                 countThreadControllerCommentByKeyword--;
 
-                GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
-                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");   
+
             }
-        }
-
-        public void StartActionMultithreadCommentByKeyword(ref PinInterestUser objPinUser, List<string> UserCount_CommentByKeyword)
-        {
-            try
-            {
-
-                int counter = 0;
-                string[] arrayItem = new string[100];
-                foreach (string newItem in UserCount_CommentByKeyword)
-                {
-                    try
-                    {
-                        arrayItem = Regex.Split(newItem, "::");
-                        if (arrayItem.Length == 3 && arrayItem[0] == objPinUser.Niches)
-                        {
-                            if (arrayItem.Length == 3)
-                            {
-                                string[] Keywordarrray = Regex.Split(arrayItem[1], ",");
-                                foreach (string KeywordsItem in Keywordarrray)
-                                {
-                                    Keyword = KeywordsItem + "::" + arrayItem[2].ToString();
-                                    lstCommnet.Add(Keyword);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        GlobusLogHelper.log.Error(" Error : 3.4" + ex.StackTrace);
-                    }
-                }
-                string[] lstCommnet_strlist = lstCommnet.ToArray();
-                foreach (string FindKeyword in lstCommnet_strlist)
-                {
-                    try
-                    {                                              
-                        List<string> LstPins = KeywordPins_New(FindKeyword, MaxCommentByKeyword, ref objPinUser);
-                        //PinterestComments Comments = new PinterestComments();                     
-                        keyword = Utils.Utils.getBetween(FindKeyword, "", "::");
-
-                        foreach (string pin in LstPins)
-                        {
-                            clsSettingDB Db = new clsSettingDB();
-                            string user = PinterestPins.getUserNameFromPinId(pin, ref objPinUser);
-
-                            if (counter >= MaxCommentByKeyword)
-                            {                              
-                                break;
-                            }
-                            else
-                            {
-                                GlobusLogHelper.log.Info(" => [ Finding Pins On Keyword : " + FindKeyword + " For " + objPinUser.Username + " ]");
-                                GlobusLogHelper.log.Info(" => [ " + LstPins.Count + " Pins On Keyword :" + FindKeyword + " For " + objPinUser.Username + " ]");
-                                comment = lstCommnet[RandomNumberGenerator.GenerateRandom(0, lstCommnet.Count)];
-                                if (comment.Contains("::"))
-                                {
-                                    comment = Regex.Split(comment, "::")[1];
-                                }
-                                else if (comment.Contains(":"))
-                                {
-                                    if (comment.Contains("http:"))
-                                    {
-                                        comment = comment.Split(':')[comment.Split(':').Count() - 1];
-                                        comment = "http:" + comment.Split(':')[comment.Split(':').Count() - 1];
-                                    }
-                                    else
-                                    {
-                                        comment = comment.Split(':')[comment.Split(':').Count() - 1];
-                                    }
-                                }
-
-                                #region                           
-                                try
-                                {
-                                    DataSet DS = QM.selectCommentedPinDetails(objPinUser.Username, pin);                                   
-                                    DataTable Dt = DS.Tables[0];
-                                                            
-                                    string dateTime = Dt.Rows[Dt.Rows.Count - 1].ItemArray[3].ToString();
-                                    DateTime previousDateTime = Convert.ToDateTime(dateTime);
-                                    DateTime currentDate = DateTime.Today;
-                                    TimeSpan dt_Difference = currentDate.Subtract(previousDateTime);
-                                    double dt_Difference1 = dt_Difference.Days;
-                                    if (dt_Difference1 < 30)
-                                    {
-                                        continue;
-                                    }
-
-                                }
-                                catch (Exception Ex)
-                                {
-                                    //CommentAddToLogger("Error ==> " + Ex.StackTrace);
-                                }
-
-                                #endregion
-
-                                bool IsCommented = objCommentManagers.Comment_new(ref objPinUser, pin, comment);
-                                if (IsCommented)
-                                {
-                                    GlobusLogHelper.log.Info(" => [ Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
-                                    clsSettingDB Databse = new clsSettingDB();
-                                    Databse.insertMessageDate(objPinUser.Username, user.Replace("/", ""), pin, keyword, comment);
-                                    try
-                                    {
-                                        QueryManager.insertCommentedPinDetails(objPinUser.Username, pin, DateTime.Now.ToString());                                 
-                                    }
-                                    catch { };
-                                    counter++;
-                                    
-                                    try
-                                    {
-                                        string CSV_Header = "Date" + "," + "UserName" + "," + "Comment" + "," + "Keyword" + "," + "Niche" + "," + "PinUrl";
-                                        string CSV_Data = System.DateTime.Now.ToString() + "," + objPinUser.Username + "," + comment + "," + keyword + "," + objPinUser.Niches + "," + "https://www.pinterest.com/pin/" + pin;
-                                        string path = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "Comment");
-                                        PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, path + "\\CommentBykeyword.csv");
-                                    }
-                                    catch (Exception ex)
-                                    {
-
-                                    }
-                                }
-                                else
-                                {
-                                    GlobusLogHelper.log.Info(" => [ Not Commneted on Pin : " + pin + " From " + objPinUser.Username + " ]");
-                                }
-
-                                //if (rdbDivideGivenByUserCommentByKeyword == true)
-                                //{
-                                //    CountGivenByUserCommentByKeyword--;
-                                //    if (CountGivenByUserCommentByKeyword < 0)
-                                //    {
-                                //        break;
-                                //    }
-                                //}
-
-                                int delay = RandomNumberGenerator.GenerateRandom(minDelayCommentByKeyword, maxDelayCommentByKeyword);
-                                GlobusLogHelper.log.Info(" => [ Delay For " + delay + " Seconds ]");
-                                Thread.Sleep(delay * 1000);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-                    }                   
-
-                }
-            }
-            catch(Exception ex)
-            {
-                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
+        
         }
 
         public List<string> KeywordPins_New(string keyword, int Count, ref PinInterestUser objPinUser)
@@ -538,7 +706,7 @@ namespace CommentManager
             }
             catch(Exception ex)
             {
-                GlobusLogHelper.log.Info(" Error :" + ex.StackTrace);
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
 
             return lstUserPins;

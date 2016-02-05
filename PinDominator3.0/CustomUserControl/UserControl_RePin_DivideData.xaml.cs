@@ -35,6 +35,7 @@ namespace PinDominator3.CustomUserControl
             try
             {
                 RePinManager.rdbDivideEqually_RePin = true;
+                RePinManager.rdbDivideGivenByUser_RePin = false;
                 rdbDivideByUser_RePinDivideData.IsEnabled = false;
                 txtCountGivenByUser_RePinDivideData.Visibility = Visibility.Hidden;
             }
@@ -49,6 +50,7 @@ namespace PinDominator3.CustomUserControl
             try
             {
                 RePinManager.rdbDivideGivenByUser_RePin = true;
+                RePinManager.rdbDivideEqually_RePin = false;
                 rdbDivideEqually_RePinDivideData.IsEnabled = false;
             }
             catch(Exception ex)
@@ -57,29 +59,29 @@ namespace PinDominator3.CustomUserControl
             }
         }
 
-        private void btnsave_RePinDivideData_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (RePinManager.rdbDivideGivenByUser_RePin == true)
-                {
-                    if (!string.IsNullOrEmpty(txtCountGivenByUser_RePinDivideData.Text))
-                    {
-                        RePinManager.CountGivenByUser_RePin = Convert.ToInt32(txtCountGivenByUser_RePinDivideData.Text);
-                    }
-                    else
-                    {
-                        GlobusLogHelper.log.Info("Please Give Count Given By User");
-                        ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
-                        return;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
-        }
+        //private void btnsave_RePinDivideData_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (RePinManager.rdbDivideGivenByUser_RePin == true)
+        //        {
+        //            if (!string.IsNullOrEmpty(txtCountGivenByUser_RePinDivideData.Text))
+        //            {
+        //                RePinManager.CountGivenByUser_RePin = Convert.ToInt32(txtCountGivenByUser_RePinDivideData.Text);
+        //            }
+        //            else
+        //            {
+        //                GlobusLogHelper.log.Info("Please Give Count Given By User");
+        //                ModernDialog.ShowMessage("Please Give Count Given By User", "Count Given By User", MessageBoxButton.OK);
+        //                return;
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+        //    }
+        //}
 
       
     }

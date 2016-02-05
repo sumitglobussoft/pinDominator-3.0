@@ -13,9 +13,12 @@ using System.Threading.Tasks;
 
 namespace PinsManager
 {
+    public delegate void AccountReport_PinScraper();
     public class ScrapePinManagers
     {
-        #region Variable
+        public static AccountReport_PinScraper objPinScraperDelegate;
+
+        #region Global Variable
         public bool isStopPinScraper = false;
         public int Nothread_PinScraper = 5;
         public List<Thread> lstThreadsPinScraper = new List<Thread>();
@@ -62,6 +65,8 @@ namespace PinsManager
 
         #endregion
 
+        QueryManager qm = new QueryManager();
+
         public void StartPinScraper()
         {
             try
@@ -90,6 +95,7 @@ namespace PinsManager
         {
             try
             {
+                GlobusLogHelper.log.Info(" => [ Scraping Process Started ]");
                 string LikeUrl = BoardUrl;
                 try
                 {
@@ -109,101 +115,148 @@ namespace PinsManager
 
                 while (!string.IsNullOrEmpty(PopularPinPageSource))
                 {
-                    if (!string.IsNullOrEmpty(PopularPinPageSource))
+                    try
                     {
-                        if (PopularPinPageSource.Contains("board_layout"))
+                        if (!string.IsNullOrEmpty(PopularPinPageSource))
                         {
-
-                            BookMark = Utils.Utils.getBetween(PopularPinPageSource, "\"board_layout\": \"default\", \"num_request\": null, \"bookmarks\": [\"", "]").Replace("\"", "").Replace("=", "");
-                        }
-                        if (BookMark.Contains(""))
-                        {
-                            BookMark = Utils.Utils.getBetween(PopularPinPageSource, "board_layout\": \"default\", \"bookmarks\": [", "]").Replace("\"", "").Replace("=", "");
-                        }
-                        if (PopularPinPageSource.Contains("pinHolder"))
-                        {
-                            string[] arrPin = Regex.Split(PopularPinPageSource, "pinHolder");
-                            foreach (var itemArrPin in arrPin)
+                            if (PopularPinPageSource.Contains("board_layout"))
                             {
-                                string Pin = Utils.Utils.getBetween(itemArrPin, "/pin/", "class=").Replace("\\", "").Replace("/", "").Replace("\"", "").Trim();
-                                if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
-                                {
-                                    if (MaxNoOfPinScrape == Counter)
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
-                                        if (chkScrapeImage == true)
-                                        {
-                                            ScrapeImage(Pin);
-                                        }
-                                        lstPopularPins.Add(Pin);
-                                        Counter++;
-                                    }
-                                }
+
+                                BookMark = Utils.Utils.getBetween(PopularPinPageSource, "\"board_layout\": \"default\", \"num_request\": null, \"bookmarks\": [\"", "]").Replace("\"", "").Replace("=", "");
                             }
-                        }
-
-                        if (PopularPinPageSource.Contains("\"id\":"))
-                        {
-                            string[] arrPin = Regex.Split(PopularPinPageSource, "uri");
-                            foreach (var itemArrPin in arrPin)
+                            if (BookMark.Contains(""))
                             {
-                                if (itemArrPin.Contains("/v3/pins/"))
+                                BookMark = Utils.Utils.getBetween(PopularPinPageSource, "board_layout\": \"default\", \"bookmarks\": [", "]").Replace("\"", "").Replace("=", "");
+                            }
+                            if (PopularPinPageSource.Contains("pinHolder"))
+                            {
+                                try
                                 {
-                                    string Pin = Utils.Utils.getBetween(itemArrPin, "/v3/pins/", "/comments/").Replace("\\", "").Replace("/", "").Replace("\"", "").Trim();
-
-                                    if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
+                                    string[] arrPin = Regex.Split(PopularPinPageSource, "pinHolder");
+                                    foreach (var itemArrPin in arrPin)
                                     {
-                                        if (MaxNoOfPinScrape == Counter)
+                                        string Pin = Utils.Utils.getBetween(itemArrPin, "/pin/", "class=").Replace("\\", "").Replace("/", "").Replace("\"", "").Trim();
+                                        if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
                                         {
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
-                                            if (chkScrapeImage == true)
+                                            if (MaxNoOfPinScrape == Counter)
                                             {
-                                                ScrapeImage(Pin);
+                                                break;
                                             }
-                                            lstPopularPins.Add(Pin);
-                                            Counter++;
+                                            else
+                                            {
+
+                                                //GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
+                                                if (chkScrapeImage == true)
+                                                {
+                                                    ScrapeImage(Pin);
+                                                }
+                                                else
+                                                {
+                                                    ImageUrl = "NULL";
+                                                }
+                                                #region AccountReport
+
+                                                string module = "PinScraper";
+                                                string status = "Scraped";
+                                                qm.insertAccRePort("", module, "https://www.pinterest.com/pin/" + Pin, "", "", "", "", ImageUrl, status, "", "", DateTime.Now);
+                                                objPinScraperDelegate();
+
+                                                #endregion
+                                                lstPopularPins.Add(Pin);
+                                                Counter++;
+                                            }
                                         }
                                     }
                                 }
+                                catch (Exception ex)
+                                {
+                                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                }
+                            }
+
+                            if (PopularPinPageSource.Contains("\"id\":"))
+                            {
+                                try
+                                {
+                                    string[] arrPin = Regex.Split(PopularPinPageSource, "uri");
+                                    foreach (var itemArrPin in arrPin)
+                                    {
+                                        if (itemArrPin.Contains("/v3/pins/"))
+                                        {
+                                            string Pin = Utils.Utils.getBetween(itemArrPin, "/v3/pins/", "/comments/").Replace("\\", "").Replace("/", "").Replace("\"", "").Trim();
+
+                                            if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
+                                            {
+                                                if (MaxNoOfPinScrape == Counter)
+                                                {
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    // GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
+                                                    if (chkScrapeImage == true)
+                                                    {
+                                                        ScrapeImage(Pin);
+                                                    }
+                                                    else
+                                                    {
+                                                        ImageUrl = "NULL";
+                                                    }
+                                                    #region AccountReport
+
+                                                    string module = "PinScraper";
+                                                    string status = "Scraped";
+                                                    qm.insertAccRePort("", module, "https://www.pinterest.com/pin/" + Pin, "", "", "", "", ImageUrl, status, "", "", DateTime.Now);
+                                                    objPinScraperDelegate();
+
+                                                    #endregion
+                                                    lstPopularPins.Add(Pin);
+                                                    Counter++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                }
                             }
                         }
-                    }
 
-                    try
-                    {
-                        NextPageUrl = "https://www.pinterest.com/resource/BoardFeedResource/get/?source_url=" + BoardIdOfBoardUrl + "&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardIdOfBoardUrl + "%22%2C%22board_url%22%3A%22" + BoardUrlEdited + "%22%2C%22page_size%22%3Anull%2C%22prepend%22%3Atrue%2C%22access%22%3A%5B%5D%2C%22board_layout%22%3A%22default%22%2C%22bookmarks%22%3A%5B%22" + BookMark + "%3D%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&_=142710648289" + count + "";
-                    }
-                    catch { };
+                        try
+                        {
+                            NextPageUrl = "https://www.pinterest.com/resource/BoardFeedResource/get/?source_url=" + BoardIdOfBoardUrl + "&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardIdOfBoardUrl + "%22%2C%22board_url%22%3A%22" + BoardUrlEdited + "%22%2C%22page_size%22%3Anull%2C%22prepend%22%3Atrue%2C%22access%22%3A%5B%5D%2C%22board_layout%22%3A%22default%22%2C%22bookmarks%22%3A%5B%22" + BookMark + "%3D%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&_=142710648289" + count + "";
+                        }
+                        catch { };
 
-                    try
-                    {
-                        PopularPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(NextPageUrl), "https://www.pinterest.com/", string.Empty, objPinUser.UserAgent);
+                        try
+                        {
+                            PopularPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(NextPageUrl), "https://www.pinterest.com/", string.Empty, objPinUser.UserAgent);
+                        }
+                        catch (Exception ex)
+                        {
+                            PopularPinPageSource = null;
+                        }
+                        count++;
                     }
                     catch (Exception ex)
                     {
-                        PopularPinPageSource = null;
-                    }
-                    count++;
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    }    
                 }
 
                 lstPopularPins = lstPopularPins.Distinct().ToList();
                 lstPopularPins.Reverse();
 
+                GlobusLogHelper.log.Info(" => [ Total  Pins : " + lstPopularPins.Count + " ]");
+
                 GlobusLogHelper.log.Info(" => [ Scraping Process Completed ]");
             }
-
-
             catch (Exception ex)
-            { };
-
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }    
             return lstPopularPins;
         }
 
@@ -232,20 +285,28 @@ namespace PinsManager
                                 {
                                     ImageUrl = Utils.Utils.getBetween(imagepage, " src=\"", "\"");
                                     DownloadImage(ImageUrl);
-                                    GlobusLogHelper.log.Info(" => [ Scraped Image for Pin " + Pin + " ]");
+                                    GlobusLogHelper.log.Info(" => [ Scraped Image " + ImageUrl + " for Pin " + Pin + " ]");
+                                    break;
                                 }
 
                             }
                         }
-                        catch { };
-
+                        catch(Exception ex) 
+                        {
+                            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                        }
                     }
 
-
                 }
-                catch { };
+                catch(Exception ex) 
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
             }
-            catch { };
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
         }
 
         public static void DownloadImage(string ImageUrl)
@@ -262,7 +323,10 @@ namespace PinsManager
                 objwebclient.UploadData(PicPath, array);
 
             }
-            catch { };
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
         }
 
     }

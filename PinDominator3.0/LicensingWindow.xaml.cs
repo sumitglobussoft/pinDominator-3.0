@@ -1,7 +1,7 @@
 ﻿using BaseLib;
+using PinDominator3;
 using FirstFloor.ModernUI.Windows.Controls;
 using LicensingManager;
-using PinDominator3;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator
+namespace facedominator
 {
     /// <summary>
     /// Interaction logic for LicensingWindow.xaml
@@ -46,7 +46,7 @@ namespace PinDominator
             
             LoadFrmMethod();
             StartLicenseValidation();
-            Thread.Sleep(1000);
+         
 
             if (status == "active")
             {
@@ -54,15 +54,17 @@ namespace PinDominator
                 {
                     licenseCheckProgressbar.IsActive = false;
                     btnValidate.Visibility = Visibility.Visible;
+
+                    licenseCheckProgressbar.IsActive = true;
+                    btnValidate.Visibility = Visibility.Hidden;
+                    Thread threadCheckLicense = new Thread(checkLicense);
+                    threadCheckLicense.SetApartmentState(ApartmentState.STA);
+                    threadCheckLicense.Start();
                 }));
             }
             else
             {
-                  this.Dispatcher.Invoke(new Action(delegate
-                {
-                ModernDialog.ShowMessage("Please Contact skype support - Facedominatorsupport", " Message Box ", btnC);
-                }));
-               //MessageBox.Show("Please Contact skype support - Facedominatorsupport");
+                MessageBox.Show("Please Contact skype support - Facedominatorsupport");
             }
           
            
@@ -135,9 +137,12 @@ namespace PinDominator
         string start = "Start";
         string activate = "Activate";
 
-        string freeTrialKey = "pdfreetrial";
+        string freeTrialKey = "fdfreetrial";
 
-      
+        //string server1 = "faced.extrem-hosting.net/FD2.0";
+        //string server2 = "faced.extrem-hosting.net/FD2.0";
+        //string server3 = "faced.extrem-hosting.net/FD2.0";
+
         string server1 = "licensing.facedominator.com/licensing/PD";
         string server2 = "licensing.facedominator.com/licensing/PD";
         string server3 = "licensing.facedominator.com/licensing/PD";
@@ -162,15 +167,9 @@ namespace PinDominator
                        StartLicenseValidation();
                     }
 
-                    if (status == "active")                    
+                    if (status == "active")
                     {
-
-                        this.Dispatcher.Invoke(new Action(delegate
-                        {
-                            ModernDialog.ShowMessage("License Validated, Please click on Validate Button", " Message Box ", btnC);
-                        }));
-                       
-                    //    MessageBox.Show("License Validated, Please click on Validate Button");
+                        MessageBox.Show("License Validated, Please click on Validate Button");
                         this.Dispatcher.Invoke(new Action(delegate
                         {
                             btnActivate.Visibility = Visibility.Hidden;
@@ -192,7 +191,21 @@ namespace PinDominator
             string TransactionID = (txtTransactionID).Text.Trim();
             string Email = (txtEmail.Text).Trim();
             //string Email = 
+            try
+            {
+                Globals.licType = cmb_LicType.Text;
+            }
+            catch(Exception ex)
+            {
 
+            }
+
+            if (Username.ToLower().Contains("pdfreetrial") || Password.ToLower().Contains("pdfreetrial") || TransactionID.ToLower().Contains("pdfreetrial") || Email.ToLower().Contains("pdfreetrial"))
+            {
+                GlobusLogHelper.log.Info("pdfreetrial is not valid input !");
+                MessageBox.Show("pdfreetrial is not valid input !");
+                return;
+            }
            // AddToLogs("Sending Details for Registration");
 
             if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(TransactionID) && !string.IsNullOrEmpty(Email))
@@ -311,17 +324,17 @@ namespace PinDominator
                             try
                             {
 
-                                if (username.Contains("fdfreetrial"))
+                                if (Globals.licType.Contains("pdbasic"))
                                 {
-                                    Globals.CheckLicenseManager = username;
+                                    Globals.IsBasicVersion = true;
                                 }
-                                else if (txnID.Contains("fdfreetrial"))
+                                else if (Globals.licType.Contains("pdpro"))
                                 {
-                                    Globals.CheckLicenseManager = txnID;
+                                    Globals.IsProVersion = true;
                                 }
-                                else if (Email.Contains("fdfreetrial"))
+                                else if (Globals.licType.Contains("pdagency"))
                                 {
-                                    Globals.CheckLicenseManager = Email;
+                                    Globals.IsAgencyVersion = true;
                                 }
 
                             }
@@ -443,17 +456,12 @@ namespace PinDominator
                 GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
             }
         }
-       
 
         private void NoRecordFoundMethod()
         {
             try
             {
-                   this.Dispatcher.Invoke(new Action(delegate
-                {
-                ModernDialog.ShowMessage("Please activate your license by submitting your Details", " Message Box ", btnC);
-                }));
-               // MessageBox.Show("Please activate your license by submitting your Details");
+                MessageBox.Show("Please activate your license by submitting your Details");
                 this.Dispatcher.Invoke(new Action(delegate
                 {
                    

@@ -46,6 +46,8 @@ namespace BasePD
         public static string path_Image = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PinDominator3.0\\ScrapedImageFolder";
         public static string PinScraped = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PinDominator3.0\\PinScraped.txt";
 
+       
+
         /// <summary>
         /// Singleton object declaration.
         /// </summary>

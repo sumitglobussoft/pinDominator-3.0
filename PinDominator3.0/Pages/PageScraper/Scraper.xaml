@@ -6,85 +6,99 @@
             xmlns:app="clr-namespace:PinDominator3.Classes"
              mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Grid>
-            <Grid.DataContext>
-                <app:Validation x:Name="objform" />
-            </Grid.DataContext>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="69*"/>
-                <RowDefinition Height="79*"/>
-                <RowDefinition Height="102*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>         
-                <GroupBox Header="User Input" BorderBrush="Black">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="54*"/>
-                            <RowDefinition Height="31*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="94*"/>
-                            <ColumnDefinition Width="90*"/>
-                            <ColumnDefinition Width="38*"/>
-                            <ColumnDefinition Width="59*"/>
-                            <ColumnDefinition Width="13*"/>
-                            <ColumnDefinition Width="40*"/>
-                            <ColumnDefinition Width="47*"/>
-                            <ColumnDefinition Width="17*"/>
-                        </Grid.ColumnDefinitions>
-                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
-                        <Label Content="User Name :" Margin="0,18,0,0" Height="25" RenderTransformOrigin="0.5,0.08"/>
-                        <TextBox Name="txtScraperUsername" Height="25" Margin="0,18,0,0" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}" Grid.ColumnSpan="4" Grid.Column="1"/>
-                        <RadioButton Content="Following" Grid.Column="2" GroupName="Scraper" Name="rdoFollowingScraper" Height="22" Grid.Row="1" Grid.ColumnSpan="3" Checked="rdoFollowingScraper_Checked"/>
-                        <RadioButton Content="Follower" GroupName="Scraper" Name="rdoFollowerScraper" Grid.Column="1" Grid.Row="1"  Checked="rdoFollowerScraper_Checked"/>
+    <!--<ScrollViewer>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Grid.Column="0" Margin="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="73*"/>
+                    <RowDefinition Height="134*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="83*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="86*"/>
+                    <ColumnDefinition Width="36*"/>
+                    <ColumnDefinition Width="69*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                <Label Content="User Name :"  Height="25" VerticalContentAlignment="Center" Grid.Row="1" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtScraperUsername" Height="25"  TextWrapping="Wrap" Text="" Grid.ColumnSpan="3" Grid.Column="2" Grid.Row="1" />
+                <RadioButton Content="Following" Grid.Column="3" GroupName="Scraper" Name="rdoFollowingScraper" Height="25" HorizontalContentAlignment="Center"  Grid.Row="0"  Grid.ColumnSpan="2" Checked="rdoFollowingScraper_Checked" ToolTip="Scrape following Of Enter UserName."/>
+                <RadioButton Content="Follower" GroupName="Scraper" Name="rdoFollowerScraper" Grid.Column="2" Grid.Row="0"  Checked="rdoFollowerScraper_Checked" Height="25" HorizontalContentAlignment="Center" ToolTip="Scrape following Of Enter UserName." />
+                <Label Content="Scrape Type :" Height="25" VerticalContentAlignment="Center" Grid.Row="0" HorizontalContentAlignment="Right" />
 
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="104*"/>
-                            <ColumnDefinition Width="81*"/>
-                            <ColumnDefinition Width="8*"/>
-                            <ColumnDefinition Width="42*"/>
-                            <ColumnDefinition Width="81*"/>
-                            <ColumnDefinition Width="81*"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="49*"/>
-                            <RowDefinition Height="29*"/>
-                            <RowDefinition Height="39*"/>
-                        </Grid.RowDefinitions>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1" Grid.Column="0" Margin="0,0,1,0">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="63*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="17*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="41*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="82*"/>
+                    <RowDefinition Height="71*"/>
+                    <RowDefinition Height="53*"/>
+                </Grid.RowDefinitions>
+                <Label Content="No. of threads :"  Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtScraper_NoOfThreads"  TextWrapping="Wrap" Text="25" Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Height="25" />
+                <Label Content="Delay :" VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="1" Height="25" HorizontalContentAlignment="Right" />
+                <TextBox Name="txtScraper_DelayMin" TextWrapping="Wrap" Text="20 " Grid.Column="2" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" />
+                <Label Content="To" Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" />
+                <TextBox Name="txtScraper_DelayMax" TextWrapping="Wrap" Text="30" Grid.Column="4" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" />
+                <Label Content="(In Seconds)" Grid.Column="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Height="25" Grid.ColumnSpan="3" />
+                <Label Content="No.of User To Scrape :" Grid.Column="3" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Height="25" Grid.ColumnSpan="3" />
+                <TextBox x:Name="txtUserScraperCount"  TextWrapping="Wrap" Text="5" HorizontalContentAlignment="Center" Grid.Column="7" Grid.Row="0" Height="25"/>
+                <CheckBox Name="chkExportScrapeData_Scraper" Content="Export Scrape Data" Grid.Row="2" Grid.ColumnSpan="3" Checked="chkExportScrapeData_Scraper_Checked" ToolTip="Export Scrape Data Of Given Username Follower or Following." Height="25"/>
 
-                        <Label Content="No. of threads :" Height="26"  Grid.Column="0" Grid.Row="0" Margin="0,10,0,13"  />
-                        <TextBox Name="txtScraper_NoOfThreads"  TextWrapping="Wrap" Text="5" Height="26" Grid.Column="1" Grid.Row="0" Margin="0,10,0,13" />
-                        <Label Content="Delay :" Height="26" Grid.Column="0" Grid.Row="1" Margin="0,21" Grid.RowSpan="2" />
-                        <TextBox Name="txtScraper_DelayMin" Height="26" TextWrapping="Wrap" Text="20 " Grid.Column="1" Grid.Row="1" Margin="0,19,0,23" Grid.RowSpan="2" />
-                        <Label Content="To" Height="26" Grid.Column="3" Grid.Row="1" Margin="8,19,10,23" Width="24" Grid.RowSpan="2" />
-                        <TextBox Name="txtScraper_DelayMax" Height="26" TextWrapping="Wrap" Text="30" Grid.Column="4" Grid.Row="1" Margin="0,19,0,23" Grid.RowSpan="2"/>
-                        <Label Content="(In Seconds)" Height="26" Grid.Column="5" Grid.Row="1" Margin="0,19,0,23" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                        <Label Content="No.of User To Scrape :" Height="26"   Grid.Column="3" Grid.Row="0"  Margin="2,10,0,13" Grid.ColumnSpan="2"  />
-                        <TextBox x:Name="txtUserScraperCount"  TextWrapping="Wrap" Text="5" Height="26" Grid.Column="5" Grid.Row="0" Margin="0,10,0,13" Grid.ColumnSpan="2" />
-
-                    </Grid>
-                </GroupBox>
-            <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="91*"/>
-                        <ColumnDefinition Width="36*"/>
-                        <ColumnDefinition Width="91*"/>
-                        <ColumnDefinition Width="36*"/>
-                        <ColumnDefinition Width="91*"/>
-                        <ColumnDefinition Width="25*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button  BorderBrush="Green" Name="btnScraperStart" Content="START" Height="26"  Grid.Column="1" Click="btnScraperStart_Click">
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Submit Action" BorderBrush="Black" Grid.Row="2" Grid.Column="0" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Button  BorderBrush="Green" Name="btnScraperStart" Content="START" Click="btnScraperStart_Click" Grid.Column="1" Height="26">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button  BorderBrush="Red" Name="btnScraperStop" Content="STOP" Click="btnScraperStop_Click" Grid.Column="3" Height="26">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <!-- <Button BorderBrush="Green" Name="btnScraperExport" Content="EXPORT" Grid.Column="5" Height="26" Click="btnScraperExport_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
@@ -92,39 +106,28 @@
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
-                    </Button>
-                    <Button  BorderBrush="Red" Name="btnScraperStop" Content="STOP" Grid.Column="3" Height="26" Click="btnScraperStop_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Button BorderBrush="Green" Name="btnScraperExport" Content="EXPORT" Grid.Column="5" Height="26" Click="btnScraperExport_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                    </Button>-->
 
-                </Grid>
-            </GroupBox>
+            </Grid>
+        </GroupBox>
 
-            <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1">
-                    <Grid>
-                        <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="Scraper_progess"/>
+        <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <ProgressBar Height="8" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="Scraper_progess"/>
+                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="Welcome to  PinDominator3.0   &#x0a;  &#x0a;Scraper Module:- &#x0a;You Scrape Follower's or Following Of Given Username And Export Scrape Data of Follower's or Following." />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <DataGrid Name="dgvScraper_AccountsReport" GridLinesVisibility="All" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export Data" Click="clkExportData_Scraper"/>
+                        <MenuItem Header="Delete Data" Click="clkDeleteAccReport_Scraper"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </GroupBox>
 
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-                    <DataGrid Name="dtGrdScraper_AccountsReport" />
-                </GroupBox>
-            
-        </Grid>
-    </ScrollViewer>
+    </Grid>
+    <!--</ScrollViewer>-->
 </UserControl>

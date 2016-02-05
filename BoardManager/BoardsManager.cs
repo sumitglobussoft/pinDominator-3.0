@@ -13,9 +13,12 @@ using System.Threading.Tasks;
 
 namespace BoardManager
 {
+    public delegate void AccountReport_Board();
     public class BoardsManager
     {
-        #region  Variable
+        public static AccountReport_Board objBoardDelegate;
+
+        #region Global Variable
 
         public int Nothread_Boards = 5;
         public bool isStopBoards = false;
@@ -25,6 +28,11 @@ namespace BoardManager
         public readonly object BoardsObjThread = new object();
         public bool _IsfevoriteBoards = false;
         public int MaxRePinCount = 5;
+        public bool rdbSingleUserBoards = false;
+        public bool rdbMultipleUserBoards = false;
+        public string SingleBoardUrl_Boards = string.Empty;
+        public string SingleBoardName_Boards = string.Empty;
+        public string SingleMsg_Boards = string.Empty;
 
         public int minDelayBoards
         {
@@ -63,7 +71,7 @@ namespace BoardManager
         #endregion
 
         Accounts ObjAccountManager = new Accounts();
-
+        QueryManager Qm = new QueryManager();
         public void StartBoards()
         {
             try
@@ -146,67 +154,78 @@ namespace BoardManager
 
                         objPinUser = (PinInterestUser)paramsArray.GetValue(0);
 
-                        if (ClGlobul.lstListOfBoardNames.Count > BoardCreationBoardNum)
-                        {
-                            BoardUrl = ClGlobul.lstListOfBoardNames[BoardCreationBoardNum];
-                            BoardCreationBoardNum++;
-                        }
-                        else
-                        {
-                            BoardCreationBoardNum = 0;
-                            BoardUrl = ClGlobul.lstListOfBoardNames[BoardCreationBoardNum];
-                        }
+                        # region comment
+                        //if (ClGlobul.lstListOfBoardNames.Count > BoardCreationBoardNum)
+                        //{
+                        //    BoardUrl = ClGlobul.lstListOfBoardNames[BoardCreationBoardNum];
+                        //    BoardCreationBoardNum++;
+                        //}
+                        //else
+                        //{
+                        //    BoardCreationBoardNum = 0;
+                        //    BoardUrl = ClGlobul.lstListOfBoardNames[BoardCreationBoardNum];
+                        //}
 
-                        if (ClGlobul.lstBoardNameswithUserNames.Count > 0)
-                        {
-                            foreach (var itemBoardNames in ClGlobul.lstBoardNameswithUserNames)
-                            {
-                                string[] arrBoardName = Regex.Split(itemBoardNames, ":");//test
-                                string UserName = arrBoardName[0];
-                                BoardName = arrBoardName[1];
-                            }
-                        }
+                        //if (ClGlobul.lstListOfBoardNames.Count > 0)//lstBoardNameswithUserNames
+                        //{
+                        //    foreach (var itemBoardNames in ClGlobul.lstListOfBoardNames)
+                        //    {
+                        //        string[] arrBoardName = Regex.Split(itemBoardNames, ":");//test
+                        //        string UserName = arrBoardName[0];
+                        //        BoardName = arrBoardName[1];
+                        //    }
+                        //}
+#endregion
 
                         #region Login
 
                         if (!objPinUser.isloggedin)
                         {
-                            GlobusLogHelper.log.Info("[ => [ Logging In With : " + objPinUser.Username + " ]");
+                            GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                               // checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
-                                    }
-                                    catch (Exception ex)
-                                    { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info("[ => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
-
-                                GlobusLogHelper.log.Info("[ => [ Logged In With : " + objPinUser.Username + " ]");
+                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadBoards(ref objPinUser);
                             }
 
                             catch (Exception ex)
-                            { };
+                            {
+                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                            }
                         }
-                        #endregion
+                        else if (objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadBoards(ref objPinUser);
+                            }
+                            catch(Exception ex)
+                            {
+                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                            }
+                        }
 
-                        StartActionMultithreadBoards(ref objPinUser);
+                        #endregion                      
                     }
                     catch (Exception ex)
                     {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
                 }
             }
@@ -221,159 +240,197 @@ namespace BoardManager
             PinInterestUser objPinUser = objPinInUser;
             try
             {
-                TemplstListOfBoardNames.AddRange(ClGlobul.lstListOfBoardNames);
+                //TemplstListOfBoardNames.AddRange(ClGlobul.lstListOfBoardNames);
 
-                try
+                foreach (var item_TemplstListOfBoardNames in ClGlobul.lstListOfBoardNames)
                 {
-                    foreach (var itemBoardName in ClGlobul.lstBoardNameswithUserNames)
+                    try
                     {
-                        string[] arrBoard = null;
-                        if (itemBoardName.Contains("::"))
+                        string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
+                        string boardurl = url[2].ToString();
+                        string Boardname = string.Empty;
+                        string niche = string.Empty;
+                        niche = url[0];
+                        Boardname = url[1];
+                        if (niche == objPinUser.Niches)
                         {
-                            arrBoard = Regex.Split(itemBoardName, "::");
-                        }
-                        else if (itemBoardName.Contains(":"))
-                        {
-                            arrBoard = Regex.Split(itemBoardName, ":");
-                        }
-                        //string[] arrBoard = Regex.Split(itemBoardName, "::"); // string[] arrBoard = Regex.Split(itemBoardName, ":");
-                        if (arrBoard[0] == objPinUser.Niches)
-                        {
-                            if (arrBoard[1].Contains(":"))   //if (arrBoard[1].Contains(","))
-                            {
-                                try
-                                {
-
-                                    string[] arrBoardName = Regex.Split(arrBoard[1], ",");
-                                    foreach (var itemBoard in arrBoardName)
-                                    {
-                                        if (itemBoard.Contains(","))
-                                        {
-                                            string[] MatchBoardwithUrl = Regex.Split(itemBoard, ",");
-                                            foreach (var item_TemplstListOfBoardNames in TemplstListOfBoardNames)
-                                            {
-                                                string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
-                                                if (MatchBoardwithUrl[0] == url[0])
-                                                {
-                                                    string boardurl = url[1].ToString();
-                                                    Thread thread = new Thread(() => BoardMethod(MatchBoardwithUrl[1], boardurl, ref objPinUser));
-                                                    thread.Start();
-                                                    Thread.Sleep(10 * 1000);
-                                                }
-                                                else
-                                                {
-                                                }
-
-                                            }
-                                        }
-                                    }
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-                                }
-                            }
-                            else if (arrBoard[1].Contains(","))
-                            {
-                                foreach (var itemBoardName1 in ClGlobul.lstBoardNameswithUserNames)
-                                {
-                                    string[] url = Regex.Split(BoardUrl, "::");
-                                    string boardurl = url[1].ToString();
-                                    string[] arrBoard1 = null;
-                                    if (itemBoardName1.Contains("::"))
-                                    {
-                                        arrBoard1 = Regex.Split(itemBoardName, "::");
-                                    }
-                                    else
-                                    {
-                                        arrBoard1 = Regex.Split(itemBoardName, ":");
-                                    }
-                                    if (arrBoard1[0] == objPinUser.Niches)
-                                    {
-                                        if (arrBoard1[1].Contains(","))
-                                        {
-                                            string[] arrBoardName = Regex.Split(arrBoard1[1], ",");
-                                            foreach (var itemBoard in arrBoardName)
-                                            {
-                                                Thread thread = new Thread(() => BoardMethod(itemBoard, boardurl, ref objPinUser));
-                                                thread.Start();
-                                                Thread.Sleep(10 * 1000);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Thread thread = new Thread(() => BoardMethod(arrBoard1[1], BoardUrl, ref objPinUser));
-                                            thread.Start();
-                                            Thread.Sleep(10 * 1000);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    foreach (var item_TemplstListOfBoardNames in TemplstListOfBoardNames)
-                                    {
-                                        try
-                                        {
-                                            string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
-                                            string boardurl = url[1].ToString();
-                                            if (!arrBoard[1].Contains(":"))
-                                            {
-                                                string Boardname = string.Empty;
-                                                try
-                                                {
-                                                    string[] board = null;
-                                                    if (!arrBoard[1].Contains(",")) // if (arrBoard[1].Contains(","))
-                                                    {
-                                                        Boardname = arrBoard[1];
-                                                    }
-                                                    else if (arrBoard[1].Contains(","))
-                                                    {
-                                                        board = Regex.Split(arrBoard[1], ",");
-                                                        Boardname = board[1];
-
-                                                    }
-
-                                                    if (url[0] == Boardname)
-                                                    {
-                                                        try
-                                                        {
-                                                            Thread thread = new Thread(() => BoardMethod(Boardname, boardurl, ref objPinUser));
-                                                            thread.Start();
-                                                            Thread.Sleep(10 * 1000);
-                                                        }
-                                                        catch(Exception ex)
-                                                        { };
-                                                    }
-
-                                                }
-                                                catch (Exception ex)
-                                                { };
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        { };
-
-                                    }
-                                }
-                                catch (Exception ex)
-                                { };
-                            }
+                            Thread thread = new Thread(() => BoardMethod(Boardname, boardurl, ref objPinUser));
+                            thread.Start();
+                            Thread.Sleep(10 * 1000);
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    }
+                    Thread.Sleep(10 * 1000);
                 }
-                catch (Exception ex)
-                { };
+                #region old code comment
+                //foreach (var itemBoardName in ClGlobul.lstListOfBoardNames)//lstBoardNameswithUserNames
+                //{
+                //    string[] arrBoard = null;
+                //    if (itemBoardName.Contains("::")) //"::"
+                //    {
+                //        arrBoard = Regex.Split(itemBoardName, "::"); //"::"
+                //    }
+                //    else if (itemBoardName.Contains(":"))
+                //    {
+                //        arrBoard = Regex.Split(itemBoardName, ":");
+                //    }
+                //    //string[] arrBoard = Regex.Split(itemBoardName, "::"); // string[] arrBoard = Regex.Split(itemBoardName, ":");
+                //    if (arrBoard[0] == objPinUser.Niches)
+                //    {
+                //        if (arrBoard[1].Contains(":"))   //if (arrBoard[1].Contains(","))
+                //        {
+                //            try
+                //            {
+
+                //                string[] arrBoardName = Regex.Split(arrBoard[1], ",");
+                //                foreach (var itemBoard in arrBoardName)
+                //                {
+                //                    if (itemBoard.Contains(","))
+                //                    {
+                //                        string[] MatchBoardwithUrl = Regex.Split(itemBoard, ",");
+                //                        foreach (var item_TemplstListOfBoardNames in TemplstListOfBoardNames)
+                //                        {
+                //                            string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
+                //                            if (MatchBoardwithUrl[0] == url[0])
+                //                            {
+                //                                string boardurl = url[1].ToString();
+                //                                Thread thread = new Thread(() => BoardMethod(MatchBoardwithUrl[1], boardurl, ref objPinUser));
+                //                                thread.Start();
+                //                                Thread.Sleep(10 * 1000);
+                //                            }
+                //                            else
+                //                            {
+                //                            }
+
+                //                        }
+                //                    }
+                //                }
+
+                //            }
+                //            catch (Exception ex)
+                //            {
+                //                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                //            }
+                //        }
+                //        else if (arrBoard[1].Contains(","))
+                //        {
+                //            foreach (var itemBoardName1 in ClGlobul.lstBoardNameswithUserNames)
+                //            {
+                //                string[] url = Regex.Split(BoardUrl, "::");
+                //                string boardurl = url[1].ToString();
+                //                string[] arrBoard1 = null;
+                //                if (itemBoardName1.Contains("::"))
+                //                {
+                //                    arrBoard1 = Regex.Split(itemBoardName, "::");
+                //                }
+                //                else
+                //                {
+                //                    arrBoard1 = Regex.Split(itemBoardName, ":");
+                //                }
+                //                if (arrBoard1[0] == objPinUser.Niches)
+                //                {
+                //                    if (arrBoard1[1].Contains(","))
+                //                    {
+                //                        string[] arrBoardName = Regex.Split(arrBoard1[1], ",");
+                //                        foreach (var itemBoard in arrBoardName)
+                //                        {
+                //                            Thread thread = new Thread(() => BoardMethod(itemBoard, boardurl, ref objPinUser));
+                //                            thread.Start();
+                //                            Thread.Sleep(10 * 1000);
+                //                        }
+                //                    }
+                //                    else
+                //                    {
+                //                        Thread thread = new Thread(() => BoardMethod(arrBoard1[1], BoardUrl, ref objPinUser));
+                //                        thread.Start();
+                //                        Thread.Sleep(10 * 1000);
+                //                    }
+                //                }
+                //            }
+                //        }
+                //        else
+                //        {
+                //            try
+                //            {
+                //                //foreach (var item_TemplstListOfBoardNames in TemplstListOfBoardNames)
+                //                //{
+                //                //    try
+                //                //    {
+                //                //        string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
+                //                //        string boardurl = url[1].ToString();
+                //                //        if (!arrBoard[1].Contains(":"))
+                //                //        {
+                //                //            string Boardname = string.Empty;
+                //                //            try
+                //                //            {
+                //                //                string[] board = null;
+                //                //                if (!arrBoard[1].Contains(",")) // if (arrBoard[1].Contains(","))
+                //                //                {
+                //                //                    Boardname = arrBoard[1];
+                //                //                }
+                //                //                else if (arrBoard[1].Contains(","))
+                //                //                {
+                //                //                    board = Regex.Split(arrBoard[1], ",");
+                //                //                    Boardname = board[1];
+
+                //                //                }
+
+                //                //                if (url[0] == Boardname)
+                //                //                {
+                //                //                    try
+                //                //                    {
+                //                //                        Thread thread = new Thread(() => BoardMethod(Boardname, boardurl, ref objPinUser));
+                //                //                        thread.Start();
+                //                //                        Thread.Sleep(10 * 1000);
+                //                //                    }
+                //                //                    catch(Exception ex)
+                //                //                    { };
+                //                //                }
+
+                //                //            }
+                //                //            catch (Exception ex)
+                //                //            { };
+                //                //        }
+                //                //    }
+                //                //    catch (Exception ex)
+                //                //    { };
+
+                //                //}
+                //            }
+                //            catch (Exception ex)
+                //            { };
+                //        }
+                //    }
+                //}
+                #endregion
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
-          
+            finally
+            {
+                try
+                {
+                    if (countThreadControllerBoards > Nothread_Boards)
+                    {
+                        lock (BoardsObjThread)
+                        {
+                            Monitor.Pulse(BoardsObjThread);
+                        }
+                    }
+                    Boardsdata_count--;
+                }
+                catch (Exception Ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + Ex.StackTrace);
+                }
+                countThreadControllerBoards--;              
+            }
         }
 
         public void BoardMethod(string BoardName, string BoardUrl, ref PinInterestUser objPinInUser)
@@ -417,11 +474,11 @@ namespace BoardManager
                     catch (Exception ex)
                     {
 
-                    }                   
+                    }
                 }
 
                 if (string.IsNullOrEmpty(BoardId))
-                {                
+                {
                     BoardId = objaddnewPin.GetBoardId(BoardName, ref objPinInUser);
                 }
 
@@ -433,16 +490,17 @@ namespace BoardManager
                     {
                         if (PDGlobals.ValidateNumber(BoardId))
                         {
-                            GlobusLogHelper.log.Info("[ => [ Adding Pins From Board :" + BoardUrl + " ]");
-                      
-                            clsSettingDB db = new clsSettingDB();                     
+                            GlobusLogHelper.log.Info(" => [ Adding Pins From Board :" + BoardUrl + " ]");
+
+                            clsSettingDB db = new clsSettingDB();
                             List<string> lstPins = GetBoardPinsNew(BoardId, BoardUrl, 10, ref objPinInUser);
                             lstPins.Distinct();
-                           
+                            List<string> lstOfRepin = new List<string>();
+                            lstOfRepin.AddRange(lstPins);
                             //getting lstPins length
-                            int lenOFlstPins = lstPins.Count;                         
+                            int lenOFlstPins = lstOfRepin.Count;
 
-                            foreach (string Pins in lstPins)
+                            foreach (string Pins in lstOfRepin)
                             {
 
                                 if (MaxRePinCount > RepinCounter)
@@ -459,26 +517,35 @@ namespace BoardManager
                                             counter = 0;
                                             Message = ClGlobul.lstBoardRepinMessage[counter];
                                         }
-                                       
+
                                     }
-                                 
+
                                     bool IsReppined = false;
                                     if (!Pins.Contains("n"))
                                     {
                                         try
-                                        {                                           
-                                            int index = lstPins.Where(x => x == Pins).Select(x => lstPins.IndexOf(x)).Single<int>();
+                                        {
+                                            int index = lstOfRepin.Where(x => x == Pins).Select(x => lstOfRepin.IndexOf(x)).Single<int>();
 
                                             string NoOfPages = Convert.ToString(index / lenOFlstPins);
 
-                                            IsReppined = objRepin.RepinwithMessage( Pins, Message, BoardId, NoOfPages, ref objPinInUser);
+                                            IsReppined = objRepin.RepinwithMessage(Pins, Message, BoardId, NoOfPages, ref objPinInUser);
                                         }
 
                                         catch { }
                                         if (IsReppined)
                                         {
                                             //GlobusLogHelper.log.Info("[ => [ Repin Id : " + Pins + " ]");
-                                            GlobusLogHelper.log.Info("[ => [ Repin Pin : " + Pins + " to Account : " + objPinInUser.Username + " In " + BoardName + " ]");
+                                            #region AccountReport                                      
+
+                                            string module = "Boards";
+                                            string status = "Repined";
+                                            Qm.insertAccRePort(objPinInUser.Username, module, "https://www.pinterest.com/pin/" + Pins, BoardName, "", "", "", "", status, "", "", DateTime.Now);
+                                            objBoardDelegate();
+
+                                            #endregion
+
+                                            GlobusLogHelper.log.Info(" => [ Repin Pin : " + Pins + " to Account : " + objPinInUser.Username + " In " + BoardName + " ]");
                                             try
                                             {
                                                 string CSV_Header = "Date" + "," + "UserName" + "," + "Message" + "," + "Pin" + "Board Id";
@@ -494,7 +561,7 @@ namespace BoardManager
 
                                             //kept here
                                             int delay = RandomNumberGenerator.GenerateRandom(minDelayBoards, maxDelayBoards);
-                                            GlobusLogHelper.log.Info("[ => [ Delay for " + delay + " Seconds ]");
+                                            GlobusLogHelper.log.Info(" => [ Delay for " + delay + " Seconds ]");
                                             Thread.Sleep(delay * 1000);
                                         }
                                         else
@@ -507,46 +574,25 @@ namespace BoardManager
                                 }
                                 else
                                 {
+                                    GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinInUser.Username + " In " + BoardName + "]");
+                                    GlobusLogHelper.log.Info("-----------------------------------------------------------------------------");
                                     break;
                                 }
                             }
+
                         }
                     }
                 }
                 else
                 {
-                    GlobusLogHelper.log.Info("[  => [ You already have a board with that name. " + objPinInUser.Username + " ]");
+                    GlobusLogHelper.log.Info("  => [ You already have a board with that name. " + objPinInUser.Username + " ]");
                 }
             }
             catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
-            finally
-            {
-                try
-                {
-                    if (countThreadControllerBoards > Nothread_Boards)
-                    {
-                        lock (BoardsObjThread)
-                        {
-                            Monitor.Pulse(BoardsObjThread);
-                        }
-                    }
-                    Boardsdata_count--;
-                }
-                catch (Exception Ex)
-                {
-                    //GlobusFileHelper.AppendStringToTextfileNewLine("[ " + DateTime.Now + " ] => Error --> btnMultithraededKeywordBoard --> " + Ex.Message, ApplicationData.ErrorLogFile);
-                }
-                countThreadControllerBoards--;
-
-                if (MaxRePinCount == 0)
-                {
-                    GlobusLogHelper.log.Info("[ => [ PROCESS COMPLETED ]");
-                    GlobusLogHelper.log.Info("--------------------------------------------------------------------------------------------------------------------------");
-                }
-            }
+          
         }
 
         public List<string> GetAllBoardNames_new(ref PinInterestUser objPinInUser)
@@ -681,9 +727,9 @@ namespace BoardManager
                 }
 
                 lstPopularPins = lstPopularPins.Distinct().ToList();
-                lstPopularPins.Reverse();
+                //lstPopularPins.Reverse();
 
-                GlobusLogHelper.log.Info("[  => [ Total Pin Urls Collected " + lstPopularPins.Count + " ]");
+                GlobusLogHelper.log.Info(" => [ Total Pin Urls Collected " + lstPopularPins.Count + " ]");
             }
             catch (Exception ex)
             {

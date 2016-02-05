@@ -21,6 +21,7 @@ using PinDominator3.Pages.PageMessage;
 using PinDominator3.Pages.PagePin;
 using PinDominator3.Pages.PageProxy;
 using PinDominator3.Pages.PageScraper;
+using PinDominator3.Pages.setting;
 
 
 
@@ -58,9 +59,9 @@ namespace PinDominator3
             {
                 return new AccountProfile();
             }
-            else if (uri.ToString() == "/Profile Update")
+            else if (uri.ToString() == "/Manage Accounts")
             {
-                return new ProfileUpload();
+                return new ManageAccount();
             }
 
             //Pages Module
@@ -85,7 +86,10 @@ namespace PinDominator3
             {
                  return new EditPinDiscription();
             }
-
+            else if (uri.ToString() == "/Repin By Keyword")
+            {
+                return new RepinByKeyword();
+            }
 
             else if (uri.ToString() == "/Pin Scraper")
             {
@@ -103,6 +107,11 @@ namespace PinDominator3
             else if (uri.ToString() == "/Like")
             {
                 return new Like();
+            }
+
+            else if (uri.ToString() == "/Like By Keyword")
+            {
+                return new LikeByKeyword();
             }
 
             //Group Module 
@@ -156,17 +165,19 @@ namespace PinDominator3
             {
                 return new Proxy();
             }
+            else if (uri.ToString() == "/Help")
+            {
+                return  new Help();
+            }
 
             //Campaign Module
 
             else if (uri.ToString() == "/Settings/Appearance")
             {
                 // return new CampaignProcess();
-            }
-           
-
-
+            }          
             return "";
+           
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AccountManager;
 using BaseLib;
 using BasePD;
+using Globussoft;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,8 +13,11 @@ using System.Threading.Tasks;
 
 namespace FollowManagers
 {
+    public delegate void AccountReport_FollowByKeyword();
     public class FollowByKeywordManager
     {
+        public static AccountReport_FollowByKeyword objFollowByKeywordDelegate;
+
         #region Global Variable
 
         public int Nothread_FollowByKeyword = 5;
@@ -26,9 +30,13 @@ namespace FollowManagers
         public readonly object FollowByKeywordObjThread = new object();
         public bool _IsfevoriteFollowByKeyword = false;
 
+        public bool rdbSingleUserFollowByKeyword = false;
+        public bool rdbMultipleUserFollowByKeyword = false;
+        public string SingleKeyword_FollowByKeyword = string.Empty;
+
         string[] array = null;
         List<string> Pins = new List<string>();
-        int FollowData = 0;
+        
 
         public int minDelayFollowByKeyword
         {
@@ -115,12 +123,12 @@ namespace FollowManagers
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
 
-            finally
-            {
-                GlobusLogHelper.log.Info(" => [ Follow By Keyword Process Finished ]");
-                GlobusLogHelper.log.Info(" [ PROCESS COMPLETED ]");
-                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
-            }
+            //finally
+            //{
+            //    GlobusLogHelper.log.Info(" => [ Follow By Keyword Process Finished ]");
+            //    GlobusLogHelper.log.Info(" [ PROCESS COMPLETED ]");
+            //    GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+            //}
 
         }
 
@@ -162,43 +170,49 @@ namespace FollowManagers
                                         GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                                         bool checkLogin;
 
-                                        try
+                                        if (string.IsNullOrEmpty(objPinUser.ProxyPort))
                                         {
-                                            checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                            objPinUser.ProxyPort = "80";
+                                        }
 
-                                            string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-
+                                        try
+                                        {                                         
+                                            checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
                                             if (!checkLogin)
                                             {
-                                                try
-                                                {
-                                                    checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                                }
-                                                catch { };
-                                                if (!checkLogin)
-                                                {
-                                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                                    return;
-                                                }
+                                                GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                                return;
                                             }
-
+                                            string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                             GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            StartActionMultithreadFollowByKeyword(ref objPinUser);
                                         }
 
                                         catch { };
+                                    }
+                                    else if(objPinUser.isloggedin == true)
+                                    {
+                                        try
+                                        {
+                                            GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            StartActionMultithreadFollowByKeyword(ref objPinUser);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                        }
                                     }
                                     #endregion                                
                                    
                                 }
                             }
                         }                                        
-                        StartActionMultithreadFollowByKeyword(ref objPinUser);
+                       
                     }
                     catch(Exception ex)
                     {
-                        GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " +  objPinUser.Username + " ]");
-                        GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+                        //GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " +  objPinUser.Username + " ]");
+                        //GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
                     }
                 }
             }
@@ -220,13 +234,14 @@ namespace FollowManagers
                         }
                         FollowByKeyworddata_count--;
                     }
-
-
                 }
                 catch (Exception ex)
                 {
                     GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
                 }
+
+                //GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                //GlobusLogHelper.log.Info("----------------------------------------------------------------------------------------------------");
             }
 
 
@@ -239,75 +254,100 @@ namespace FollowManagers
                 DataTable FollowedCount = QM.SelectFollowsToday(objPinUser.Username);
                 int TotalFollow = NoOfUserFollowByKeyword;
                 //int CountLeft = NoOfUserFollowByKeyword - FollowedCount.Rows.Count;
-
+                int FollowData = 0;
                 if (TotalFollow > 0)
                 {
                     int Time = AccPerDayUserFollowByKeyword;
                     int delay = (Time * 60 * 60) / TotalFollow;
-
-                    string[] keywordArray = Regex.Split(array[1], ",");
-
-                    bool OverFollow = false;
-                    foreach (string PinSearch in keywordArray)
+                    foreach (string comment in ClGlobul.lstkeyword)
                     {
-                        try
+                         string[] arraykey = Regex.Split(comment, "::");
+                         if (arraykey.Length == 2)
                         {
-                            Pins = getUserKeywordSearch_New(PinSearch, NoOfUserFollowByKeyword, ref objPinUser);
-
-                            foreach (string FollowUser in Pins)
+                            if (arraykey[0] == objPinUser.Niches)
                             {
-                                DataTable dt = QM.SelectFollowsToday(objPinUser.Username);
-                                DataTable dt1 = QM.SelectFollowsCheck(objPinUser.Username, FollowUser);
-                                if (FollowData >= TotalFollow)
+                                string[] keywordArray = Regex.Split(arraykey[1], ",");
+                                
+                                bool OverFollow = false;
+                                foreach (string PinSearch in keywordArray)
                                 {
-                                    GlobusLogHelper.log.Info(" => [ Followed " + dt.Rows.Count + " Users ]");
-                                    OverFollow = true;
-                                    TotalFollow = TotalFollow + NoOfUserFollowByKeyword;
-                                    break;
-                                }
-                                if (dt1.Rows.Count == 0)
-                                {
-                                    string User = FollowPeople_New(ref objPinUser, FollowUser);
+                                    try
+                                    {
+                                        Pins = getUserKeywordSearch_New(PinSearch, NoOfUserFollowByKeyword, ref objPinUser);
+
+                                        foreach (string FollowUser in Pins)
+                                        {
+                                            try
+                                            {
+                                                DataTable dt = QM.SelectFollowsToday(objPinUser.Username);
+                                                DataTable dt1 = QM.SelectFollowsCheck(objPinUser.Username, FollowUser);
+                                                if (FollowData >= TotalFollow)
+                                                {
+                                                    GlobusLogHelper.log.Info(" => [ Followed " + dt.Rows.Count + " Users ]");
+                                                    OverFollow = true;
+                                                    TotalFollow = TotalFollow + NoOfUserFollowByKeyword;
+                                                    break;
+                                                }
+                                                if (dt1.Rows.Count == 0)
+                                                {
+
+                                                    string User = FollowPeople_New(ref objPinUser, FollowUser, PinSearch);
 
 
-                                    if (User == "Followed")
-                                    {
-                                        string CSV_Header = "UserName" + "," + "Follow User" + "," + "Date";
-                                        string CSV_Data = objPinUser.Username + "," + FollowUser + "," + System.DateTime.Now.ToString();
-                                        string path = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "Follow");
-                                        PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, path + "\\FollowByKeyword.csv");
-                                        QM.insertFollowDate(objPinUser.Username, FollowUser, PinSearch);
-                                        OverFollow = false;
+                                                    if (User == "Followed")
+                                                    {
+                                                        string CSV_Header = "UserName" + "," + "Follow User" + "," + "Date";
+                                                        string CSV_Data = objPinUser.Username + "," + FollowUser + "," + System.DateTime.Now.ToString();
+                                                        string path = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "Follow");
+                                                        PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, path + "\\FollowByKeyword.csv");
+                                                        QM.insertFollowDate(objPinUser.Username, FollowUser, PinSearch);
+                                                        OverFollow = false;
+                                                        FollowData++;
+                                                        GlobusLogHelper.log.Info(" => [ Successfully Followed " + FollowUser + ">>>" + objPinUser.Username + " ]");
+                                                    }
+                                                    else if (User == "exceeded the maximum rate")
+                                                    {
+                                                        GlobusLogHelper.log.Info(" => [ Rate Limit Exceeded ]");
+                                                    }
+                                                    else if (User == "NotFollowed")
+                                                    {
+                                                        GlobusLogHelper.log.Info(" => [ Follow Process Failed User " + FollowUser + ">>>" + objPinUser.Username + " ]");
+                                                    }
+                                                    else if (User == "Unfollow")
+                                                    {
+                                                        GlobusLogHelper.log.Info(" => [ Already Followed " + FollowUser + " from " + objPinUser.Username + "]");
+                                                    }
+                                                    int RandomDelayAdd = RandomNumberGenerator.GenerateRandom(minDelayFollowByKeyword, maxDelayFollowByKeyword);
+                                                    GlobusLogHelper.log.Info(" => [ Delay For " + RandomDelayAdd + " Seconds ]");
+                                                    int totaldelay = (RandomDelayAdd * 1000);
+                                                    Thread.Sleep(totaldelay);
+                                                }
+                                                else
+                                                {
+                                                    GlobusLogHelper.log.Info(" => [ Already Followed " + FollowUser + " from " + objPinUser.Username + "]");
+                                                }
+                                                if (OverFollow)
+                                                {
+                                                    break;
+                                                }
+                                            }
+
+                                            catch (Exception ex)
+                                            {
+                                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                            }
+                                        }
+
                                     }
-                                    else if (User == "exceeded the maximum rate")
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Rate Limit Exceeded ]");
-                                    }
-                                    else
-                                    {
-                                        // FollowAddToLogger("Not Followed >>> " + FollowUser + ">>> Account >>> " + accountManager.Username);
-                                    }
-                                    FollowData++;
-                                    int RandomDelayAdd = RandomNumberGenerator.GenerateRandom(minDelayFollowByKeyword, maxDelayFollowByKeyword);
-                                    GlobusLogHelper.log.Info(" => [ Delay For " + RandomDelayAdd + " Seconds ]");
-                                    int totaldelay = (RandomDelayAdd * 1000);
-                                    Thread.Sleep(totaldelay);
-                                }
-                                else
-                                {
-                                    GlobusLogHelper.log.Info(" => [ Already Followed " + FollowUser + " from " + objPinUser.Username + "]");
-                                }
-                                if (OverFollow)
-                                {
-                                    break;
+                                    catch (Exception ex)
+                                    { }
+
                                 }
                             }
-
                         }
-                        catch (Exception ex)
-                        { }
-
                     }
+                    GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                    GlobusLogHelper.log.Info("----------------------------------------------------------------------------------------------------");
                 }
 
             }
@@ -391,7 +431,7 @@ namespace FollowManagers
         }
 
 
-        public string FollowPeople_New(ref PinInterestUser objPinUser, string Username)
+        public string FollowPeople_New(ref PinInterestUser objPinUser, string Username, string KeywordUser)
         {
             try
             {
@@ -403,7 +443,10 @@ namespace FollowManagers
                 {
                     ObjAccountManager.LoginPinterestAccount(ref objPinUser);
                 }
-                string UserUrl = "https://www.pinterest.com/resource/UserFollowResource/create/";
+                string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                string newHomePageUrl = redirectDomain + "." + "pinterest.com";
+
+                string UserUrl = redirectDomain + ".pinterest.com/resource/UserFollowResource/create/";
                 string Refrer = "http://www.pinterest.com/" + Username.Replace(" ", "");
                 //Refrer = "http://www.pinterest.com/";
 
@@ -427,30 +470,47 @@ namespace FollowManagers
                 }
                 catch (Exception ex)
                 {
-
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                 }
 
                 string checkalreadyFollowed = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/" + Username.Replace(" ", "") + "/"));
                 if (checkalreadyFollowed.Contains("buttonText\">Unfollow"))
                 {
-                    return " ";
+                    return "Unfollow";
                 }
 
                 Thread.Sleep(10 * 1000);
+               
 
-                string PostData = "source_url=%2F" + Username.Replace(" ", "") + "%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + userid + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EUserProfilePage(resource%3DUserResource(username%3D" + Username.Replace(" ", "") + "%2C+invite_code%3Dnull))%3EUserProfileHeader(resource%3DUserResource(username%3D" + Username.Replace(" ", "") + "%2C+invite_code%3Dnull))%3EUserFollowButton(followed%3Dfalse%2C+is_me%3Dfalse%2C+unfollow_text%3DUnfollow%2C+memo%3D%5Bobject+Object%5D%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow%2C+disabled%3Dfalse%2C+color%3Dprimary%2C+text%3DFollow%2C+user_id%3D" + userid + "%2C+follow_text%3DFollow%2C+follow_class%3Dprimary)";      
-                string FollowPageSource = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri(UserUrl), PostData, "https://www.pinterest.com/");
+                string PostData = "source_url=%2F" + Username.Replace(" ", "") + "%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + userid + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EUserProfilePage(resource%3DUserResource(username%3D" + Username.Replace(" ", "") + "%2C+invite_code%3Dnull))%3EUserProfileHeader(resource%3DUserResource(username%3D" + Username.Replace(" ", "") + "%2C+invite_code%3Dnull))%3EUserFollowButton(followed%3Dfalse%2C+is_me%3Dfalse%2C+unfollow_text%3DUnfollow%2C+memo%3D%5Bobject+Object%5D%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow%2C+disabled%3Dfalse%2C+color%3Dprimary%2C+text%3DFollow%2C+user_id%3D" + userid + "%2C+follow_text%3DFollow%2C+follow_class%3Dprimary)";
+                try
+                {
+                    string FollowPageSource = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri(UserUrl), PostData, newHomePageUrl);
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                }
 
                 string AfterFollowPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/" + Username.Replace(" ", "") + "/"));
 
                 if (!string.IsNullOrEmpty(AfterFollowPageSource) && AfterFollowPageSource.Contains("buttonText\">Unfollow"))
                 {
-                    GlobusLogHelper.log.Info(" => [ Successfully Followed " + Username + ">>>" + objPinUser.Username + " ]");
+                    #region AccountReport
+
+                    string module = "FollowByKeyword";
+                    string status = "Followed";
+                    QM.insertAccRePort(objPinUser.Username, module, "", "", Username, "", KeywordUser, "", status, "", "", DateTime.Now);
+                    objFollowByKeywordDelegate();
+
+                    #endregion
+
+                    
                     return "Followed";
                 }
                 else
                 {
-                    GlobusLogHelper.log.Info(" => [ Follow Process Failed User " + Username + ">>>" + objPinUser.Username + " ]");
+                   
                     return "NotFollowed";
                 }
 

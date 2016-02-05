@@ -4,134 +4,133 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:app="clr-namespace:PinDominator3.Classes"
-              mc:Ignorable="d"  d:DesignWidth="700" d:DesignHeight ="600" >
+              mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Grid>
-            <Grid.DataContext>
-                <app:Validation x:Name="objform" />
-            </Grid.DataContext>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="User Input" BorderBrush="Black" Grid.Row="0" Grid.Column="0" Margin="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="107*"/>
-                    <RowDefinition Height="131*"/>
-                    <RowDefinition Height="162*"/>
+                    <RowDefinition Height="26*"/>
+                    <RowDefinition Height="69*"/>
+                    <RowDefinition Height="52*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="User Input" BorderBrush="Black" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="75*"/>
-                            <RowDefinition Height="64*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="82*"/>
-                            <ColumnDefinition Width="59*"/>
-                            <ColumnDefinition Width="59*"/>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="13"/>
-                            <ColumnDefinition Width="39*"/>
-                            <ColumnDefinition Width="43*"/>
-                        </Grid.ColumnDefinitions>
-                        <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
-                        <Label Content="Keyword : " VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25"/>
-                        <TextBox Name="txtKeywordUpload" TextWrapping="Wrap" Text="{Binding TxtUserField,Mode=TwoWay,ValidatesOnDataErrors=True}"  Grid.ColumnSpan="3" Grid.Column="1" Height="25"/>
-                        <Button BorderBrush="Green" Name="btnKeyword_FollowByKeyword_Browse" Content="Browse" Grid.Column="5" Grid.ColumnSpan="2" Click="btnKeyword_FollowByKeyword_Browse_Click" Height="25">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Label Content="Niche::Keyword 1 ,Keyword 2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,54,0,5" Grid.Column="1" Grid.ColumnSpan="5" Height="16" Width="170"/>
-                        <Label Content="Follow Accounts/Day In :" Grid.ColumnSpan="2"  VerticalContentAlignment="Center"  Grid.Row="1" Height="25"/>
-                        <TextBox Name="txtBoxHours_FollowByKeyword" Grid.Column="2" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center"  Grid.Row="1" Height="25"/>
-                        <Label Content="Seconds" Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Grid.ColumnSpan="3" Grid.Row="1" Height="25" />
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="93*"/>
-                            <ColumnDefinition Width="53*"/>
-                            <ColumnDefinition Width="40*"/>
-                            <ColumnDefinition Width="53*"/>
-                            <ColumnDefinition Width="21*"/>
-                            <ColumnDefinition Width="55*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="19*"/>
-                            <RowDefinition Height="26*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Content="No. of threads :" VerticalContentAlignment="Center"  Grid.Column="0" Grid.Row="0" Height="25"/>
-                        <TextBox Name="txtFollowByKeyword_NoOfThreads"  TextWrapping="Wrap" Text="5"  Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" Height="25"/>
-                        <Label Content="Delay :"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="1" Height="25"  />
-                        <TextBox Name="txtFollowByKeyword_DelayMin" TextWrapping="Wrap" Text="20"  Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" Height="25"/>
-                        <Label Content="To" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="1" Height="25"/>
-                        <TextBox Name="txtFollowByKeyword_DelayMax" Height="25" TextWrapping="Wrap" Text="30" HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="1"/>
-                        <Label Content="(In Seconds)"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"/>
-                        <Label Content="No.of User :"  Grid.Column="3" Grid.Row="0" VerticalContentAlignment="Center" Grid.ColumnSpan="2" Height="25" />
-                        <TextBox Name="txtFollowPerDay"  TextWrapping="Wrap" Text="5" HorizontalContentAlignment="Center" Grid.Column="5" Grid.Row="0" Height="25"/>
-
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Submit Action" BorderBrush="Black"  Grid.Row="2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="32*"/>
-                            <ColumnDefinition Width="137*"/>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="137*"/>
-                            <ColumnDefinition Width="41*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button  BorderBrush="Green" Name="btnFollowByKeyword_Start" Content="START" Height="26"  Grid.Column="1" Click="btnFollowByKeyword_Start_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button  BorderBrush="Red" Name="btnFollowByKeyword_Stop" Content="STOP"  Grid.Column="3" Height="26" Click="btnFollowByKeyword_Stop_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                    </Grid>
-                </GroupBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="93*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="32*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="34*"/>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="11*"/>
+                    <ColumnDefinition Width="99*"/>
+                </Grid.ColumnDefinitions>
+                <!--  <TextBox Name="txtMessage_Like_LoadMessages" Margin="10,28,10,4.308" TextWrapping="Wrap" Text="" Grid.Column="1" Height="25" Grid.ColumnSpan="2"/>-->
+                <Label Content="Keyword : " Name="lbKeyword" VerticalContentAlignment="Center" Grid.Row="1" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtKeywordUpload" TextWrapping="Wrap" Text=""  Grid.ColumnSpan="5" Grid.Column="2" Grid.Row="1" Height="25"/>
+                <Button BorderBrush="Green" Name="btnKeyword_FollowByKeyword_Browse" Content="Browse" Grid.Column="8" Height="26" Click="btnKeyword_FollowByKeyword_Browse_Click" Grid.Row="1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Label Content="Niche::Keyword 1 ,Keyword 2" Name="lbKeywordEg" Grid.Column="2" Grid.Row="1" Height="20" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
+                <Label Content="Follow Accounts/Day In :" Grid.ColumnSpan="3"  VerticalContentAlignment="Center"  Grid.Row="2" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtBoxHours_FollowByKeyword" Grid.Column="4" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" Grid.Row="2" Height="25"/>
+                <Label Content="Seconds" Grid.Column="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="2" Height="25" Grid.ColumnSpan="2" />
+                <RadioButton Name="rdbSingleUser_FollowByKeyword" Content="Use Single User" Grid.ColumnSpan="4" Checked="rdbSingleUser_FollowByKeyword_Checked" ToolTip="Follow Any Users By Single Keywords." Height="25" Grid.Column="2"/>
+                <RadioButton Name="rdbMultipleUser_FollowByKeyword" Content="Use Multiple Users" Grid.Column="6" Grid.ColumnSpan="3" IsChecked="True" Checked="rdbMultipleUser_FollowByKeyword_Checked" ToolTip="Follow Any Users By Multiple Keywords." Height="25"/>
+                <Label Content="User Type :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
             </Grid>
-            <Grid Margin="0,0,10,0" Grid.Column="1">
+        </GroupBox>
+        <GroupBox Header="Settings" BorderBrush="Black" Grid.Row="1" Grid.Column="0" Margin="0,0,1,0">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="92*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="38*"/>
+                    <ColumnDefinition Width="18*"/>
+                    <ColumnDefinition Width="56*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="12*"/>
+                    <ColumnDefinition Width="41*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="53*"/>
-                    <RowDefinition Height="147*"/>
+                    <RowDefinition Height="19*"/>
+                    <RowDefinition Height="26*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="Module Description" BorderBrush="Black" >
-                    <Grid>
-                        <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="FollowByKeyword_progess"/>
 
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1">
-                    <DataGrid Name="dtGrdFollowByKeyword_AccountsReport" />
-                </GroupBox>
+                <Label Content="No. of threads :" VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="0" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtFollowByKeyword_NoOfThreads"  TextWrapping="Wrap" Text="25"  Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Height="25"/>
+                <Label Content="Delay :"  VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="1" Height="25" HorizontalContentAlignment="Right"/>
+                <TextBox Name="txtFollowByKeyword_DelayMin" TextWrapping="Wrap" Text="20"  Grid.Row="1" Grid.Column="2" HorizontalContentAlignment="Center" Height="25" />
+                <Label Content="To" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="1" Height="25"  Grid.ColumnSpan="2" />
+                <TextBox Name="txtFollowByKeyword_DelayMax" Height="25" TextWrapping="Wrap" Text="30" HorizontalContentAlignment="Center" Grid.Column="5" Grid.Row="1" />
+                <Label Content="(In Seconds)"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="25" Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="3"/>
+                <Label Content="No.of User :"  Grid.Column="4" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="25"  Grid.ColumnSpan="2" />
+                <TextBox Name="txtFollowPerDay"  TextWrapping="Wrap" Text="5" HorizontalContentAlignment="Center" Grid.Column="7" Grid.Row="0" Height="25"/>
+
             </Grid>
-        </Grid>
-    </ScrollViewer>
+        </GroupBox>
+        <GroupBox Header="Submit Action" BorderBrush="Black"  Grid.Row="2" Grid.Column="0" Margin="0,0,1,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Button  BorderBrush="Green" Name="btnFollowByKeyword_Start" Content="START"  Grid.Column="1" Click="btnFollowByKeyword_Start_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button  BorderBrush="Red" Name="btnFollowByKeyword_Stop" Content="STOP"  Grid.Column="3" Click="btnFollowByKeyword_Stop_Click" Height="27">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderBrush="Red" BorderThickness="1,1,1,2" Background="LavenderBlush">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Module Description" BorderBrush="Black" Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <ProgressBar Height="8" Margin="0,73,0,0" VerticalAlignment="Bottom" Foreground="#FF0F21DC" Background="Transparent" Name="FollowByKeyword_progess"/>
+                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" Text="Welcome to  PinDominator3.0   &#x0a;  &#x0a;Follow By Keyword Module:- &#x0a;You Give Niche And Keyword Through Niche It Select Your Account And Follow Users Through Given Keyword."/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Accounts Report" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <DataGrid Name="dgvFollowByKeyword_AccountsReport" GridLinesVisibility="All" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export Data" Click="clkExport_FollowByKeyword"/>
+                        <MenuItem Header="Delete Data" Click="clkDelete_FollowByKeyword"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
 </UserControl>
 

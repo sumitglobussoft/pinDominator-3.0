@@ -1,8 +1,10 @@
 ﻿using AccountManager;
 using BaseLib;
 using BasePD;
+using Globussoft;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,9 +13,14 @@ using System.Threading.Tasks;
 
 namespace PinsManager
 {
+    public delegate void AccountReport_AddBoardName();
+    public delegate void AccountReport_AddPinWithBoard();
     public class AddPinWithNewBoardManager
     {
-        #region Variable
+        public static AccountReport_AddBoardName objDelegateAccountReport;
+        public static AccountReport_AddPinWithBoard objAddPinWithBoardDelegate;
+
+        #region Global Variable
         public int Nothread_AddPinWithNewBoard = 5;
         public bool isStopAddPinWithNewBoard = false;
         public List<Thread> lstThreadsAddPinWithNewBoard = new List<Thread>();
@@ -51,6 +58,7 @@ namespace PinsManager
         #endregion
 
         Accounts ObjAccountManager = new Accounts();
+        QueryManager objqm = new QueryManager();
         AddNewPinManager objAddNewPinManager = new AddNewPinManager();
         string Pinpath = PDGlobals.FolderCreation(PDGlobals.Pindominator_Folder_Path, "NewPin");
 
@@ -142,39 +150,43 @@ namespace PinsManager
                         {
                             GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
-
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-
+                                //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                    }
-                                    catch { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
-
+                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                 GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadAddPinWithNewBoard(ref objPinUser);
                             }
 
                             catch { };
                         }
-                        #endregion
-
-                        StartActionMultithreadAddPinWithNewBoard(ref objPinUser);
+                        else if (objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadAddPinWithNewBoard(ref objPinUser);
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                            }
+                        }
+                        #endregion              
                     }
                     catch (Exception ex)
-                    {                     
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
                 }
             }
@@ -270,6 +282,15 @@ namespace PinsManager
                 string Data = objAddNewPinManager.NewPin(BoardNumber, Desc, ImageUrl, ref objPinUser);
                 if (Data.Equals("true"))
                 {
+                    #region AccountReport
+
+                    string module = "AddPinWithNewBoard";
+                    string status = "Added";
+                    objqm.insertAccRePort(objPinUser.Username, module, "", Board, "", Desc, "", ImageUrl, status, "", "", DateTime.Now);
+                    objAddPinWithBoardDelegate();
+
+                    #endregion
+
                     //GlobusLogHelper.log.Info(" => [ Pin Added To " + Board + " From " + objPinUser.Username + " ]");
                     try
                     {
@@ -323,7 +344,7 @@ namespace PinsManager
             try
             {
                 string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/settings/"));
-                string ScreenName = ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
+                string ScreenName = objPinUser.ScreenName; //ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
                 if (Checking.Contains("profileName"))
                 {
                 }
@@ -331,6 +352,8 @@ namespace PinsManager
                 {
                     ObjAccountManager.LoginPinterestAccount(ref objPinUser);
                 }
+                string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                string newHomePageUrl = redirectDomain + "." + "pinterest.com";
 
                 if (!string.IsNullOrEmpty(Checking))
                 {
@@ -338,12 +361,12 @@ namespace PinsManager
 
                     //string newpostdata = "source_url=%2F" + ScreenName + "%2F&data=%7B%22options%22%3A%7B%22name%22%3A%22" + (BoardName.Replace(" ", "+")) + "%22%2C%22category%22%3A%22other%22%2C%22description%22%3A%22%22%2C%22privacy%22%3A%22public%22%2C%22layout%22%3A%22default%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EUserProfilePage(resource%3DUserResource(username%3D" + ScreenName + "%2C+invite_code%3Dnull))%3EUserProfileContent(resource%3DUserResource(username%3D" + objPinUser.ScreenName + "%2C+invite_code%3Dnull))%3EUserBoards()%3EGrid(resource%3DProfileBoardsResource(username%3D" + ScreenName + "))%3EGridItems(resource%3DProfileBoardsResource(username%3D" + ScreenName + "))%3EBoardCreateRep(ga_category%3Dboard_create%2C+text%3DCreate+a+board%2C+submodule%3D%5Bobject+Object%5D)%23Modal(module%3DBoardCreate())";
                     string newpostdata = "source_url=%2F" + ScreenName + "%2F&data=%7B%22options%22%3A%7B%22name%22%3A%22" + (BoardName.Replace(" ", "+")) + "%22%2C%22category%22%3A%22other%22%2C%22description%22%3A%22%22%2C%22privacy%22%3A%22public%22%2C%22layout%22%3A%22default%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserProfilePage%3EUserProfileContent%3EUserBoards%3EGrid%3EGridItems%3EBoardCreateRep(ga_category%3Dboard_create%2C+text%3DCreate+a+board%2C+submodule%3D%5Bobject+Object%5D)%23App%3EModalManager%3EModal(showCloseModal%3Dtrue%2C+mouseDownInModal%3Dfalse)";
-
+                    string PostUrlBoard = redirectDomain + ".pinterest.com/resource/BoardResource/create/";
                     try
                     {
-                        CreatedBoardPageSource = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri("https://www.pinterest.com/resource/BoardResource/create/"), newpostdata, "https://www.pinterest.com/");
+                        CreatedBoardPageSource = objPinUser.globusHttpHelper.postFormDataProxyPin(new Uri(PostUrlBoard), newpostdata, newHomePageUrl);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
@@ -356,8 +379,14 @@ namespace PinsManager
                             return null;
                         }
 
-                        GlobusLogHelper.log.Info(" => [ Successfully Created Board " + BoardName + " For " + objPinUser.Username + " ]");
+                        string ModuleName = "AddBoardName";
+                        string Status = "Board_Created";
+                        QueryManager qm = new QueryManager();
+                        qm.insertAccRePort(objPinUser.Username, ModuleName, "", BoardName, "", "", "", "", Status, "", "", DateTime.Now);
+                        //qm.insertBoard_AddBoardName(objPinUser.Username, ModuleName, BoardName, Status);
+                        objDelegateAccountReport();
 
+                        GlobusLogHelper.log.Info(" => [ Successfully Created Board " + BoardName + " For " + objPinUser.Username + " ]");
                         string BoardId = objAddNewPinManager.GetBoardId_Board(BoardName, ref objPinUser);//GetBoardId(BoardName, ref pinterestAccountManager);
                         return BoardId;
 
@@ -370,7 +399,7 @@ namespace PinsManager
                     }
                     else
                     {
-                         GlobusLogHelper.log.Info(" => [ Board Creation Process Failed " + BoardName + " ]");
+                        GlobusLogHelper.log.Info(" => [ Board Creation Process Failed " + BoardName + " ]");
                         return CreatedBoardPageSource;
                     }
                 }
@@ -381,7 +410,7 @@ namespace PinsManager
             }
             catch (Exception ex)
             {
-                 GlobusLogHelper.log.Info(" => [ Board Creation Process Failed " + BoardName + " ]");
+                GlobusLogHelper.log.Info(" => [ Board Creation Process Failed " + BoardName + " ]");
                 return null;
             }
             return null;

@@ -136,22 +136,20 @@ namespace AccountManager
                     }
                     else
                     {
-                        GlobusLogHelper.log.Info("[ => [ Login Failed for " + Username + " ]");
+                        GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                         this.LoggedIn = false;                     
                         return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    GlobusLogHelper.log.Info("[ => [ Login Failed for " + Username + " ]");
+                    GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                     this.LoggedIn = false;
                     return false;
                 }
             }
 
         }
-
-
 
         public bool LoginPinterestAccount1(ref PinInterestUser objPinUser, string Username, string Password, string proxyAddress, string proxyPort, string proxyUsername, string proxyPassword, string ss)
         {
@@ -230,14 +228,14 @@ namespace AccountManager
                         }
                         else
                         {
-                            GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+                            //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                             this.LoggedIn = false;
                             return false;
                         }
                     }
                     catch (Exception ex)
                     {
-                        GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+                        //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                         this.LoggedIn = false;
                         return false;
                     }
@@ -367,7 +365,7 @@ namespace AccountManager
 
                             try
                             {
-                                QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, screen_Name, Username);                              
+                               //// QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, screen_Name, Username);                              
                                 //objUploadAccount.AccounLoad();
                                 objDelegateAccountLoad();
                             }
@@ -450,21 +448,21 @@ namespace AccountManager
             {
                 lock (this)
                 {
+                    GlobusHttpHelper globusHttpHelper = new GlobusHttpHelper();
                     string Name = string.Empty;
                     string ProxyAddress = proxyAddress;
                     string ProxyPort = proxyPort;
                     string ProxyUsername = proxyUsername;
                     string ProxyPassword = proxyPassword;
+                    string LoginStatus = string.Empty;
 
                     string AfterLoginPageSource = string.Empty;
                     try
                     {
 
-                        string PinPage = objPinUser.globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/"), ProxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
+                        string PinPage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/"), ProxyAddress, int.Parse(proxyPort), proxyUsername, proxyPassword);
 
-                        string _MainSourcePage = objPinUser.globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/resource/NoopResource/get/?source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EHomePage()%3EUnauthHomePage(signup_email%3Dnull%2C+tab%3Dfollowing%2C+cmp%3Dnull%2C+resource%3DInspiredWallResource())&_=1424169081757"), proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
-                    
-
+                       /// string _MainSourcePage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/resource/NoopResource/get/?source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EHomePage()%3EUnauthHomePage(signup_email%3Dnull%2C+tab%3Dfollowing%2C+cmp%3Dnull%2C+resource%3DInspiredWallResource())&_=1424169081757"), proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);                   
                         ///Get App Version 
                         if (PinPage.Contains("app_version"))
                         {
@@ -499,36 +497,66 @@ namespace AccountManager
                         try
                         {                         
                             string PostData1 = "source_url=%2F&data=%7B%22options%22%3A%7B%22username_or_email%22%3A%22" + Uri.EscapeDataString(Username) + "%22%2C%22password%22%3A%22" + Uri.EscapeDataString(Password) + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPlainSignupModal%3ESignupForm%3EUserRegister(next%3D%2F%2C+wall_class%3DgrayWall%2C+container%3Dplain_signup_modal%2C+unified_auth%3Dundefined%2C+is_login_form%3Dtrue%2C+show_personalize_field%3Dundefined%2C+auto_follow%3Dundefined%2C+register%3Dtrue)";
-                            login = objPinUser.globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/UserSessionResource/create/"), PostData1, referer, proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
+                            login = globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/UserSessionResource/create/"), PostData1, referer, proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
                         }
                         catch (Exception ex)
                         { }
                        
                         try
                         {
-                            AfterLoginPageSource = objPinUser.globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com"), proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
+                            AfterLoginPageSource = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com"), proxyAddress, Convert.ToInt32(proxyPort), proxyUsername, proxyPassword);
                         }
                         catch (Exception ex)
                         { }
                         if (AfterLoginPageSource.Contains("Logout") || AfterLoginPageSource.Contains("pinHolder") || AfterLoginPageSource.Contains("header1\": \"What are you interested in?") || AfterLoginPageSource.Contains("\"error\": null") || login.Contains("\"error\": null"))
                         {
-                            GlobusLogHelper.log.Info(" => [ Successfully Login for " + Username + " ]");
+                           // GlobusLogHelper.log.Info(" => [ Successfully Login for " + Username + " ]");
+                            objPinUser.globusHttpHelper = globusHttpHelper;
                             this.LoggedIn = true;
+                            objPinUser.isloggedin = true;
+                            objPinUser.LoginStatus = "Success";
 
                         }
                         else
                         {
-                            GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+                            //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                             this.LoggedIn = false;
-
+                            objPinUser.LoginStatus = "Fail";
+                            try
+                            {
+                                try
+                                {
+                                    QueryExecuter.updatetb_emails("", "", "", "", objPinUser.ScreenName, Username, objPinUser.LoginStatus);
+                                }
+                                catch
+                                {
+                                }
+                                //objUploadAccount.AccounLoad();
+                                objDelegateAccountLoad();
+                            }
+                            catch { }
                             return false;
                         }
                     }
                     catch (Exception ex)
                     {
-                        GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+                        //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
                         this.LoggedIn = false;
-
+                        objPinUser.LoginStatus = "Fail";
+                        try
+                            {
+                                try
+                                {
+                                    QueryExecuter.updatetb_emails("", "", "", "", objPinUser.ScreenName, Username, objPinUser.LoginStatus);
+                                }
+                                catch
+                                {
+                                }
+                                //objUploadAccount.AccounLoad();
+                                objDelegateAccountLoad();
+                            }
+                            catch { }
+                       
                         return false;
                     }
 
@@ -538,6 +566,7 @@ namespace AccountManager
                         try
                         {
                             string screen_Name = Getscreen_Name(ref objPinUser);
+                            objPinUser.ScreenName = screen_Name;
                             DataSet ds = QME.getFollower(screen_Name);
 
                             foreach (System.Data.DataRow dRow in ds.Tables[0].Rows)
@@ -554,87 +583,89 @@ namespace AccountManager
 
                         try
                         {
-                            string screen_Name = Getscreen_Name(ref objPinUser);
-                            Screen_Name = screen_Name;
+                            #region old Commented Code
+                            ///string screen_Name = Getscreen_Name(ref objPinUser);
+                            ///Screen_Name = screen_Name;
                             //Get current followers list from website
-                            List<string> FollowersName = GetRefrshFollowerName(screen_Name, ref objPinUser);
+                           // List<string> FollowersName = GetRefrshFollowerName(objPinUser.ScreenName, ref objPinUser);
 
-                            //FollowersName.RemoveAt(0);
+                           // //FollowersName.RemoveAt(0);
 
-                            if (FollowersName != null)
-                            {
-                                FollowersName = FollowersName.Distinct().ToList();
-                            }
-                            if (FollowersName.Contains(screen_Name))
-                            {
-                                FollowersName.Remove(screen_Name);
-                            }
-                            //listFollowersFromDatabse.Add("gunde");
-                            List<string> listUnfollowers = listFollowersFromDatabse.Except(FollowersName).ToList();
+                           // if (FollowersName != null)
+                           // {
+                           //     FollowersName = FollowersName.Distinct().ToList();
+                           // }
+                           // if (FollowersName.Contains(objPinUser.ScreenName))
+                           // {
+                           //     FollowersName.Remove(objPinUser.ScreenName);
+                           // }
+                           // //listFollowersFromDatabse.Add("gunde");
+                           // List<string> listUnfollowers = listFollowersFromDatabse.Except(FollowersName).ToList();
 
-                            GlobusLogHelper.log.Info(listUnfollowers.Count + " users Unfollowed Account : " + screen_Name);
+                           //// GlobusLogHelper.log.Info(listUnfollowers.Count + " users Unfollowed Account : " + screen_Name);
 
-                            string UnfollowersList = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PInterestUnfollowersList.csv";
+                           // string UnfollowersList = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PInterestUnfollowersList.csv";
 
-                            //write unfollowers list to csv
-                            if (!System.IO.File.Exists(UnfollowersList))                                                             //*     CSV Header     *//
-                            {
-                                try
-                                {
-                                    string dataFormat = "Account_ScreenName" + "," + "UnfollowerUsername";
-                                    GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
-                                }
-                                catch (Exception ex) { };
-                            }
+                           // //write unfollowers list to csv
+                           // if (!System.IO.File.Exists(UnfollowersList))                                                             //*     CSV Header     *//
+                           // {
+                           //     try
+                           //     {
+                           //         string dataFormat = "Account_ScreenName" + "," + "UnfollowerUsername";
+                           //         GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
+                           //     }
+                           //     catch (Exception ex) { };
+                           // }
 
-                            foreach (string unfollower in listUnfollowers)
-                            {
-                                try
-                                {
-                                    string dataFormat = screen_Name + "," + unfollower;
-                                    GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
+                           // foreach (string unfollower in listUnfollowers)
+                           // {
+                           //     try
+                           //     {
+                           //         string dataFormat = objPinUser.ScreenName + "," + unfollower;
+                           //         GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
 
-                                    //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " written to file " + UnfollowersList);
-                                }
-                                catch (Exception ex) { };
+                           //         //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " written to file " + UnfollowersList);
+                           //     }
+                           //     catch (Exception ex) { };
 
-                                try
-                                {
-                                    QueryExecuter.deleteFollower(screen_Name, unfollower);                                     
-                                    //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " deleted from Databse");
-                                }
-                                catch { }
-                            }
+                           //     try
+                           //     {
+                           //         QueryExecuter.deleteFollower(objPinUser.ScreenName, unfollower);                                     
+                           //         //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " deleted from Databse");
+                           //     }
+                           //     catch { }
+                           // }
 
-                            List<string> listNewFollowers = FollowersName.Except(listFollowersFromDatabse).ToList();
+                           // List<string> listNewFollowers = FollowersName.Except(listFollowersFromDatabse).ToList();
 
-                           // GlobusLogHelper.log.Info(listNewFollowers.Count + " NEW Followers for Account : " + screen_Name + "");
+                           //// GlobusLogHelper.log.Info(listNewFollowers.Count + " NEW Followers for Account : " + screen_Name + "");
 
-                            foreach (string follName_item in listNewFollowers)
-                            {
-                                try
-                                {
-                                    QueryExecuter.insertFollowerName(screen_Name, follName_item);   
-                                    GlobusLogHelper.log.Info("New follower : " + follName_item + " for Account : " + screen_Name + " added to Databse");
-                                }
-                                catch { }
+                           // foreach (string follName_item in listNewFollowers)
+                           // {
+                           //     try
+                           //     {
+                           //         QueryExecuter.insertFollowerName(objPinUser.ScreenName, follName_item);   
+                           //         //GlobusLogHelper.log.Info("New follower : " + follName_item + " for Account : " + screen_Name + " added to Databse");
+                           //     }
+                           //     catch { }
 
-                            }
+                            // }
+                            #endregion
 
-                            string follower = GetFollowercount(screen_Name, ref objPinUser);
-                            string following = GetFollowingCount(screen_Name, ref objPinUser);
-                            string BOARDS = GetBoard(screen_Name, ref objPinUser);
+                            string follower = GetFollowercount(objPinUser.ScreenName, ref objPinUser);
+                            string following = GetFollowingCount(objPinUser.ScreenName, ref objPinUser);
+                            //string BOARDS = GetBoard(objPinUser.ScreenName, ref objPinUser);
 
 
                             //Globals.followingCountLogin = int.Parse(PinterestAccountManager.getBetween(following, "value'>", "</span>"));
 
                             string followingCount = getBetween(following, "value'>", "</span>");
-
+                            string BOARDS = string.Empty;
                             string BoardsName = string.Empty;
                             List<string> BOARDSNAMES = new List<string>();
                             if (inviteStart)
                             {
-                                BOARDSNAMES = GetAllBoardNames_new1(screen_Name);
+                                BOARDSNAMES = GetAllBoardNames_new1(objPinUser.ScreenName);
 
                                 foreach (var itemBoardNames in BOARDSNAMES)
                                 {
@@ -655,7 +686,15 @@ namespace AccountManager
 
                             try
                             {
-                                QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, screen_Name, Username);
+                                try
+                                {
+
+                                    QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, objPinUser.ScreenName, Username, objPinUser.LoginStatus);
+                                }
+                                catch(Exception ex)
+                                {
+                                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                }
                                 //objUploadAccount.AccounLoad();
                                 objDelegateAccountLoad();
 
@@ -754,7 +793,7 @@ namespace AccountManager
             }
             catch(Exception ex)
             {
-                GlobusLogHelper.log.Info("Error :" + ex.StackTrace);
+                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
             }
             return FindScreenName;
         }
@@ -891,7 +930,7 @@ namespace AccountManager
             }
             catch(Exception ex)
             {
-                GlobusLogHelper.log.Info("Error :" + ex.StackTrace);
+                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
             }
             return followers;
         }
@@ -911,7 +950,7 @@ namespace AccountManager
             }
             catch (Exception ex)
             {
-                GlobusLogHelper.log.Info("Error :" + ex.StackTrace);
+                GlobusLogHelper.log.Error("Error :" + ex.StackTrace);
             }
             return following;
         }

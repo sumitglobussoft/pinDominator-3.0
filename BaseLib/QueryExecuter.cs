@@ -38,7 +38,8 @@ namespace BaseLib
             DataSet ds = new DataSet();
             try
             {
-                string selectQuery = "Select UserName,Password,Niches,ProxyAddress,ProxyPort,ProxyUserName,ProxyPassword,UserAgent,Follower,Following,BOARDS,BoardsName,ScreenName from " + tb_emails;
+                //string selectQuery = "Select UserName,Password,Niches,ProxyAddress,ProxyPort,ProxyUserName,ProxyPassword,UserAgent,Follower,Following,BOARDS,BoardsName,ScreenName from " + tb_emails;
+                string selectQuery = "Select UserName,Password,Niches,ProxyAddress,ProxyPort,ProxyUserName,ProxyPassword,Follower,Following,ScreenName,LoginStatus from " + tb_emails;
                 ds = DBHandler.SelectQuery(selectQuery, tb_emails);
             }
             catch { }
@@ -84,11 +85,11 @@ namespace BaseLib
             }
         }
 
-        public static void updatetb_emails(string follower, string followingCount, string BOARDS, string BoardsName, string screen_Name, string Username)
+        public static void updatetb_emails(string follower, string followingCount, string BOARDS, string BoardsName, string screen_Name, string Username, string LoginStatus)
         {
            try
            {
-               string UpdateQuery = "Update tb_emails set Follower = '" + follower + "',Following = '" + followingCount + "',BOARDS= '" + BOARDS + "',BOARDSNAME='" + BoardsName + "',ScreenName='" + screen_Name + "' where UserName = '" + Username + "'";
+               string UpdateQuery = "Update tb_emails set Follower = '" + follower + "',Following = '" + followingCount + "',BOARDS= '" + BOARDS + "',BOARDSNAME='" + BoardsName + "',ScreenName='" + screen_Name + "',LoginStatus='" + LoginStatus + "' where UserName = '" + Username + "'";
                DataBaseHandler.UpdateQuery(UpdateQuery, "tb_emails");
            }
            catch(Exception ex)

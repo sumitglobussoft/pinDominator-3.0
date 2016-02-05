@@ -5,31 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d">
-    <ScrollViewer>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="18*"/>
-                <RowDefinition Height="50*"/>
-            </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Divide Data Setting" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Width="190" FontSize="18" FontWeight="Bold" />
-            <GroupBox Header="Divide Data Repin" Grid.Row="1" Grid.Column="0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="177*"/>
-                        <ColumnDefinition Width="214*"/>
-                        <ColumnDefinition Width="162*"/>
-                        <ColumnDefinition Width="118*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="7*"/>
-                        <RowDefinition Height="13*"/>
-                    </Grid.RowDefinitions>
-                    <RadioButton Name="rdbDivideEqually_RePinDivideData" Content="Divide Equally" Checked="rdbDivideEqually_RePinDivideData_Checked" Height="25" Grid.Row="0" Grid.Column="0"/>
-                    <RadioButton Name="rdbDivideByUser_RePinDivideData" Content="Divide Given By User" VerticalContentAlignment="Center" Checked="rdbDivideByUser_RePinDivideData_Checked" Height="25" Grid.Row="0" Grid.Column="1" />
-                    <Label Content="Count Given By User :  " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="25" Grid.Row="0" Grid.Column="2" />
-                    <TextBox Name="txtCountGivenByUser_RePinDivideData" Text="" Height="25"  Grid.Row="0" Grid.Column="4" />
-                    <Button Name="btnsave_RePinDivideData" Content="SAVE" Click="btnsave_RePinDivideData_Click" Height="25" Grid.Column="4" Grid.Row="1">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Text="Divide Data Setting" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Width="190" FontSize="18" FontWeight="Bold" />
+        <GroupBox Header="Divide Data Repin" Grid.Row="1" Grid.Column="0" BorderBrush="Black">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="177*"/>
+                    <ColumnDefinition Width="214*"/>
+                    <ColumnDefinition Width="162*"/>
+                    <ColumnDefinition Width="118*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <RadioButton Name="rdbDivideEqually_RePinDivideData" Content="Divide Equally" Checked="rdbDivideEqually_RePinDivideData_Checked" Height="25" Grid.Row="0" Grid.Column="0" />
+                <RadioButton Name="rdbDivideByUser_RePinDivideData" Content="Divide Given By User" VerticalContentAlignment="Center" Checked="rdbDivideByUser_RePinDivideData_Checked" Height="25" Grid.Row="0" Grid.Column="1"/>
+                <Label Content="Count Given By User :  " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="25" Grid.Row="0" Grid.Column="2"/>
+                <TextBox Name="txtCountGivenByUser_RePinDivideData" Text="" Height="25"  Grid.Row="0" Grid.Column="3"/>
+                <!--<Button Name="btnsave_RePinDivideData" Content="SAVE" Click="btnsave_RePinDivideData_Click" Height="25" Grid.Column="3" Margin="0,122,0,52">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border CornerRadius="5" BorderBrush="SeaGreen" BorderThickness="1,1,1,2" Background="Azure">
@@ -37,9 +36,8 @@
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
-                    </Button>
-                </Grid>
-            </GroupBox>
-        </Grid>
-    </ScrollViewer>
+                    </Button>-->
+            </Grid>
+        </GroupBox>
+    </Grid>
 </UserControl>

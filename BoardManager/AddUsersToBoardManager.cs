@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 
 namespace BoardManager
 {
+    public delegate void AccountReport_AddUserToBoard();
     public class AddUsersToBoardManager
     {
-        #region Variable
+        public static AccountReport_AddUserToBoard objAddUserToBoarddelegate;
+
+        #region Global Variable
 
         public int Nothread_AddUserToBoard = 5;
         public bool isStopAddUserToBoard = false;
@@ -22,6 +25,9 @@ namespace BoardManager
         public static int AddUserToBoarddata_count = 0;
         public readonly object AddUserToBoardObjThread = new object();
         public bool _IsfevoriteAddUserToBoard = false;
+        public bool rdbSingleUserAddUserToBoard = false;
+        public bool rdbMultipleUserAddUserToBoard = false;
+        public string SingleUsername_AddUserToBoard = string.Empty;
 
         public int minDelayAddUserToBoard
         {
@@ -139,37 +145,43 @@ namespace BoardManager
                         {
                             GlobusLogHelper.log.Info(" => [ Logging In With : " + objPinUser.Username + " ]");
                             bool checkLogin;
+
+                            if (string.IsNullOrEmpty(objPinUser.ProxyPort))
+                            {
+                                objPinUser.ProxyPort = "80";
+                            }
+
                             try
                             {
-                                checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                               // checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
                                 {
-                                    try
-                                    {
-                                        checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
-
-                                    }
-                                    catch (Exception ex)
-                                    { };
-                                    if (!checkLogin)
-                                    {
-                                        GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
-                                        return;
-                                    }
+                                    GlobusLogHelper.log.Info(" => [ Logging UnSuccessfull : " + objPinUser.Username + " ]");
+                                    return;
                                 }
+                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
 
                                 GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadAddUserToBoard(ref objPinUser);
                             }
-
                             catch (Exception ex)
                             { };
                         }
-                        #endregion
-
-                        StartActionMultithreadAddUserToBoard(ref objPinUser);
+                        else if (objPinUser.isloggedin == true)
+                        {
+                            try
+                            {
+                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                StartActionMultithreadAddUserToBoard(ref objPinUser);
+                            }
+                            catch (Exception ex)
+                            {
+                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                            }
+                        }
+                        #endregion                       
                     }
                     catch (Exception ex)
                     {
@@ -293,8 +305,11 @@ namespace BoardManager
             try
             {
                 GlobusLogHelper.log.Info(" => [ Start Adding " + UserName + " to " + BoardName + " ]");
+                string checklogin = pinterestAccountManager.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+                string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                string newHomePageUrl = redirectDomain + "." + "pinterest.com";
 
-                string screen_Name = ObjAccountManager.Getscreen_Name(ref pinterestAccountManager);
+                string screen_Name = pinterestAccountManager.ScreenName; //ObjAccountManager.Getscreen_Name(ref pinterestAccountManager);
 
                 pinterestAccountManager.globusHttpHelper = new GlobusHttpHelper();
                 BoardName = BoardName.Replace(" ", "-");
@@ -316,6 +331,7 @@ namespace BoardManager
                 string invited_userid = string.Empty;
                 string invited = "https://pinterest.com/" + UserName.Replace(" ", "").Replace("%20", "");
                 string pagesourceinvited = pinterestAccountManager.globusHttpHelper.getHtmlfromUrl(new Uri(invited));
+                
                 try
                 {
                     invited_userid = Utils.Utils.getBetween(pagesourceinvited, "options\": {\"user_id\"", "}");
@@ -323,6 +339,7 @@ namespace BoardManager
                 }
                 catch { };
 
+               
 
                 string MainPageSource = pinterestAccountManager.globusHttpHelper.getHtmlfromUrl(new Uri(BoardUrl), "https://pinterest.com/", string.Empty, pinterestAccountManager.UserAgent);
 
@@ -345,39 +362,45 @@ namespace BoardManager
                 string InviteToBoardPostData = string.Empty;
              
 
+               // if (ObjAccountManager.LoginPinterestAccount(ref pinterestAccountManager))
                 if (ObjAccountManager.LoginPinterestAccount(ref pinterestAccountManager))
-                {
-
-                    string checkwelcome = pinterestAccountManager.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/"));
-
+                {                 
                     string Url = "https://www.pinterest.com/resource/BoardInviteResource/get/?source_url=%2F" + screen_Name + "%2Fhealth%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22invited_user_id%22%3A%22" + invited_userid + "%22%2C%22field_set_key%22%3A%22boardEdit%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=Modal()%3EBoardCollaboratorInviter(resource%3DBoardResource(board_id%3D" + BoardId + "))%3EBoardInviteForm()%3ESocialTypeaheadField()%3ETypeahead(bypass_maxheight%3Dtrue%2C+tags%3Dpinners_and_contacts%2C+template%3Duser_circle_avatar%2C+view_type%3DuserCircleSelect)&_=1431320928412";
 
                     string getResponce = pinterestAccountManager.globusHttpHelper.getHtmlfromUrl(new Uri(Url));
 
                     if (UserName.Contains("@"))
-                    {                     
-                        InviteToBoardPostData = "source_url=%2F" + screen_Name + "%2F" + BoardName + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22emails%22%3A%5B%22" + UserName + "%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EBoardPage%3EBoardHeader%3EBoardInfoBar%3EShowModalButton(module%3DBoardCollaboratorInviter)%23App%3EModalManager%3EModal()";
-
+                    {
+                        UserName = UserName.Replace("@", "%40");
+                        //InviteToBoardPostData = "source_url=%2F" + screen_Name + "%2F" + BoardName + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22emails%22%3A%5B%22" + UserName + "%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EBoardPage%3EBoardHeader%3EBoardInfoBar%3EShowModalButton(module%3DBoardCollaboratorInviter)%23App%3EModalManager%3EModal()";
+                        InviteToBoardPostData = "source_url=%2F" + screen_Name + "%2Fas%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22emails%22%3A%5B%22" + UserName + "%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EBoardCollaboratorInviter%3EBoardInviteForm%3EButton(class_name%3DinviteButton%2C+text%3DInvite%2C+color%3Ddefault%2C+state_badgeValue%3D%22%22%2C+state_accessibilityText%3D%22%22%2C+state_disabled%3Dundefined)";
                         try
                         {
-                            AfterInvitePageSourceData = pinterestAccountManager.globusHttpHelper.postFormDataProxyPin(new Uri("https://www.pinterest.com/resource/BoardEmailInviteResource/create/"), InviteToBoardPostData, "https://www.pinterest.com/");
+                            string postInviteEmail = redirectDomain + ".pinterest.com/resource/BoardEmailInviteResource/create/";
+                            AfterInvitePageSourceData = pinterestAccountManager.globusHttpHelper.postFormDataProxyPin(new Uri(postInviteEmail), InviteToBoardPostData, newHomePageUrl);
                         }
                         catch (Exception ex)
                         { };                  
                     }
                     else
                     {
-                        InviteToBoardPostData = "source_url=%2F" + screen_Name + "%2F" + BoardName + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22invited_user_id%22%3A%22" + invited_userid + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EBoardPage(resource%3DBoardResource(username%3D" + screen_Name + "%2C+slug%3D" + BoardName + "))%3EBoardHeader(resource%3DBoardResource(board_id%3D" + BoardId + "))%3EBoardInfoBar(resource%3DBoardResource(board_id%3D" + BoardId + "))%3EShowModalButton(module%3DBoardCollaboratorInviter)%23Modal(module%3DBoardCollaboratorInviter(resource%3DBoardResource(board_id%3D" + BoardId + ")))";
+                        InviteToBoardPostData = "source_url=%2F" + screen_Name + "%2F" + BoardName + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22invited_user_id%22%3A%22" + invited_userid + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EBoardPage%3EBoardHeader%3EBoardInfoBar%3EShowModalButton(module%3DBoardCollaboratorInviter)%23App%3EModalManager%3EModal(state_isVisible%3Dtrue%2C+showCloseModal%3Dtrue%2C+state_mouseDownInModal%3Dtrue%2C+state_showModalMask%3Dtrue%2C+state_showContainer%3Dfalse%2C+state_showPositionElement%3Dtrue)";
                         try
                         {
-                            AfterInvitePageSourceData = pinterestAccountManager.globusHttpHelper.postFormDataProxyPin(new Uri("https://www.pinterest.com/resource/BoardInviteResource/create/"), InviteToBoardPostData, "https://www.pinterest.com/");
-
+                            string postUrlInviteBoard = redirectDomain + ".pinterest.com/resource/BoardInviteResource/create/";
+                            AfterInvitePageSourceData = pinterestAccountManager.globusHttpHelper.postFormDataProxyPin(new Uri(postUrlInviteBoard), InviteToBoardPostData, newHomePageUrl);                    
                         }
                         catch (Exception ex)
                         { };
                     }
                     if (!string.IsNullOrEmpty(AfterInvitePageSourceData))
                     {
+                        string ModuleName = "AddUserToBoard";
+                        string Status = "Invitation Sent";
+                        QueryManager qm = new QueryManager();
+                        //qm.insertSentInvitation_AddUserToBoard(pinterestAccountManager.Username, ModuleName, BoardName, UserName, Status);
+                        qm.insertAccRePort(pinterestAccountManager.Username, ModuleName, "", BoardName, UserName, "", "", "", Status, "", "", DateTime.Now);
+                        objAddUserToBoarddelegate();
                         GlobusLogHelper.log.Info(" => [ Invitation sent to " + UserName + " for Board " + BoardName + " ]");
                         return true;
                     }

@@ -11,8 +11,11 @@ using System.Threading.Tasks;
 
 namespace ScraperManagers
 {
+    public delegate void AccountReport_Scraper();
     public class ScraperManager
     {
+        public static AccountReport_Scraper objScraperDelegate;
+
         #region Global Variable
 
         public int Nothread_Scraper = 5;
@@ -34,6 +37,7 @@ namespace ScraperManagers
         string FollowerPageSource = string.Empty;          
         string User = string.Empty;         
         List<string> followings = new List<string>();
+        List<string> followers = new List<string>();
         List<string> templist = new List<string>();
 
         public int minDelayScraper
@@ -59,7 +63,10 @@ namespace ScraperManagers
         PinInterestUser objPinUser = new PinInterestUser();
 
         #endregion
-       
+
+
+        Accounts ObjAccountManager = new Accounts();
+        QueryManager qm = new QueryManager();
         public void StartScraper()
         {
             try
@@ -72,49 +79,49 @@ namespace ScraperManagers
                     numberOfAccountPatchScraper = NoOfThreadsScraper;
                 }
 
-                Scraperdata_count = PDGlobals.loadedAccountsDictionary.Count();
+                //Scraperdata_count = PDGlobals.loadedAccountsDictionary.Count();
 
                 List<List<string>> list_listAccounts = new List<List<string>>();
 
-                if (PDGlobals.listAccounts.Count >= 1)
-                {
-                    list_listAccounts = Utils.Utils.Split(PDGlobals.listAccounts, numberOfAccountPatchScraper);
-                    foreach (List<string> listAccounts in list_listAccounts)
-                    {
-                        foreach (string account in listAccounts)
-                        {
-                            if (countThreadControllerScraper > Nothread_Scraper)
-                            {
-                                try
-                                {
-                                    lock (ScraperObjThread)
-                                    {
-                                        Monitor.Wait(ScraperObjThread);
-                                    }
-                                }
-                                catch (Exception Ex)
-                                {
+                //if (PDGlobals.listAccounts.Count >= 1)
+                //{
+                //    list_listAccounts = Utils.Utils.Split(PDGlobals.listAccounts, numberOfAccountPatchScraper);
+                //    foreach (List<string> listAccounts in list_listAccounts)
+                //    {
+                //        foreach (string account in listAccounts)
+                //        {
+                //            if (countThreadControllerScraper > Nothread_Scraper)
+                //            {
+                //                try
+                //                {
+                //                    lock (ScraperObjThread)
+                //                    {
+                //                        Monitor.Wait(ScraperObjThread);
+                //                    }
+                //                }
+                //                catch (Exception Ex)
+                //                {
 
-                                }
-                            }
+                //                }
+                //            }
 
-                            string acc = account.Split(':')[0];
-                            PinInterestUser objPinInterestUser = null;
-                            PDGlobals.loadedAccountsDictionary.TryGetValue(acc, out objPinInterestUser);
-                            if (objPinInterestUser != null)
-                            {
+                //            string acc = account.Split(':')[0];
+                //            PinInterestUser objPinInterestUser = null;
+                //            PDGlobals.loadedAccountsDictionary.TryGetValue(acc, out objPinInterestUser);
+                          //  if (objPinInterestUser != null)
+                          //  {
                                 Thread profilerThread = new Thread(StartScraperMultiThreaded);
-                                profilerThread.Name = "workerThread_Profiler_" + acc;
+                                //profilerThread.Name = "workerThread_Profiler_" + acc;
                                 profilerThread.IsBackground = true;
 
-                                profilerThread.Start(new object[] { objPinInterestUser });
+                                profilerThread.Start();// (new object[] { objPinInterestUser });
 
                                 countThreadControllerScraper++;
-                            }
-                        }
+                          //  }
+                //        }
 
-                    }
-                }    
+                //    }
+                //}    
             }
             catch(Exception ex)
             {
@@ -122,8 +129,9 @@ namespace ScraperManagers
             }
         }
 
-        public void StartScraperMultiThreaded(object objParameters)
+        public void StartScraperMultiThreaded()
         {
+            //PinInterestUser objPinUser = new PinInterestUser();
             try
             {
                 if (!isStopScraper)
@@ -136,17 +144,14 @@ namespace ScraperManagers
                     }
                     catch (Exception ex)
                     { };
-
+           
                     try
                     {
-
                         #region Follower
 
                         if (UserScraperType == "followers")
                         {
-
-                            GlobusLogHelper.log.Info(" => [ Starting Extraction Of Followers For " + UserName + " ]");
-                            templist= GetUserFollower_new();
+                            templist = GetUserFollower_new();
                             ClGlobul.lstTotalUserScraped.AddRange(templist);
                         }
                             
@@ -156,8 +161,7 @@ namespace ScraperManagers
 
                         else if (UserScraperType == "following")
                         {
-                           GlobusLogHelper.log.Info(" => [ Starting Extraction Of Following For " + UserName + " ]");                      
-                           templist = GetUserFollowing_new(UserName, NoOfPage, MaxCountScraper);
+                            templist = GetUserFollowing_new(UserName, NoOfPage, MaxCountScraper);
                            ClGlobul.lstTotalUserScraped.AddRange(templist);
                         }
 
@@ -194,24 +198,31 @@ namespace ScraperManagers
                     GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                 }
                 countThreadControllerScraper--;
-
-                if (followings.Count == MaxCountScraper)  //|| DivideByUserinput < 0)
-                {                  
+                //if (followings.Count == MaxCountScraper)  //|| DivideByUserinput < 0)
+                //{
                     GlobusLogHelper.log.Info(" => [ Process Completed Please. Now you can export file ]");
                     GlobusLogHelper.log.Info(" [ PROCESS COMPLETED ]");
                     GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
 
-                }
+                //}
             }
 
         }
+
 
         public List<string> GetUserFollower_new()
         {
             try
             {
+                ClGlobul.lstTotalUserScraped.Clear();
+                GlobusLogHelper.log.Info(" => [ Starting Extraction Of Followers For " + UserName + " ]");
                 objPinUser.globusHttpHelper = new GlobusHttpHelper();
-                for (int i = 1; i <= 1000; i++) //  for (int i = 1; i <= NoOfPage; i++)
+
+                string TotalFollowersUrl = "https://pinterest.com/" + UserName;
+                string responseFollowersUrl = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(TotalFollowersUrl), referer, string.Empty, "");
+                int TotalFollower = int.Parse(Utils.Utils.getBetween(responseFollowersUrl, "follower_count\": ", ","));
+                int NoOfPage = TotalFollower / 12 + 1;
+                for (int i = 1; i <= NoOfPage; i++) //  for (int i = 1; i <= NoOfPage; i++)
                 {
                     try
                     {
@@ -231,7 +242,7 @@ namespace ScraperManagers
                             }
                             catch (Exception ex)
                             {
-                                Console.Write(ex.Message);
+                                GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                             }
                         }
                         ///Get App Version 
@@ -279,23 +290,22 @@ namespace ScraperManagers
 
                                                 User = item.Substring(FirstPinPoint, SecondPinPoint - FirstPinPoint).Replace("\"", string.Empty).Replace("href=", string.Empty).Replace("/", string.Empty).Trim();
                                             }
-
-
-                                            if (followings.Count == MaxCountScraper)
+                                            if (followers.Count == MaxCountScraper)
                                             {
                                                 return ClGlobul.lstTotalUserScraped; 
                                             }
 
-                                            GlobusLogHelper.log.Info(" => [ " + User + " ]");
-                                            followings.Add(User);
-                                            if (followings.Count == MaxCountScraper)
+                                            
+                                           // GlobusLogHelper.log.Info(" => [ " + User + " ]");
+                                            followers.Add(User);
+                                            if (followers.Count == MaxCountScraper)
                                             {
                                                 break;
                                             }
                                         }
                                         catch (Exception ex)
                                         {
-
+                                            GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                                         }
                                     }
                                 }
@@ -314,20 +324,26 @@ namespace ScraperManagers
 
                                     bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5);
                                 }
-                                followings = followings.Distinct().ToList();
+                                followers = followers.Distinct().ToList();
 
-                                foreach (string lstdata in followings)
+                                foreach (string lstdata in followers)
                                 {
                                     ClGlobul.lstTotalUserScraped.Add(lstdata);
+                                    #region AccountReport
 
+                                    string module = "Scraper";
+                                    string status = "Followers";
+                                    qm.insertAccRePort("", module, "", "", lstdata, "", "", "", status, "", "", DateTime.Now);
+                                    objScraperDelegate();
+
+                                    #endregion
+                                    if (followers.Count >= MaxCountScraper)
+                                    {
+                                        return ClGlobul.lstTotalUserScraped; 
+                                    }
                                 }
-
-
                                 ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
-                                if (ClGlobul.lstTotalUserScraped.Count == MaxCountScraper)
-                                {
-                                    break;
-                                }
+                               
                                 Thread.Sleep(1000);
 
                             }
@@ -352,6 +368,9 @@ namespace ScraperManagers
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
+
+            GlobusLogHelper.log.Info(" => [ Total  Followers : " + ClGlobul.lstTotalUserScraped.Count + " ]");
+
             return ClGlobul.lstTotalUserScraped;
         }
 
@@ -359,8 +378,16 @@ namespace ScraperManagers
         {
             try
             {
+                ClGlobul.lstTotalUserScraped.Clear();
+                GlobusLogHelper.log.Info(" => [ Starting Extraction Of Following For " + UserName + " ]");       
                 objPinUser.globusHttpHelper = new GlobusHttpHelper();
-                for (int i = 1; i <= 1000; i++)
+
+                string TotalFollowingUrl = "https://pinterest.com/" + UserName;
+                string responseFollowingUrl = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(TotalFollowingUrl), referer, string.Empty, "");
+                int TotalFollowing = int.Parse(Utils.Utils.getBetween(responseFollowingUrl, "following_count\":", ","));
+                int PageCount = TotalFollowing / 12 + 1;
+
+                for (int i = 1; i <= PageCount; i++)
                 {
                     try
                     {
@@ -374,7 +401,7 @@ namespace ScraperManagers
                         }
                         else
                         {
-                            FollowUrl = "https://www.pinterest.com/resource/UserFollowingResource/get/?source_url=%2F" + UserName + "%2Ffollowing%2F&data=%7B%22options%22%3A%7B%22username%22%3A%22" + UserName + "%22%2C%22bookmarks%22%3A%5B%22" + bookmark + "%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App(module%3D%5Bobject+Object%5D)&_=144204352215" + (i - 1);
+                            FollowUrl = "https://pinterest.com/resource/UserFollowingResource/get/?source_url=%2F" + UserName + "%2Ffollowing%2F&data=%7B%22options%22%3A%7B%22username%22%3A%22" + UserName + "%22%2C%22bookmarks%22%3A%5B%22" + bookmark + "%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App(module%3D%5Bobject+Object%5D)&_=144204352215" + (i - 1);
 
                             try
                             {
@@ -454,17 +481,19 @@ namespace ScraperManagers
 
                                                 User = item.Substring(FirstPinPoint, SecondPinPoint - FirstPinPoint).Replace("\"", string.Empty).Replace("href=", string.Empty).Replace("/", string.Empty).Trim();
                                             }
-
-                                            followings.Add(User);
-                                            //GlobusLogHelper.log.Info(" => [ " + User + " ]");                                           
                                             if (followings.Count == FollowingCount)
                                             {
                                                 break;
                                             }
+                                            followings.Add(User);
+                                            
+
+                                            //GlobusLogHelper.log.Info(" => [ " + User + " ]");                                           
+                                           
                                         }
                                         catch (Exception ex)
                                         {
-
+                                            GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                                         }
                                     }
                                     if (i > 1)
@@ -483,6 +512,7 @@ namespace ScraperManagers
                                                     break;
                                                 }
                                                 followings.Add(User);
+                                            
                                                 //GlobusLogHelper.log.Info(" => [ " + User + " ]");
 
                                                 if (followings.Count == FollowingCount)
@@ -490,7 +520,10 @@ namespace ScraperManagers
                                                     break;
                                                 }
                                             }
-                                            catch { };
+                                            catch (Exception ex)
+                                            {
+                                                GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
+                                            }
                                         }
                                     }
                                 }
@@ -500,13 +533,25 @@ namespace ScraperManagers
                                 foreach (string lstdata in followings)
                                 {
                                     ClGlobul.lstTotalUserScraped.Add(lstdata);
+                                    #region AccountReport
 
+                                    string module = "Scraper";
+                                    string status = "Following";
+                                    qm.insertAccRePort("", module, "", "", lstdata, "", "", "", status, "", "", DateTime.Now);
+                                    objScraperDelegate();
+
+                                    #endregion
+                                    if (followings.Count >= MaxCountScraper)
+                                    {
+                                        break;
+                                    }
                                 }
                                 ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
-                                if (ClGlobul.lstTotalUserScraped.Count == MaxCountScraper)
+                                if (ClGlobul.lstTotalUserScraped.Count >= MaxCountScraper)
                                 {
-                                    break;
+                                    return ClGlobul.lstTotalUserScraped;
                                 }
+                              
                                 Thread.Sleep(1000);
                             }
                             else
@@ -527,7 +572,7 @@ namespace ScraperManagers
 
                     }
                 }
-
+                GlobusLogHelper.log.Info(" => [ Total Followings : " + ClGlobul.lstTotalUserScraped.Count + " ]");
                 //GlobusLogHelper.log.Info(" => [ Finished Extracting following For " + UserName + " ]");
                 //GlobusLogHelper.log.Info(" => [ Process Completed Please. Now you can export file ]");
             }
@@ -535,6 +580,7 @@ namespace ScraperManagers
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
+
             return ClGlobul.lstTotalUserScraped;
         }
 
@@ -547,18 +593,20 @@ namespace ScraperManagers
                  try
                  {
                      if (UserScraperType == "followers")
-                     {                      
+                     {
                          GlobusFileHelper.WriteListtoTextfile(ClGlobul.lstTotalUserScraped, PDGlobals.UserScrapedFollower);
                          GlobusLogHelper.log.Info(" => File Path " + PDGlobals.UserScrapedFollower + " ]");
                      }
                      else
-                     {                      
+                     {
                          GlobusFileHelper.WriteListtoTextfile(ClGlobul.lstTotalUserScraped, PDGlobals.UserScrapedFollowing);
                          GlobusLogHelper.log.Info(" => File Path " + PDGlobals.UserScrapedFollowing + " ]");
                      }
                  }
-                catch(Exception ex)
-                 { }
+                 catch (Exception ex)
+                 {
+                     GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
+                 }
             }
             catch(Exception ex)
             {
