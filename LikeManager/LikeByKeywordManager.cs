@@ -176,12 +176,12 @@ namespace LikeManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadLikeByKeyword(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadLikeByKeyword(ref objPinUser);
                             }
                             catch { };
                         }
-                        else
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -212,6 +212,15 @@ namespace LikeManager
         {
             try
             {
+                try
+                {
+                    lstThreadsLikeByKeyword.Add(Thread.CurrentThread);
+                    lstThreadsLikeByKeyword.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
+
                 int counter = 0;
                 string[] arrayItem = new string[100];
                 foreach (string newItem in ClGlobul.lstLikeByKeyword)

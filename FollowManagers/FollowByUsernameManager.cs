@@ -235,12 +235,12 @@ namespace FollowManagers
                                    return;
                                }
                                string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                               GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                               StartActionMultithreadFollowByUsername(ref objPinUser, list_lstTargetFollowByUsername_item);
+                               //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                               //StartActionMultithreadFollowByUsername(ref objPinUser, list_lstTargetFollowByUsername_item);
                            }
                            catch { };
                        }
-                       else if (objPinUser.isloggedin == true)
+                       if (objPinUser.isloggedin == true)
                        {
                            try
                            {
@@ -295,6 +295,14 @@ namespace FollowManagers
        {
            try
            {
+               try
+               {
+                   lstThreadsFollowByUsername.Add(Thread.CurrentThread);
+                   lstThreadsFollowByUsername.Distinct().ToList();
+                   Thread.CurrentThread.IsBackground = true;
+               }
+               catch (Exception ex)
+               { };
                string followCountString = ObjAccountManager.GetFollowingCount(objPinUser.ScreenName, ref objPinUser);
                //followCountString = ObjAccountManager.getBetween(followCountString, "value'>", "</span>");
                followCountString = Utils.Utils.getBetween(followCountString, "value'>", "</span>");
@@ -551,9 +559,15 @@ namespace FollowManagers
        {
            try
            {
-               lstThreadsFollowByUsername.Add(Thread.CurrentThread);
-               lstThreadsFollowByUsername.Distinct().ToList();
-               Thread.CurrentThread.IsBackground = true;
+               try
+               {
+                   lstThreadsFollowByUsername.Add(Thread.CurrentThread);
+                   lstThreadsFollowByUsername.Distinct().ToList();
+                   Thread.CurrentThread.IsBackground = true;
+               }
+               catch (Exception ex)
+               { };
+            
 
                string FollowUrl = FollowUser;
                int pagecount = Pagecount;

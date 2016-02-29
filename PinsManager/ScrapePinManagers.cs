@@ -3,6 +3,7 @@ using BasePD;
 using Globussoft;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -59,7 +60,7 @@ namespace PinsManager
         string Pagesource = string.Empty;
         string ImageUrl = string.Empty;
         int count = 1;
-        int Counter = 0;
+       
 
         PinInterestUser objPinUser = new PinInterestUser();
 
@@ -97,6 +98,7 @@ namespace PinsManager
             {
                 GlobusLogHelper.log.Info(" => [ Scraping Process Started ]");
                 string LikeUrl = BoardUrl;
+                int Counter = 0;
                 try
                 {
                     PopularPinPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(LikeUrl), "http://pinterest.com/", string.Empty, objPinUser.UserAgent);
@@ -138,11 +140,8 @@ namespace PinsManager
                                         string Pin = Utils.Utils.getBetween(itemArrPin, "/pin/", "class=").Replace("\\", "").Replace("/", "").Replace("\"", "").Trim();
                                         if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
                                         {
-                                            if (MaxNoOfPinScrape == Counter)
-                                            {
-                                                break;
-                                            }
-                                            else
+
+                                            if (MaxNoOfPinScrape >= Counter)                                         
                                             {
 
                                                 //GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
@@ -160,10 +159,14 @@ namespace PinsManager
                                                 string status = "Scraped";
                                                 qm.insertAccRePort("", module, "https://www.pinterest.com/pin/" + Pin, "", "", "", "", ImageUrl, status, "", "", DateTime.Now);
                                                 objPinScraperDelegate();
-
+                                                Counter++;
                                                 #endregion
                                                 lstPopularPins.Add(Pin);
-                                                Counter++;
+                                               
+                                            }
+                                             if (MaxNoOfPinScrape == Counter)
+                                            {
+                                                break;
                                             }
                                         }
                                     }
@@ -187,11 +190,7 @@ namespace PinsManager
 
                                             if (!string.IsNullOrEmpty(Pin) && !lstPopularPins.Contains(Pin))
                                             {
-                                                if (MaxNoOfPinScrape == Counter)
-                                                {
-                                                    break;
-                                                }
-                                                else
+                                                if (MaxNoOfPinScrape >= Counter)
                                                 {
                                                     // GlobusLogHelper.log.Info(" => [ Pin " + Pin + " ]");
                                                     if (chkScrapeImage == true)
@@ -212,6 +211,10 @@ namespace PinsManager
                                                     #endregion
                                                     lstPopularPins.Add(Pin);
                                                     Counter++;
+                                                }
+                                                if (MaxNoOfPinScrape == Counter)
+                                                {
+                                                    break;
                                                 }
                                             }
                                         }
@@ -320,8 +323,16 @@ namespace PinsManager
                 Random rn = new Random();
                 string Title = areaay[rn.Next(0, 5)] + "" + rn.Next(0, 1000000);
                 string PicPath = PDGlobals.path_Image + "\\" + Title + ".jpg";
-                objwebclient.UploadData(PicPath, array);
 
+                if (!Directory.Exists(PicPath))
+                {
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PinDominator3.0\\ScrapedImageFolder");
+                    objwebclient.UploadData(PicPath, array);
+                }
+                else if (Directory.Exists(PicPath))
+                {
+                    objwebclient.UploadData(PicPath, array);
+                }
             }
             catch (Exception ex)
             {

@@ -79,6 +79,7 @@ namespace BaseLib
         public string Description { get; set; }
         public string Board { get; set; }
         public string Email { get; set; }
+        public string Niche { get; set; }
     }
 
 

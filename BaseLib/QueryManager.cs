@@ -210,6 +210,35 @@ namespace BaseLib
             }
         }
 
+        public void insertAccReportScrapeUser(string Module, string UserName, string status, DateTime DateAndTime)
+        {
+
+            try
+            {
+                string insertQuery = "Insert into tb_AccReportScrapeUser (ModuleName, UserName, Status, DateTime) values ('" + Module + "', '" + UserName + "','" + status + "', '" + DateAndTime + "')";
+                DataBaseHandler.InsertQuery(insertQuery, "tb_AccountReport");
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public DataSet SelectAddReportScrapeUser(string module)
+        {
+            try
+            {
+                string query = "Select * from tb_AccReportScrapeUser where  ModuleName='" + module + "'";
+                DataSet ds = DataBaseHandler.SelectQuery(query, "tb_AccReportScrapeUser");
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                return new DataSet();
+            }
+
+        }
+
         public  void DeleteAccountReport(string module)
         {
             try
@@ -222,6 +251,20 @@ namespace BaseLib
 
             }
         }
+
+        public void DeleteAccountReportScrapeUser(string module)
+        {
+            try
+            {
+                string deleteQuery = "Delete from tb_AccReportScrapeUser where ModuleName='" + module + "'";
+                DataBaseHandler.DeleteQuery(deleteQuery, "tb_AccReportScrapeUser");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
 
 
     }

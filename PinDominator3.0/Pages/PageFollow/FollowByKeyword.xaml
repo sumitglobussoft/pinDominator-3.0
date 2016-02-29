@@ -46,7 +46,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Label Content="Niche::Keyword 1 ,Keyword 2" Name="lbKeywordEg" Grid.Column="2" Grid.Row="1" Height="20" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
+                <Label Content="eg:- Niche::Keyword 1 ,Keyword 2" Name="lbKeywordEg" Grid.Column="2" Grid.Row="1" Height="20" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
                 <Label Content="Follow Accounts/Day In :" Grid.ColumnSpan="3"  VerticalContentAlignment="Center"  Grid.Row="2" Height="25" HorizontalContentAlignment="Right"/>
                 <TextBox Name="txtBoxHours_FollowByKeyword" Grid.Column="4" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" Grid.Row="2" Height="25"/>
                 <Label Content="Seconds" Grid.Column="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="2" Height="25" Grid.ColumnSpan="2" />

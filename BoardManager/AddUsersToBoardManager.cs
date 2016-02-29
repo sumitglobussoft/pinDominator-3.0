@@ -163,13 +163,13 @@ namespace BoardManager
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
 
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadAddUserToBoard(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadAddUserToBoard(ref objPinUser);
                             }
                             catch (Exception ex)
                             { };
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -198,6 +198,14 @@ namespace BoardManager
         {
             try
             {
+                try
+                {
+                    lstThreadsAddUserToBoard.Add(Thread.CurrentThread);
+                    lstThreadsAddUserToBoard.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 string UserName = string.Empty;
                 foreach (string item_lstAddToBoardUserNames in ClGlobul.lstAddToBoardUserNames)
                 {

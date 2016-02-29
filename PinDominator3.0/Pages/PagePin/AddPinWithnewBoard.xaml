@@ -43,7 +43,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Label Name="lblHint_AddPinWithnewBoard" Content="eg: BoardName,Description,ImageUrl" Grid.Column="2" Height="20" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" Grid.Row="1" />
+                <Label Name="lblHint_AddPinWithnewBoard" Content="eg: BoardName,Description,ImageUrl,Niche" Grid.Column="2" Height="20" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" Grid.Row="1" />
                 <Label Content="User Type :" Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
                 <RadioButton Content="Single User" Grid.Column="2" Height="25" Name="rdbSingleUser_AddPinWithNewBoard" Checked="rdbSingleUser_AddPinWithNewBoard_Checked"/>
                 <RadioButton Content="Multiple User" Grid.Column="3" Height="25" Grid.ColumnSpan="3" Name="rdbMultipleUser_AddPinWithNewBoard" Checked="rdbMultipleUser_AddPinWithNewBoard_Checked"/>

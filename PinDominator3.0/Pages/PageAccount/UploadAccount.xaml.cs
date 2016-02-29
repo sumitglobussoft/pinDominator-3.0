@@ -23,11 +23,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 //using BasePD;
 using FirstFloor.ModernUI.Windows.Controls;
-using System.Data.SQLite;
+
 using AccountManager;
 using PinDominator3.AccountUserControl;
 using PinDominator3.Classes;
 using WpfAnimatedGif;
+using System.Data.SQLite;
 
 namespace PinDominator3.Pages.PageAccount
 {

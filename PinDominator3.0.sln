@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinDominator3.0", "PinDominator3.0\PinDominator3.0.csproj", "{3CAE5199-C891-4F24-B8A0-57967D10076E}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardManager", "BoardManage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageAccountManager", "ManageAccountManager\ManageAccountManager.csproj", "{A41158FB-7046-40E1-9C3C-2049853059FC}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PinDominator_Setup", "PinDominator_Setup\PinDominator_Setup.vdproj", "{9A050D66-1800-45F6-A566-606DCFCFB783}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PinDominator_Setup", "PinDominator_Setup\PinDominator_Setup.vdproj", "{B5BE4897-417C-4E38-889E-2832DCEC6597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,10 +111,10 @@ Global
 		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A41158FB-7046-40E1-9C3C-2049853059FC}.Release|x86.ActiveCfg = Release|Any CPU
-		{9A050D66-1800-45F6-A566-606DCFCFB783}.Debug|Any CPU.ActiveCfg = Debug
-		{9A050D66-1800-45F6-A566-606DCFCFB783}.Debug|x86.ActiveCfg = Debug
-		{9A050D66-1800-45F6-A566-606DCFCFB783}.Release|Any CPU.ActiveCfg = Release
-		{9A050D66-1800-45F6-A566-606DCFCFB783}.Release|x86.ActiveCfg = Release
+		{B5BE4897-417C-4E38-889E-2832DCEC6597}.Debug|Any CPU.ActiveCfg = Debug
+		{B5BE4897-417C-4E38-889E-2832DCEC6597}.Debug|x86.ActiveCfg = Debug
+		{B5BE4897-417C-4E38-889E-2832DCEC6597}.Release|Any CPU.ActiveCfg = Release
+		{B5BE4897-417C-4E38-889E-2832DCEC6597}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

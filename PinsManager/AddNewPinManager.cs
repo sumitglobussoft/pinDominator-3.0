@@ -177,13 +177,13 @@ namespace PinsManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadAddNewPin(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadAddNewPin(ref objPinUser);
                             }
 
                             catch { };
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -227,8 +227,8 @@ namespace PinsManager
                     GlobusLogHelper.log.Error(" Error : " + ex.StackTrace);
                 }
                 countThreadControllerAddNewPin--;
-                GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
-                GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
+                //GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                //GlobusLogHelper.log.Info("---------------------------------------------------------------------------------------------------------------------------");
             }
 
         }
@@ -258,8 +258,7 @@ namespace PinsManager
                             catch (Exception ex)
                             {
                                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-                            } 
-
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -493,6 +492,8 @@ namespace PinsManager
 
                         }
                     }
+                    GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                    GlobusLogHelper.log.Info("----------------------------------------------------------------------------------------------");
                 }
             }
             catch(Exception ex)
@@ -505,106 +506,121 @@ namespace PinsManager
         {
             try
             {
-                // BoardNumber
-                BoardId = GetBoardId_Board(Board, ref objPinUser);
-            }
-            catch (Exception ex)
-            {
-                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-            }
-            if (string.IsNullOrEmpty(BoardId))
-            {
-                GlobusLogHelper.log.Info(" => [ " + Board + " Not Found. Creating Board ]");
                 try
                 {
-                    BoardId = CreateBoard_NewPin(Board, "Other", ref objPinUser);
+                    // BoardNumber
+                    BoardId = GetBoardId_Board(Board, ref objPinUser);
                 }
                 catch (Exception ex)
                 {
                     GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                 }
-            }
-
-            string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-
-            if (!string.IsNullOrEmpty(BoardId))
-            {
-                if (ClGlobul.lstListofFiles.Count > 0)
+                if (string.IsNullOrEmpty(BoardId))
                 {
-                    foreach (var itemImageFile in ClGlobul.lstListofFiles)
+                    GlobusLogHelper.log.Info(" => [ " + Board + " Not Found. Creating Board ]");
+                    try
                     {
-                        //lock (this)
+                        BoardId = CreateBoard_NewPin(Board, "Other", ref objPinUser);
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                    }
+                }
+
+                string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+
+                if (!string.IsNullOrEmpty(BoardId))
+                {
+                    if (ClGlobul.lstListofFiles.Count > 0)
+                    {
+                        foreach (var itemImageFile in ClGlobul.lstListofFiles)
                         {
-                            try
+                            //lock (this)
                             {
-                                string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
-                                string newHomePageUrl = redirectDomain + "." + "pinterest.com";
-                                string fileName = Regex.Split(itemImageFile.Replace("\\", "<>"), "<>").Last();
-                                string fileUrl = redirectDomain + ".pinterest.com/upload-image/?img=" + fileName;
-                                System.Collections.Specialized.NameValueCollection nvc = new System.Collections.Specialized.NameValueCollection();
-                                string uploadFile = objPinUser.globusHttpHelper.HttpUploadPictureForWall(ref objPinUser.globusHttpHelper, "", fileUrl, "img", "image/jpeg", itemImageFile, nvc, "", 80, "", "", itemImageFile, fileName);
-                                string fileUploadUrl = string.Empty;
-
-                                // string fileUrl = redirectDomain + ".pinterest.com/upload-image/?img=" + fileName;
-                                if (!string.IsNullOrEmpty(uploadFile))
+                                try
                                 {
-                                    if (uploadFile.Contains("s3.amazonaws.com"))
+                                    string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                                    string newHomePageUrl = redirectDomain + "." + "pinterest.com";
+                                    string fileName = Regex.Split(itemImageFile.Replace("\\", "<>"), "<>").Last();
+                                    string fileUrl = redirectDomain + ".pinterest.com/upload-image/?img=" + fileName;
+                                    System.Collections.Specialized.NameValueCollection nvc = new System.Collections.Specialized.NameValueCollection();
+                                    string uploadFile = objPinUser.globusHttpHelper.HttpUploadPictureForWall(ref objPinUser.globusHttpHelper, "", fileUrl, "img", "image/jpeg", itemImageFile, nvc, "", 80, "", "", itemImageFile, fileName);
+                                    string fileUploadUrl = string.Empty;
+
+                                    // string fileUrl = redirectDomain + ".pinterest.com/upload-image/?img=" + fileName;
+                                    if (!string.IsNullOrEmpty(uploadFile))
                                     {
-                                        fileUploadUrl = Utils.Utils.getBetween(uploadFile, "image_url\":", ",").Replace("\"", "").Trim();
-                                        string imageUrl = Uri.EscapeDataString(fileUploadUrl);
-                                        string postData = "source_url=%2F" + objPinUser.ScreenName + "%2Fpins%2F&data=%7B%22options%22%3A%7B%22method%22%3A%22uploaded%22%2C%22description%22%3A%22%22%2C%22link%22%3A%22%22%2C%22image_url%22%3A%22" + imageUrl + "%22%2C%22board_id%22%3A%22" + BoardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
-                                        string url = redirectDomain + ".pinterest.com/resource/PinResource/create/";
-                                        string thirdResponse = objPinUser.globusHttpHelper.postDataForPinterest(new Uri(url), postData, newHomePageUrl);
-                                        if (!string.IsNullOrEmpty(thirdResponse))
+                                        if (uploadFile.Contains("s3.amazonaws.com"))
                                         {
-                                            GlobusLogHelper.log.Info(" => [ Pin Added To " + Board + " From " + objPinUser.Username + " ]");
-                                            #region AccountReport
+                                            fileUploadUrl = Utils.Utils.getBetween(uploadFile, "image_url\":", ",").Replace("\"", "").Trim();
+                                            string imageUrl = Uri.EscapeDataString(fileUploadUrl);
+                                            string postData = "source_url=%2F" + objPinUser.ScreenName + "%2Fpins%2F&data=%7B%22options%22%3A%7B%22method%22%3A%22uploaded%22%2C%22description%22%3A%22%22%2C%22link%22%3A%22%22%2C%22image_url%22%3A%22" + imageUrl + "%22%2C%22board_id%22%3A%22" + BoardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+                                            postData = "source_url=%2F" + objPinUser.ScreenName + "%2Fpins%2F&data=%7B%22options%22%3A%7B%22method%22%3A%22uploaded%22%2C%22description%22%3A%22%22%2C%22link%22%3A%22%22%2C%22image_url%22%3A%22" + imageUrl + "%22%2C%22board_id%22%3A%22" + BoardId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EModalManager%3EModal%3EPinCreate%3EBoardPicker%3ESelectList(view_type%3DpinCreate%2C+selected_section_index%3Dundefined%2C+selected_item_index%3Dundefined%2C+highlight_matched_text%3Dtrue%2C+suppress_hover_events%3Dundefined%2C+scroll_selected_item_into_view%3Dtrue%2C+select_first_item_after_update%3Dfalse%2C+item_module%3D%5Bobject+Object%5D)";
+                                            string url = redirectDomain + ".pinterest.com/resource/PinResource/create/";
+                                            string thirdResponse = objPinUser.globusHttpHelper.postDataForPinterest(new Uri(url), postData, newHomePageUrl, objPinUser.App_version);
+                                            if (!string.IsNullOrEmpty(thirdResponse))
+                                            {
+                                                GlobusLogHelper.log.Info(" => [ Pin Added To " + Board + " From " + objPinUser.Username + " ]");
+                                                #region AccountReport
 
-                                            string module = "AddNewPin";
-                                            string status = "Pin Added";
-                                            qm.insertAccRePort(objPinUser.Username, module, "", Board, "", "", "", fileUploadUrl, status, "", "", DateTime.Now);
-                                            objAddNewPinDelegate();
+                                                string module = "AddNewPin";
+                                                string status = "Pin Added";
+                                                qm.insertAccRePort(objPinUser.Username, module, "", Board, "", "", "", fileUploadUrl, status, "", "", DateTime.Now);
+                                                objAddNewPinDelegate();
 
-                                            #endregion
+                                                #endregion
+                                            }
+                                            else
+                                            {
+                                                GlobusLogHelper.log.Info(" => [ Pin Not Added To " + Board + " From " + objPinUser.Username + " ]");
+                                            }
+
+                                            string PinId = Utils.Utils.getBetween(thirdResponse, "}, \"id\": \"", "\"},");
+
+                                            string PostUrlData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22description%22%3A%22%22%2C%22link%22%3A%22" + Uri.EscapeDataString(WebsiteUrl) + "%2F%22%2C%22place%22%3A0%2C%22id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3ECloseup%3EPinActionBar%3EShowModalButton(module%3DPinEdit)%23App%3EModalManager%3EModal(state_isVisible%3Dtrue%2C+showCloseModal%3Dtrue%2C+state_mouseDownInModal%3Dfalse%2C+state_showModalMask%3Dtrue%2C+state_showContainer%3Dfalse%2C+state_showPositionElement%3Dtrue)";
+                                            string editUrl = redirectDomain + ".pinterest.com/resource/PinResource/update/";
+                                            try
+                                            {
+                                                string postPageSOurce = objPinUser.globusHttpHelper.postFormDataProxywithCSRFToken(new Uri(editUrl), PostUrlData, newHomePageUrl, "", 0, "", "");
+                                            }
+                                            catch { }
+
+                                            int delay = RandomNumberGenerator.GenerateRandom(minDelayAddNewPin, maxDelayAddNewPin);
+                                            GlobusLogHelper.log.Info(" => [ Delay for " + delay + " Seconds ]");
+                                            Thread.Sleep(delay * 1000);
                                         }
-                                        else
-                                        {
-                                            GlobusLogHelper.log.Info(" => [ Pin Not Added To " + Board + " From " + objPinUser.Username + " ]");
-                                        }
-
-                                        string PinId = Utils.Utils.getBetween(thirdResponse, "}, \"id\": \"", "\"},");
-
-                                        string PostUrlData = "source_url=%2Fpin%2F" + PinId + "%2F&data=%7B%22options%22%3A%7B%22board_id%22%3A%22" + BoardId + "%22%2C%22description%22%3A%22%22%2C%22link%22%3A%22" + Uri.EscapeDataString(WebsiteUrl) + "%2F%22%2C%22place%22%3A0%2C%22id%22%3A%22" + PinId + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3ECloseup%3EPinActionBar%3EShowModalButton(module%3DPinEdit)%23App%3EModalManager%3EModal(state_isVisible%3Dtrue%2C+showCloseModal%3Dtrue%2C+state_mouseDownInModal%3Dfalse%2C+state_showModalMask%3Dtrue%2C+state_showContainer%3Dfalse%2C+state_showPositionElement%3Dtrue)";
-                                        string editUrl = redirectDomain + ".pinterest.com/resource/PinResource/update/";
-                                        try
-                                        {
-                                            string postPageSOurce = objPinUser.globusHttpHelper.postFormDataProxywithCSRFToken(new Uri(editUrl), PostUrlData, newHomePageUrl, "", 0, "", "");
-                                        }
-                                        catch { }
                                     }
-                                }
-                                else
-                                {
-                                    GlobusLogHelper.log.Info(" => [ Pin Not Added To " + Board + " From " + objPinUser.Username + " ]");
-                                }
-                                Thread.Sleep(2000);
+                                    else
+                                    {
+                                        GlobusLogHelper.log.Info(" => [ Pin Not Added To " + Board + " From " + objPinUser.Username + " ]");
+                                    }
+                                    Thread.Sleep(2000);
 
-                            }
-                            catch (Exception ex)
-                            {
-                                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                }
+                                catch (Exception ex)
+                                {
+                                    GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                }
                             }
                         }
+                        GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinUser.Username + " ]");
+                        GlobusLogHelper.log.Info("----------------------------------------------------------------------------------------------");
+                    }
+                    else
+                    {
+                        GlobusLogHelper.log.Info(" => [ No Image files selected. ]");
                     }
                 }
                 else
                 {
-                    GlobusLogHelper.log.Info(" => [ No Image files selected. ]");
+                    GlobusLogHelper.log.Info(" => [ Board " + Board + " not created. ]");
                 }
             }
-            else
+
+            catch (Exception ex)
             {
-                GlobusLogHelper.log.Info(" => [ Board " + Board + " not created. ]");
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
         }
 

@@ -2211,17 +2211,56 @@ namespace Globussoft
             gRequest.Headers["Accept-Encoding"] = "gzip,deflate,sdch";
             //gRequest.Headers["Cache-Control"] = "max-age=0";
             gRequest.Headers["Accept-Language"] = "en-US,en;q=0.8";
-
+            gRequest.Headers["X-Requested-With"] = "XMLHttpRequest"; //application/x-www-form-urlencoded; charset=UTF-8
             gRequest.KeepAlive = true;
             //gRequest.Host = "www.pinterest.com";
             gRequest.ContentType = @"application/x-www-form-urlencoded; charset=UTF-8";
             gRequest.Timeout = Timeout;
             gRequest.Method = "POST";
-            gRequest.Headers.Add("Javascript-enabled", "true");
+            gRequest.Headers.Add("Javascript-enabled", "true");//X-Pinterest-AppState: active
+            gRequest.Headers.Add("X-Pinterest-AppState", "active");
+            gRequest.Host = "in.pinterest.com";
+            gRequest.Headers.Add("Origin", "https://in.pinterest.com");
+
+            //Cookie: _b="ARkvIkBdrc9EOKXfp/1WDxDnOv889Po6qG2VHHfEuQ/iUimBjBuf1WRtth3IJ/qXUfA="; sessionFunnelEventLogged=1; _pinterest_referrer="https://www.google.co.in/"; _ga=GA1.2.2080157053.1455875290; __utmt=1; logged_out=True; fba=True; _auth=1; csrftoken=nVQ825cleqwcaCacwHzhvOistJkUJnEr; _pinterest_sess="TWc9PSZVcXZmSDBZNERhaVRQQnA3alJicHdlK3V5Tkl5Z3htL2krR2lTM1VaOEswcDc0eWNINUZzS2VUTzBHS0Z3TWhOZVY3SFd4Lzcwb0JzTzd6MGRnVmM3RDNVSlB0eDhNUzFaUHNKSDU3RTM3aWNGaUNQNzBZMmVnWXFoNGk3R1B0c3M4djZDRlc1TjNHQ0Ywb2c0NWNNTEFvUVJDN0VLdlNCTXBpVG5uWFFDQ2VaQkVNeE04cnN0dGRIeFpYNGc1QktjQ1VGaXRLRGc3QlpHYmVac0JGK2tUTXd2RkwzcFQxQ3RyUndvaVE2dEU5RWhTTkxVQm0xcm13Uk1Lc1JTbnRSL1FaQ0hzVkIydGJ2OURaVitaQS9EcEN0MDVYaWZJWE85VWp6dW5XUGZubEZOckQ3QUFyOU5XOUJaVEkxbk1CYU8waXBCMjdIeXhGWEV0SVNVb3M5REdEamxXS0VOT2dTYnZETDNxMjhJY2Q1akdxSDJQcStFNXFpbXM0SzJ5eUZYT0JNcEkyTG9lY0NzTGQvZkpXQWtNa3MvcEtZODhnWGh3c1RqVWpLNW4xOWorM3o2RCtGMWo5T1FyRVRIRkc1b0VidllETzJaMTZubldLa1hGSisxV1ZRZzhvelV0eWVKK0IxanFpYnNtTT0mMzUzVWFVNDdrY1ZLcDY2c1R6YXJEbE5pSzFzPQ=="; c_dpr=1; __utma=124449618.1256879651.1455771928.1455864319.1455874716.6; __utmb=124449618.23.9.1455880701472; __utmc=124449618; __utmz=124449618.1455864319.5.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)
+
+            gRequest.Headers.Add(HttpRequestHeader.Cookie, "_b=\"ARkvIkBdrc9EOKXfp/1WDxDnOv889Po6qG2VHHfEuQ/iUimBjBuf1WRtth3IJ/qXUfA=\"; sessionFunnelEventLogged=1; _pinterest_referrer=\"https://www.google.co.in/\"; _ga=GA1.2.2080157053.1455875290; __utmt=1; logged_out=True; fba=True; _auth=1; csrftoken=nVQ825cleqwcaCacwHzhvOistJkUJnEr; _pinterest_sess=\"TWc9PSZVcXZmSDBZNERhaVRQQnA3alJicHdlK3V5Tkl5Z3htL2krR2lTM1VaOEswcDc0eWNINUZzS2VUTzBHS0Z3TWhOZVY3SFd4Lzcwb0JzTzd6MGRnVmM3RDNVSlB0eDhNUzFaUHNKSDU3RTM3aWNGaUNQNzBZMmVnWXFoNGk3R1B0c3M4djZDRlc1TjNHQ0Ywb2c0NWNNTEFvUVJDN0VLdlNCTXBpVG5uWFFDQ2VaQkVNeE04cnN0dGRIeFpYNGc1QktjQ1VGaXRLRGc3QlpHYmVac0JGK2tUTXd2RkwzcFQxQ3RyUndvaVE2dEU5RWhTTkxVQm0xcm13Uk1Lc1JTbnRSL1FaQ0hzVkIydGJ2OURaVitaQS9EcEN0MDVYaWZJWE85VWp6dW5XUGZubEZOckQ3QUFyOU5XOUJaVEkxbk1CYU8waXBCMjdIeXhGWEV0SVNVb3M5REdEamxXS0VOT2dTYnZETDNxMjhJY2Q1akdxSDJQcStFNXFpbXM0SzJ5eUZYT0JNcEkyTG9lY0NzTGQvZkpXQWtNa3MvcEtZODhnWGh3c1RqVWpLNW4xOWorM3o2RCtGMWo5T1FyRVRIRkc1b0VidllETzJaMTZubldLa1hGSisxV1ZRZzhvelV0eWVKK0IxanFpYnNtTT0mMzUzVWFVNDdrY1ZLcDY2c1R6YXJEbE5pSzFzPQ==\"; c_dpr=1; __utma=124449618.1256879651.1455771928.1455864319.1455874716.6; __utmb=124449618.23.9.1455880701472; __utmc=124449618; __utmz=124449618.1455864319.5.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)");
+
+
+            string cookieData = "_b=\"ARkvIkBdrc9EOKXfp/1WDxDnOv889Po6qG2VHHfEuQ/iUimBjBuf1WRtth3IJ/qXUfA=\"; sessionFunnelEventLogged=1; _pinterest_referrer=\"https://www.google.co.in/\"; _ga=GA1.2.2080157053.1455875290; __utmt=1; logged_out=True; fba=True; _auth=1; csrftoken=nVQ825cleqwcaCacwHzhvOistJkUJnEr; _pinterest_sess=\"TWc9PSZVcXZmSDBZNERhaVRQQnA3alJicHdlK3V5Tkl5Z3htL2krR2lTM1VaOEswcDc0eWNINUZzS2VUTzBHS0Z3TWhOZVY3SFd4Lzcwb0JzTzd6MGRnVmM3RDNVSlB0eDhNUzFaUHNKSDU3RTM3aWNGaUNQNzBZMmVnWXFoNGk3R1B0c3M4djZDRlc1TjNHQ0Ywb2c0NWNNTEFvUVJDN0VLdlNCTXBpVG5uWFFDQ2VaQkVNeE04cnN0dGRIeFpYNGc1QktjQ1VGaXRLRGc3QlpHYmVac0JGK2tUTXd2RkwzcFQxQ3RyUndvaVE2dEU5RWhTTkxVQm0xcm13Uk1Lc1JTbnRSL1FaQ0hzVkIydGJ2OURaVitaQS9EcEN0MDVYaWZJWE85VWp6dW5XUGZubEZOckQ3QUFyOU5XOUJaVEkxbk1CYU8waXBCMjdIeXhGWEV0SVNVb3M5REdEamxXS0VOT2dTYnZETDNxMjhJY2Q1akdxSDJQcStFNXFpbXM0SzJ5eUZYT0JNcEkyTG9lY0NzTGQvZkpXQWtNa3MvcEtZODhnWGh3c1RqVWpLNW4xOWorM3o2RCtGMWo5T1FyRVRIRkc1b0VidllETzJaMTZubldLa1hGSisxV1ZRZzhvelV0eWVKK0IxanFpYnNtTT0mMzUzVWFVNDdrY1ZLcDY2c1R6YXJEbE5pSzFzPQ==\"; c_dpr=1; __utma=124449618.1256879651.1455771928.1455864319.1455874716.6; __utmb=124449618.23.9.1455880701472; __utmc=124449618; __utmz=124449618.1455864319.5.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)";
+
+            string[] cookieSplited = Regex.Split(cookieData, ";");
+            gRequest.CookieContainer = new CookieContainer();
+            foreach (string item in cookieSplited)
+            {
+                string name = Regex.Split(item, "=")[0].Replace(" ","");
+                string Value = Regex.Split(item, "=")[1].Replace(" ", "");
+                string Domain = "in.pinterest.com";
+                Cookie cookie = new Cookie(name, Value, "/", Domain);
+                gRequest.CookieContainer.Add(cookie);
+
+            }
+
+
+
+
+        
 
             if (!string.IsNullOrEmpty(CsrfToken))
             {
-                gRequest.Headers.Add("X-CSRFToken", CsrfToken);
+                gRequest.Headers["X-APP-VERSION"] = CsrfToken;
+            }
+
+            foreach (Cookie item in gCookies)
+            {
+                if (item.Name == "csrftoken")
+                {
+                    string csrftokenValue = item.Value;
+
+                    gRequest.Headers["X-CSRFToken"] = csrftokenValue;
+
+                    break;
+                }
             }
 
             //gRequest.Headers.Add("Accept-Language", "en-US,en;q=0.8");
@@ -2236,8 +2275,6 @@ namespace Globussoft
             gRequest.Headers.Add("Javascript-enabled", "true");
             gRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            gRequest.CookieContainer = new CookieContainer();
-
             if (!string.IsNullOrEmpty(referer))
             {
                 gRequest.Referer = referer;
@@ -2250,7 +2287,7 @@ namespace Globussoft
             if (this.gCookies != null && this.gCookies.Count > 0)
             {
                 setExpect100Continue();
-                gRequest.CookieContainer.Add(gCookies);
+              //  gRequest.CookieContainer.Add(gCookies);
             }
 
             //logic to postdata to the form
@@ -2259,6 +2296,7 @@ namespace Globussoft
                 setExpect100Continue();
                 string postdata = string.Format(postData);
                 byte[] postBuffer = System.Text.Encoding.GetEncoding(1252).GetBytes(postData);
+                postBuffer = System.Text.Encoding.UTF8.GetBytes(postData);
                 gRequest.ContentLength = postBuffer.Length;
                 Stream postDataStream = gRequest.GetRequestStream();
                 postDataStream.Write(postBuffer, 0, postBuffer.Length);
@@ -3134,7 +3172,7 @@ namespace Globussoft
         }
 
 
-        public string postDataForPinterest(Uri formActionUrl, string postData, string Refrer)//, string proxyAddress, int port, string proxyUsername, string proxyPassword)
+        public string postDataForPinterest(Uri formActionUrl, string postData, string Refrer, string AppVersion)//, string proxyAddress, int port, string proxyUsername, string proxyPassword)
         {
             gRequest = (HttpWebRequest)WebRequest.Create(formActionUrl);
             gRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
@@ -3146,9 +3184,9 @@ namespace Globussoft
             gRequest.KeepAlive = true;
             gRequest.ContentType = @"application/x-www-form-urlencoded; charset=UTF-8";
             gRequest.Referer = Refrer;
-            gRequest.Headers["X-APP-VERSION"] = "d2dd61f";
+            gRequest.Headers["X-APP-VERSION"] = AppVersion;
             gRequest.Headers.Add("Javascript-enabled", "true");
-
+           // gRequest.Headers["X-Pinterest-AppState"] = "active";
             gRequest.Headers["X-Requested-With"] = "XMLHttpRequest";
             gRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 

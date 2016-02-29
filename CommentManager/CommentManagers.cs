@@ -150,8 +150,7 @@ namespace CommentManager
                                 objPinUser.ProxyPort = "80";
                             }
                             try
-                            {
-                                //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                            {                              
                                 checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
@@ -160,15 +159,15 @@ namespace CommentManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultiThreadedComment(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultiThreadedComment(ref objPinUser);
                             }
                             catch (Exception ex)
                             {
                                 GlobusLogHelper.log.Debug(" Debug : " + ex.StackTrace);
                             }
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -224,6 +223,16 @@ namespace CommentManager
         {
             try
             {
+                try
+                {
+                    lstThreadsComment.Add(Thread.CurrentThread);
+                    lstThreadsComment.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                {
+                    GlobusLogHelper.log.Error("Error : " + ex.StackTrace);
+                }
                 List<string> lstPinComment = new List<string>();
                 //List<string> lstAllPins = objLikeManagers.GetPins(ref objPinUser, MaxComment);
 

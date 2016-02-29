@@ -111,7 +111,8 @@ namespace PinDominator3.Pages.PagePin
                         {
                             pin.Board = arMessages[0];
                             pin.Description = arMessages[1];
-                            pin.ImageUrl = (arMessages[2] + arMessages[3]).Trim();
+                            pin.ImageUrl = (arMessages[2]).Trim();
+                            pin.Niche = (arMessages[3]).Trim();
 
                         }
                         if (!string.IsNullOrEmpty(pin.ImageUrl))
@@ -155,7 +156,7 @@ namespace PinDominator3.Pages.PagePin
                         {
                             if (rdbSingleUser_AddPinWithNewBoard.IsChecked == true)
                             {
-                                AddNewPinsListofAddNewBoardWithNewPin(lstBoardDesc);
+                               // AddNewPinsListofAddNewBoardWithNewPin(lstBoardDesc);
                             }
                             if (rdbMultipleUser_AddPinWithNewBoard.IsChecked == true)
                             {
@@ -472,7 +473,7 @@ namespace PinDominator3.Pages.PagePin
 
                 UserControl_SingleUser obj = new UserControl_SingleUser();
                 obj.UserControlHeader.Text = "Enter User Here ";
-                obj.txtEnterSingleMessages.ToolTip = "Format :- BoardName,Description,ImageUrl";
+                obj.txtEnterSingleMessages.ToolTip = "Format :- BoardName,Description,ImageUrl,Niche";
                 var window = new ModernDialog
                 {
 
@@ -507,9 +508,14 @@ namespace PinDominator3.Pages.PagePin
                             }
 
                         }
+                      
                     }
                     GlobusLogHelper.log.Info(" => [ User Loaded : " + lstBoardDesc.Count + " ]");
                     GlobusLogHelper.log.Debug("User : " + lstBoardDesc.Count);
+                    new Thread(() =>
+                    {
+                        AddNewPinsListofAddNewBoardWithNewPin(lstBoardDesc);
+                    }).Start();
                 } 
             }
             catch (Exception ex)

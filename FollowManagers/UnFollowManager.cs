@@ -169,12 +169,12 @@ namespace FollowManagers
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadUnFollow(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadUnFollow(ref objPinUser);
                             }
                             catch { };
                         }
-                        else if(objPinUser.isloggedin == true)
+                        if(objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -207,6 +207,14 @@ namespace FollowManagers
         {
             try
             {
+                try
+                {
+                    lstThreadsUnFollow.Add(Thread.CurrentThread);
+                    lstThreadsUnFollow.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 string ScreenName = objPinUser.ScreenName; //ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
 
                 if (!chkUploadUnFollowList)

@@ -156,7 +156,6 @@ namespace BoardManager
 
                                         try
                                         {
-                                            //checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
                                             checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                             if (!checkLogin)
@@ -165,14 +164,14 @@ namespace BoardManager
                                                 return;
                                             }
                                             string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                            GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                            StartActionMultithreadAddBoardName(ref objPinUser);
+                                            //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            //StartActionMultithreadAddBoardName(ref objPinUser);
                                         }
 
                                         catch (Exception ex)
                                         { };
                                     }
-                                    else if(objPinUser.isloggedin == true)
+                                    if(objPinUser.isloggedin == true)
                                     {
                                         try
                                         {
@@ -205,6 +204,14 @@ namespace BoardManager
         {
             try 
             {
+                try
+                {
+                    lstThreadsAddBoardName.Add(Thread.CurrentThread);
+                    lstThreadsAddBoardName.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 foreach (string Boardnames in ClGlobul.lstBoardNames)
                 {
                    string[] array1 = Regex.Split(Boardnames, ":");

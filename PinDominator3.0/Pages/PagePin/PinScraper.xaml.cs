@@ -295,6 +295,7 @@ namespace PinDominator3.Pages.PagePin
                         objAccountNotifyPropertyChanged.ModuleName = ModuleName;
                         objAccountNotifyPropertyChanged.PinNo = Pin;                      
                         objAccountNotifyPropertyChanged.Status = Status;
+                        objAccountNotifyPropertyChanged.ImageUrl = ImageUrl;
                         objAccountNotifyPropertyChanged.DateTime = DateAndTime;
 
                         this.Dispatcher.Invoke(new Action(delegate

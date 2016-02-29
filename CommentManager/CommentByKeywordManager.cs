@@ -238,12 +238,12 @@ namespace CommentManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadCommentByKeyword(ref objPinUser, list_lstTargetCommentByKeyword_item);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadCommentByKeyword(ref objPinUser, list_lstTargetCommentByKeyword_item);
                             }
                             catch { };
                         }
-                        else
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -276,6 +276,14 @@ namespace CommentManager
         {
             try
             {
+                try
+                {
+                    lstThreadsCommentByKeyword.Add(Thread.CurrentThread);
+                    lstThreadsCommentByKeyword.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                int counter = 0;
                 string[] arrayItem = new string[100];
 

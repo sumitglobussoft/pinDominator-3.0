@@ -41,7 +41,7 @@ namespace ManageAccountManager
         string about = string.Empty;
         string location = string.Empty;
         string website = string.Empty;
-        string CsrfMiddleToken = string.Empty;
+        string CsrfMiddleToken = string.Empty;     
         string userid = string.Empty;
 
 
@@ -152,13 +152,13 @@ namespace ManageAccountManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadManageAccount(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadManageAccount(ref objPinUser);
                             }
                             catch (Exception ex)
                             { };
                         } 
-                        else if(objPinUser.isloggedin == true)
+                        if(objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -188,6 +188,14 @@ namespace ManageAccountManager
         {
             try
             {
+                try
+                {
+                    lstThreadsManageAcc.Add(Thread.CurrentThread);
+                    lstThreadsManageAcc.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 PinInterestUser objPinChange = objPinUser;
                 #region ChangeEmail
                 if (rdbChangeEmailManageAccount == true)
@@ -288,6 +296,14 @@ namespace ManageAccountManager
         {
             try
             {
+                 try
+                {
+                    lstThreadsManageAcc.Add(Thread.CurrentThread);
+                    lstThreadsManageAcc.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 string pagesource = string.Empty;
                 string NewPostData = string.Empty;        
                 GlobusLogHelper.log.Info(" => [ Starting Email Update ]");
@@ -316,7 +332,7 @@ namespace ManageAccountManager
                         //NewPostData = "source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%22email%22%3A%22Abhita1234%40hotmail.com%22%2C%22locale%22%3A%22en-US%22%2C%22country%22%3A%22IN%22%2C%22gender%22%3A%22male%22%2C%22custom_gender%22%3A%22%22%2C%22personalize_from_offsite_browsing%22%3Atrue%2C%22ads_customize_from_conversion%22%3Atrue%2C%22first_name%22%3A%22abhish%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22abhita0328%22%2C%22about%22%3A%22%22%2C%22location%22%3A%22%22%2C%22website_url%22%3A%22%22%2C%22filter_settings%22%3A%22anyone%22%2C%22email_enabled%22%3Atrue%2C%22email_repins%22%3Atrue%2C%22email_likes%22%3Atrue%2C%22email_follows%22%3Atrue%2C%22email_interval%22%3A%22immediate%22%2C%22email_comments%22%3Atrue%2C%22email_shares%22%3Atrue%2C%22email_friends_joining%22%3Atrue%2C%22email_collaboration_invite%22%3Atrue%2C%22email_product_changes%22%3Atrue%2C%22email_suggestions%22%3Atrue%2C%22email_news%22%3Atrue%2C%22email_updates%22%3Atrue%2C%22email_education%22%3Atrue%2C%22email_feedback_and_research%22%3Atrue%2C%22web_push_notification%22%3Atrue%2C%22exclude_from_search%22%3Afalse%2C%22login_with_facebook%22%3Afalse%2C%22login_with_twitter%22%3Afalse%2C%22connectToGplus%22%3Afalse%2C%22connectToGoogle%22%3Afalse%2C%22connectToYahoo%22%3Afalse%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPage%3EButton(class_name%3DsaveSettingsButton%2C+color%3Dprimary%2C+type%3Dsubmit%2C+text%3DSave+Settings%2C+state_badgeValue%3D%22%22%2C+state_accessibilityText%3D%22%22%2C+state_disabled%3Dtrue)";                      
                         try
                         {
-                            pagesource = objPinEmail.globusHttpHelper.postFormDataWithCsrftoken(new Uri(url + "resource/UserSettingsResource/update/"), NewPostData, url, CsrfMiddleToken);
+                            pagesource = objPinEmail.globusHttpHelper.postFormDataWithCsrftoken(new Uri(url + "resource/UserSettingsResource/update/"), NewPostData, url, objPinEmail.App_version);
                             //https://in.pinterest.com/resource/UserSettingsResource/update/ 
                         }
                         catch (Exception ex)
@@ -361,26 +377,38 @@ namespace ManageAccountManager
         {
             try
             {
-                string pagesourcePwd = string.Empty;
-                string NewPostDataPwd = string.Empty;
-                GlobusLogHelper.log.Info(" => [ Starting Email Update ]");
                 try
                 {
-
+                    lstThreadsManageAcc.Add(Thread.CurrentThread);
+                    lstThreadsManageAcc.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
+                string pagesourcePwd = string.Empty;
+                string NewPostDataPwd = string.Empty;
+                GlobusLogHelper.log.Info(" => [ Starting Password Update ]");
+                try
+                {
                     string pageSource = objPinPwd.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                    CsrfMiddleToken = Utils.Utils.getBetween(pageSource, "\"csrftoken\": \"", "\", \"");
+                    string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+                    string newHomePageUrl = redirectDomain + "." + "pinterest.com";
+
                     string res_ProfilePage = objPinPwd.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/settings/"), "https://www.pinterest.com/", "", "");
                     userid = getUserid(res_ProfilePage);
-                    string Res_settingPagesource = objPinPwd.globusHttpHelper.getHtmlfromUrl(new Uri("https://in.pinterest.com/resource/UpdatesResource/get/?source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPage%3EShowModalButton(module%3DUserChangePassword)%23App%3EModalManager%3EModal(showCloseModal%3Dtrue%2C+mouseDownInModal%3Dfalse)&_=1449746352521"), "", "", "");
-                    string redirect = GlobusHttpHelper.valueURl;
-                    string url = Utils.Utils.getBetween(redirect, "", "resource/");
-
+                    string Res_settingPagesource = objPinPwd.globusHttpHelper.getHtmlfromUrl(new Uri(redirectDomain + ".pinterest.com/resource/UpdatesResource/get/?source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPage%3EShowModalButton(module%3DUserChangePassword)%23App%3EModalManager%3EModal(showCloseModal%3Dtrue%2C+mouseDownInModal%3Dfalse)&_=1449746352521"), "", "", "");
+                    //string redirect = GlobusHttpHelper.valueURl;
+                    //string url = Utils.Utils.getBetween(redirect, "", "resource/");
+                    string AppVersion = Utils.Utils.getBetween(Res_settingPagesource, "app_version\": \"", "\",");
                     try
                     {
-                        NewPostDataPwd = "source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%22new_password%22%3A%22" + newPassword + "%22%2C%22new_password_confirm%22%3A%22" + newPassword + "%22%2C%22old_password%22%3A%22" + objPinPwd.Password + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPage%3EShowModalButton(module%3DUserChangePassword)%23App%3EModalManager%3EModal(showCloseModal%3Dtrue%2C+mouseDownInModal%3Dfalse)";
+
+                        //QwErTy98210abc1345
+                        //NewPostDataPwd = "source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%22new_password%22%3A%22" + newPassword + "%22%2C%22new_password_confirm%22%3A%22" + newPassword + "%22%2C%22old_password%22%3A%22" + objPinPwd.Password + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPage%3EShowModalButton(module%3DUserChangePassword)%23App%3EModalManager%3EModal(showCloseModal%3Dtrue%2C+mouseDownInModal%3Dfalse)";
+                        NewPostDataPwd = "source_url=%2Fsettings%2F&data=%7B%22options%22%3A%7B%22new_password%22%3A%22" + newPassword + "%22%2C%22new_password_confirm%22%3A%22" + newPassword + "%22%2C%22old_password%22%3A%22" + objPinPwd.Password + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserSettingsPageReactWrapper%3EUserSettingsPage%3EShowModalButton(module%3DUserChangePassword)%23App%3EModalManager%3EModal(state_isVisible%3Dtrue%2C+showCloseModal%3Dtrue%2C+state_mouseDownInModal%3Dfalse%2C+state_showModalMask%3Dtrue%2C+state_showContainer%3Dfalse%2C+state_showPositionElement%3Dtrue%2C+state_slow%3Dfalse)";
                         try
                         {
-                            pagesourcePwd = objPinPwd.globusHttpHelper.postFormDataWithCsrftoken(new Uri(url + "resource/UserPasswordResource/update/"), NewPostDataPwd, url, CsrfMiddleToken);
+                            pagesourcePwd = objPinPwd.globusHttpHelper.postFormDataWithCsrftoken(new Uri(redirectDomain + ".pinterest.com/resource/UserPasswordResource/update/"), NewPostDataPwd, newHomePageUrl, AppVersion);
                             //https://in.pinterest.com/resource/UserSettingsResource/update/ 
                         }
                         catch (Exception ex)

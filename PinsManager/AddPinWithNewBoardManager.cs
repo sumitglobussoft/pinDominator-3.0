@@ -164,13 +164,13 @@ namespace PinsManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadAddPinWithNewBoard(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadAddPinWithNewBoard(ref objPinUser);
                             }
 
                             catch { };
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -198,21 +198,31 @@ namespace PinsManager
 
         public void StartActionMultithreadAddPinWithNewBoard(ref PinInterestUser objPinUser12)
         {
+            Pins obj = new Pins();
             try
             {
                 PinInterestUser objPinUser = (PinInterestUser)objPinUser12;
-
-                foreach (string strPinList in ClGlobul.addNewPinWithBoard)
+                try
                 {
-                    string strPin = strPinList.Replace("\0", "").Trim();
-                    string[] pin = Regex.Split(strPin, ",");
-                  
-                    if (pin.Count() != 3)
-                    {
-                        GlobusLogHelper.log.Info(" => [ Please upload correct file format ]");
-                        return;
-                    }
+                    lstThreadsAddPinWithNewBoard.Add(Thread.CurrentThread);
+                    lstThreadsAddPinWithNewBoard.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
                 }
+                catch (Exception ex)
+                { };
+                //string strPin=string.Empty;
+                //string[] arrPin = null;
+                //foreach (string strPinList in ClGlobul.addNewPinWithBoard)
+                //{
+                //    strPin = strPinList.Replace("\0", "").Trim();
+                //    arrPin = Regex.Split(strPin, ",");
+
+                //    if (arrPin.Count() != 4)
+                //    {
+                //        GlobusLogHelper.log.Info(" => [ Please upload correct file format ]");
+                //        return;
+                //    }
+                //}
 
                 PinInterestUser objPinUseaddpin = objPinUser;
                 UserPins = ClGlobul.lst_AddnewPinWithNewBoard.FindAll(P => P.Email == objPinUseaddpin.Username).ToList();
@@ -226,13 +236,15 @@ namespace PinsManager
 
                 foreach (Pins pin in UserPins)
                 {
-                    Thread thread = new Thread(() => ThreadRepinMethod(pin, objPinUser));
-                    thread.Start();
-                    Thread.Sleep(ThreadDelay * 1000);
+                    if (pin.Niche == objPinUser12.Niches)
+                    {
+                        Thread thread = new Thread(() => ThreadRepinMethod(pin, objPinUser));
+                        thread.Start();
+                        Thread.Sleep(ThreadDelay * 1000);
+                    }
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
             }
@@ -242,6 +254,15 @@ namespace PinsManager
         {
             try
             {
+                try
+                {
+                    lstThreadsAddPinWithNewBoard.Add(Thread.CurrentThread);
+                    lstThreadsAddPinWithNewBoard.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
+
                 Board = Regex.Split(pin.Board, ":")[0];                         
                 if (!string.IsNullOrEmpty(Board))
                 {
@@ -251,6 +272,7 @@ namespace PinsManager
                     {
                         GlobusLogHelper.log.Info(" => [ " + Board + " Not Found. Creating Board ]");
                         BoardNumber = CreateBoard_new(Board, "Other", ref objPinUser);
+                        BoardNumber = objAddNewPinManager.GetBoardId(Board, ref objPinUser);
                     }
                 }
                 else
@@ -378,14 +400,21 @@ namespace PinsManager
                             GlobusLogHelper.log.Info(" => [ You already have a board with this name. " + BoardName + " For " + objPinUser.Username + " ]");
                             return null;
                         }
-
-                        string ModuleName = "AddBoardName";
-                        string Status = "Board_Created";
-                        QueryManager qm = new QueryManager();
-                        qm.insertAccRePort(objPinUser.Username, ModuleName, "", BoardName, "", "", "", "", Status, "", "", DateTime.Now);
-                        //qm.insertBoard_AddBoardName(objPinUser.Username, ModuleName, BoardName, Status);
-                        objDelegateAccountReport();
-
+                        try
+                        {
+                            string ModuleName = "AddBoardName";
+                            string Status = "Board_Created";
+                            QueryManager qm = new QueryManager();
+                            qm.insertAccRePort(objPinUser.Username, ModuleName, "", BoardName, "", "", "", "", Status, "", "", DateTime.Now);
+                            //qm.insertBoard_AddBoardName(objPinUser.Username, ModuleName, BoardName, Status);
+                            objDelegateAccountReport();
+                        }
+                        catch (Exception ex)
+                        {
+                            GlobusLogHelper.log.Info(" => [ Board Created " + BoardName + " ]");
+                            return null;
+                        }
+                        
                         GlobusLogHelper.log.Info(" => [ Successfully Created Board " + BoardName + " For " + objPinUser.Username + " ]");
                         string BoardId = objAddNewPinManager.GetBoardId_Board(BoardName, ref objPinUser);//GetBoardId(BoardName, ref pinterestAccountManager);
                         return BoardId;

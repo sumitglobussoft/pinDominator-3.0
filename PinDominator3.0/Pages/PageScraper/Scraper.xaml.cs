@@ -276,7 +276,7 @@ namespace PinDominator3.Pages.PageScraper
                 DS.Tables.Add(dt);
                 try
                 {
-                    DS = QM.SelectAddReport("Scraper");
+                    DS = QM.SelectAddReportScrapeUser("Scraper");
                 }
                 catch (Exception ex)
                 {
@@ -290,10 +290,10 @@ namespace PinDominator3.Pages.PageScraper
                         count++;
                         id = int.Parse(dt_item.ItemArray[0].ToString());
                        // string AccountName = dt_item.ItemArray[1].ToString();
-                        string ModuleName = dt_item.ItemArray[2].ToString();
-                        string UserName = dt_item.ItemArray[5].ToString();                
-                        string Status = dt_item.ItemArray[9].ToString();
-                        string DateAndTime = dt_item.ItemArray[12].ToString();
+                        string ModuleName = dt_item.ItemArray[1].ToString();
+                        string UserName = dt_item.ItemArray[2].ToString();                
+                        string Status = dt_item.ItemArray[3].ToString();
+                        string DateAndTime = dt_item.ItemArray[4].ToString();
                         dt.Rows.Add(count, ModuleName, UserName, Status, DateAndTime);
                     }
                     catch (Exception ex)
@@ -327,7 +327,7 @@ namespace PinDominator3.Pages.PageScraper
             {
                 if (ModernDialog.ShowMessage("Are You Really Want To Delete This Data Permanently?", " Delete Account ", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    QM.DeleteAccountReport("Scraper");
+                    QM.DeleteAccountReportScrapeUser("Scraper");
                     GlobusLogHelper.log.Info(" => [ All Data is Deleted ] ");
                 }
                 AccountReport_Scraper();
@@ -379,7 +379,7 @@ namespace PinDominator3.Pages.PageScraper
                                 GlobusLogHelper.log.Debug("Export Data File Path :" + FilePath);
                                 string ExportDataLocation = FilePath;
                                 PDGlobals.Pindominator_Folder_Path = FilePath;
-                                DataSet ds = QM.SelectAddReport("Scraper");
+                                DataSet ds = QM.SelectAddReportScrapeUser("Scraper");
                                 foreach (DataRow item in ds.Tables[0].Rows)
                                 {
                                     try

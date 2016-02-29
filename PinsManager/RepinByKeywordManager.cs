@@ -162,8 +162,8 @@ namespace PinsManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadRepinByKeyword(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadRepinByKeyword(ref objPinUser);
                             }
 
                             catch (Exception ex)
@@ -171,7 +171,7 @@ namespace PinsManager
                                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                             }
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -203,6 +203,15 @@ namespace PinsManager
             PinInterestUser objPinUser = objPinInUser;
             try
             {
+                try
+                {
+                    lstThreadsRepinByKeyword.Add(Thread.CurrentThread);
+                    lstThreadsRepinByKeyword.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
+
                 foreach (var item_TemplstListOfBoardNames in ClGlobul.lstRepinByKeyword)
                 {
                     try
@@ -257,6 +266,15 @@ namespace PinsManager
         {
             try
             {
+                try
+                {
+                    lstThreadsRepinByKeyword.Add(Thread.CurrentThread);
+                    lstThreadsRepinByKeyword.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
+
                 string BoardId = string.Empty;
                 AddNewPinManager objaddnewPin = new AddNewPinManager();
                 RePinManager objRepin = new RePinManager();

@@ -163,12 +163,12 @@ namespace InviteManager
                                     return;
                                 }
                                 string checklogin = httpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadInvite(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadInvite(ref objPinUser);
                             }
                             catch { };
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
@@ -228,6 +228,14 @@ namespace InviteManager
         {
             try
             {
+                try
+                {
+                    lstThreadsInvite.Add(Thread.CurrentThread);
+                    lstThreadsInvite.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 foreach (var item_lstEmailInvites in ClGlobul.lstEmailInvites)
                 {
                     try

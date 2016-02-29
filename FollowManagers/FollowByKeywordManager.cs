@@ -184,13 +184,17 @@ namespace FollowManagers
                                                 return;
                                             }
                                             string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                            GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                            StartActionMultithreadFollowByKeyword(ref objPinUser);
+                                            //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                            //StartActionMultithreadFollowByKeyword(ref objPinUser);
+                                            if (checklogin.Contains("profileName"))
+                                            {
+                                            }
+                                            else { }	
                                         }
 
                                         catch { };
                                     }
-                                    else if(objPinUser.isloggedin == true)
+                                    if(objPinUser.isloggedin == true)
                                     {
                                         try
                                         {
@@ -251,6 +255,14 @@ namespace FollowManagers
         {
             try
             {
+                try
+                {
+                    lstThreadsFollowByKeyword.Add(Thread.CurrentThread);
+                    lstThreadsFollowByKeyword.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 DataTable FollowedCount = QM.SelectFollowsToday(objPinUser.Username);
                 int TotalFollow = NoOfUserFollowByKeyword;
                 //int CountLeft = NoOfUserFollowByKeyword - FollowedCount.Rows.Count;

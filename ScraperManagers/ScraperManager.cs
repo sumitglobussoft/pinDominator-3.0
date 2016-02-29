@@ -215,6 +215,7 @@ namespace ScraperManagers
             try
             {
                 ClGlobul.lstTotalUserScraped.Clear();
+                List<string> lstFollower = new List<string>(); 
                 GlobusLogHelper.log.Info(" => [ Starting Extraction Of Followers For " + UserName + " ]");
                 objPinUser.globusHttpHelper = new GlobusHttpHelper();
 
@@ -328,21 +329,21 @@ namespace ScraperManagers
 
                                 foreach (string lstdata in followers)
                                 {
-                                    ClGlobul.lstTotalUserScraped.Add(lstdata);
+                                    lstFollower.Add(lstdata);
                                     #region AccountReport
 
                                     string module = "Scraper";
                                     string status = "Followers";
-                                    qm.insertAccRePort("", module, "", "", lstdata, "", "", "", status, "", "", DateTime.Now);
+                                    qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
                                     objScraperDelegate();
 
                                     #endregion
-                                    if (followers.Count >= MaxCountScraper)
+                                    if (lstFollower.Count >= MaxCountScraper)
                                     {
                                         return ClGlobul.lstTotalUserScraped; 
                                     }
                                 }
-                                ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
+                                ClGlobul.lstTotalUserScraped = lstFollower.Distinct().ToList();
                                
                                 Thread.Sleep(1000);
 
@@ -379,6 +380,7 @@ namespace ScraperManagers
             try
             {
                 ClGlobul.lstTotalUserScraped.Clear();
+                List<string> lstFollowing = new List<string>();
                 GlobusLogHelper.log.Info(" => [ Starting Extraction Of Following For " + UserName + " ]");       
                 objPinUser.globusHttpHelper = new GlobusHttpHelper();
 
@@ -532,21 +534,21 @@ namespace ScraperManagers
                                 followings = followings.Distinct().ToList();
                                 foreach (string lstdata in followings)
                                 {
-                                    ClGlobul.lstTotalUserScraped.Add(lstdata);
+                                    lstFollowing.Add(lstdata);
                                     #region AccountReport
 
                                     string module = "Scraper";
                                     string status = "Following";
-                                    qm.insertAccRePort("", module, "", "", lstdata, "", "", "", status, "", "", DateTime.Now);
+                                    qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
                                     objScraperDelegate();
 
                                     #endregion
-                                    if (followings.Count >= MaxCountScraper)
+                                    if (lstFollowing.Count >= MaxCountScraper)
                                     {
                                         break;
                                     }
                                 }
-                                ClGlobul.lstTotalUserScraped = ClGlobul.lstTotalUserScraped.Distinct().ToList();
+                                ClGlobul.lstTotalUserScraped = lstFollowing.Distinct().ToList();
                                 if (ClGlobul.lstTotalUserScraped.Count >= MaxCountScraper)
                                 {
                                     return ClGlobul.lstTotalUserScraped;

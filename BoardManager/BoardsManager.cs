@@ -57,7 +57,7 @@ namespace BoardManager
         string BoardUrl = string.Empty;
         List<string> TemplstListOfBoardNames = new List<string>();
         List<Thread> boardinput = new List<Thread>();
-        List<string> lstPopularPins = new List<string>();
+        
         string PopularPinPageSource = string.Empty;
         string NextPageUrlPinPageSource = string.Empty;
         string BookMark = string.Empty;
@@ -189,7 +189,7 @@ namespace BoardManager
                             }
                             try
                             {
-                               // checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
+                                // checkLogin = ObjAccountManager.LoginPinterestAccount1(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
                                 checkLogin = ObjAccountManager.LoginPinterestAccount1forlee(ref objPinUser, objPinUser.Username, objPinUser.Password, objPinUser.ProxyAddress, objPinUser.ProxyPort, objPinUser.ProxyUsername, objPinUser.ProxyPassword, objPinUser.ScreenName);
 
                                 if (!checkLogin)
@@ -199,8 +199,8 @@ namespace BoardManager
                                     return;
                                 }
                                 string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
-                                GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
-                                StartActionMultithreadBoards(ref objPinUser);
+                                //GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
+                                //StartActionMultithreadBoards(ref objPinUser);
                             }
 
                             catch (Exception ex)
@@ -208,14 +208,14 @@ namespace BoardManager
                                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                             }
                         }
-                        else if (objPinUser.isloggedin == true)
+                        if (objPinUser.isloggedin == true)
                         {
                             try
                             {
                                 GlobusLogHelper.log.Info(" => [ Logged In With : " + objPinUser.Username + " ]");
                                 StartActionMultithreadBoards(ref objPinUser);
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                             }
@@ -240,23 +240,35 @@ namespace BoardManager
             PinInterestUser objPinUser = objPinInUser;
             try
             {
+                try
+                {
+                    lstThreadsBoards.Add(Thread.CurrentThread);
+                    lstThreadsBoards.Distinct().ToList();
+                    Thread.CurrentThread.IsBackground = true;
+                }
+                catch (Exception ex)
+                { };
                 //TemplstListOfBoardNames.AddRange(ClGlobul.lstListOfBoardNames);
 
                 foreach (var item_TemplstListOfBoardNames in ClGlobul.lstListOfBoardNames)
                 {
                     try
                     {
-                        string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
-                        string boardurl = url[2].ToString();
-                        string Boardname = string.Empty;
-                        string niche = string.Empty;
-                        niche = url[0];
-                        Boardname = url[1];
-                        if (niche == objPinUser.Niches)
+                        lock (this)
                         {
-                            Thread thread = new Thread(() => BoardMethod(Boardname, boardurl, ref objPinUser));
-                            thread.Start();
-                            Thread.Sleep(10 * 1000);
+                            string[] url = Regex.Split(item_TemplstListOfBoardNames, "::");
+                            if (url[0] == objPinUser.Niches)
+                            {
+                                string boardurl = url[2].ToString();
+                                string Boardname = string.Empty;
+                                string niche = string.Empty;
+                                niche = url[0];
+                                Boardname = url[1];
+
+                                Thread thread = new Thread(() => BoardMethod(Boardname, boardurl, ref objPinUser));
+                                thread.Start();
+                                Thread.Sleep(10 * 1000);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -437,155 +449,170 @@ namespace BoardManager
         {
             try
             {
-                string BoardId = string.Empty;
-                AddNewPinManager objaddnewPin = new AddNewPinManager();
-                RePinManager objRepin = new RePinManager();
                 try
                 {
-                    boardinput.Add(Thread.CurrentThread);
-                    boardinput.Distinct();
+                    lstThreadsBoards.Add(Thread.CurrentThread);
+                    lstThreadsBoards.Distinct().ToList();
                     Thread.CurrentThread.IsBackground = true;
                 }
                 catch (Exception ex)
                 { };
-
-                if (string.IsNullOrEmpty(BoardName))
+                lock (this)
                 {
+                    string BoardId = string.Empty;
+                    AddNewPinManager objaddnewPin = new AddNewPinManager();
+                    RePinManager objRepin = new RePinManager();
                     try
                     {
-                        List<string> baordnames = GetAllBoardNames_new(ref objPinInUser);
-                        BoardName = baordnames[RandomNumberGenerator.GenerateRandom(0, baordnames.Count - 1)];
-                        BoardId = objaddnewPin.GetBoardId(BoardName, ref objPinInUser);
+                        boardinput.Add(Thread.CurrentThread);
+                        boardinput.Distinct();
+                        Thread.CurrentThread.IsBackground = true;
                     }
                     catch (Exception ex)
                     { };
-                }
-                else
-                {
-                    //testing
 
-                    GlobusHttpHelper objHttp = new GlobusHttpHelper();
-
-                    try
+                    if (string.IsNullOrEmpty(BoardName))
                     {
-
-                        BoardId = objaddnewPin.GetBoardId_Board(BoardName, ref objPinInUser);
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-
-                if (string.IsNullOrEmpty(BoardId))
-                {
-                    BoardId = objaddnewPin.GetBoardId(BoardName, ref objPinInUser);
-                }
-
-                int counter = 0;
-                int RepinCounter = 0;
-                if (!BoardId.Contains("failure"))
-                {
-                    if (!string.IsNullOrEmpty(BoardId))
-                    {
-                        if (PDGlobals.ValidateNumber(BoardId))
+                        try
                         {
-                            GlobusLogHelper.log.Info(" => [ Adding Pins From Board :" + BoardUrl + " ]");
+                            List<string> baordnames = GetAllBoardNames_new(ref objPinInUser);
+                            BoardName = baordnames[RandomNumberGenerator.GenerateRandom(0, baordnames.Count - 1)];
+                            BoardId = objaddnewPin.GetBoardId(BoardName, ref objPinInUser);
+                        }
+                        catch (Exception ex)
+                        { };
+                    }
+                    else
+                    {
+                        //testing
 
-                            clsSettingDB db = new clsSettingDB();
-                            List<string> lstPins = GetBoardPinsNew(BoardId, BoardUrl, 10, ref objPinInUser);
-                            lstPins.Distinct();
-                            List<string> lstOfRepin = new List<string>();
-                            lstOfRepin.AddRange(lstPins);
-                            //getting lstPins length
-                            int lenOFlstPins = lstOfRepin.Count;
+                        GlobusHttpHelper objHttp = new GlobusHttpHelper();
 
-                            foreach (string Pins in lstOfRepin)
-                            {
+                        try
+                        {
 
-                                if (MaxRePinCount > RepinCounter)
-                                {
-                                    string Message = string.Empty;
-                                    if (ClGlobul.lstBoardRepinMessage.Count > 0)
-                                    {
-                                        if (counter < ClGlobul.lstBoardRepinMessage.Count)
-                                        {
-                                            Message = ClGlobul.lstBoardRepinMessage[counter];
-                                        }
-                                        else
-                                        {
-                                            counter = 0;
-                                            Message = ClGlobul.lstBoardRepinMessage[counter];
-                                        }
-
-                                    }
-
-                                    bool IsReppined = false;
-                                    if (!Pins.Contains("n"))
-                                    {
-                                        try
-                                        {
-                                            int index = lstOfRepin.Where(x => x == Pins).Select(x => lstOfRepin.IndexOf(x)).Single<int>();
-
-                                            string NoOfPages = Convert.ToString(index / lenOFlstPins);
-
-                                            IsReppined = objRepin.RepinwithMessage(Pins, Message, BoardId, NoOfPages, ref objPinInUser);
-                                        }
-
-                                        catch { }
-                                        if (IsReppined)
-                                        {
-                                            //GlobusLogHelper.log.Info("[ => [ Repin Id : " + Pins + " ]");
-                                            #region AccountReport                                      
-
-                                            string module = "Boards";
-                                            string status = "Repined";
-                                            Qm.insertAccRePort(objPinInUser.Username, module, "https://www.pinterest.com/pin/" + Pins, BoardName, "", "", "", "", status, "", "", DateTime.Now);
-                                            objBoardDelegate();
-
-                                            #endregion
-
-                                            GlobusLogHelper.log.Info(" => [ Repin Pin : " + Pins + " to Account : " + objPinInUser.Username + " In " + BoardName + " ]");
-                                            try
-                                            {
-                                                string CSV_Header = "Date" + "," + "UserName" + "," + "Message" + "," + "Pin" + "Board Id";
-                                                string CSV_Data = System.DateTime.Now.ToString() + "," + objPinInUser.Username + "," + Message + "," + "https://www.pinterest.com/pin/" + Pins + "," + BoardId;
-
-                                                PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, Boardpath + "\\Board.csv");
-                                                RepinCounter++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-
-                                            }
-
-                                            //kept here
-                                            int delay = RandomNumberGenerator.GenerateRandom(minDelayBoards, maxDelayBoards);
-                                            GlobusLogHelper.log.Info(" => [ Delay for " + delay + " Seconds ]");
-                                            Thread.Sleep(delay * 1000);
-                                        }
-                                        else
-                                        {
-
-                                        }
-
-                                        counter++;
-                                    }
-                                }
-                                else
-                                {
-                                    GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinInUser.Username + " In " + BoardName + "]");
-                                    GlobusLogHelper.log.Info("-----------------------------------------------------------------------------");
-                                    break;
-                                }
-                            }
+                            BoardId = objaddnewPin.GetBoardId_Board(BoardName, ref objPinInUser);
+                        }
+                        catch (Exception ex)
+                        {
 
                         }
                     }
-                }
-                else
-                {
-                    GlobusLogHelper.log.Info("  => [ You already have a board with that name. " + objPinInUser.Username + " ]");
+
+                    if (string.IsNullOrEmpty(BoardId))
+                    {
+                        BoardId = objaddnewPin.GetBoardId(BoardName, ref objPinInUser);
+                    }
+
+                    int counter = 0;
+                    int RepinCounter = 0;
+                    if (!BoardId.Contains("failure"))
+                    {
+                        if (!string.IsNullOrEmpty(BoardId))
+                        {
+                            if (PDGlobals.ValidateNumber(BoardId))
+                            {
+                                GlobusLogHelper.log.Info(" => [ Adding Pins From Board :" + BoardUrl + " ]");
+
+                                clsSettingDB db = new clsSettingDB();
+                                List<string> lstPins = new List<string>();
+                                lstPins = GetBoardPinsNew(BoardId, BoardUrl, 10, ref objPinInUser);
+                                lstPins.Distinct();
+                                List<string> lstOfRepin = new List<string>();
+                                lstOfRepin.AddRange(lstPins);
+
+                                string[] lstPinNo = null;
+                                lstPinNo = lstPins.ToArray();
+                                //getting lstPins length
+                                int lenOFlstPins = lstOfRepin.Count;
+
+                                foreach (string Pins in lstPinNo)
+                                {
+
+                                    if (MaxRePinCount > RepinCounter)
+                                    {
+                                        string Message = string.Empty;
+                                        if (ClGlobul.lstBoardRepinMessage.Count > 0)
+                                        {
+                                            if (counter < ClGlobul.lstBoardRepinMessage.Count)
+                                            {
+                                                Message = ClGlobul.lstBoardRepinMessage[counter];
+                                            }
+                                            else
+                                            {
+                                                counter = 0;
+                                                Message = ClGlobul.lstBoardRepinMessage[counter];
+                                            }
+
+                                        }
+
+                                        bool IsReppined = false;
+                                        if (!Pins.Contains("n"))
+                                        {
+                                            try
+                                            {
+                                                int index = lstOfRepin.Where(x => x == Pins).Select(x => lstOfRepin.IndexOf(x)).Single<int>();
+
+                                                string NoOfPages = Convert.ToString(index / lenOFlstPins);
+
+                                                IsReppined = objRepin.RepinwithMessage(Pins, Message, BoardId, NoOfPages, ref objPinInUser);
+                                            }
+
+                                            catch { }
+                                            if (IsReppined)
+                                            {
+                                                //GlobusLogHelper.log.Info("[ => [ Repin Id : " + Pins + " ]");
+                                                #region AccountReport
+
+                                                string module = "Boards";
+                                                string status = "Repined";
+                                                Qm.insertAccRePort(objPinInUser.Username, module, "https://www.pinterest.com/pin/" + Pins, BoardName, "", "", "", "", status, "", "", DateTime.Now);
+                                                objBoardDelegate();
+
+                                                #endregion
+
+                                                GlobusLogHelper.log.Info(" => [ Repin Pin : " + Pins + " to Account : " + objPinInUser.Username + " In " + BoardName + " ]");
+                                                try
+                                                {
+                                                    string CSV_Header = "Date" + "," + "UserName" + "," + "Message" + "," + "Pin" + "Board Id";
+                                                    string CSV_Data = System.DateTime.Now.ToString() + "," + objPinInUser.Username + "," + Message + "," + "https://www.pinterest.com/pin/" + Pins + "," + BoardId;
+
+                                                    PDGlobals.ExportDataCSVFile(CSV_Header, CSV_Data, Boardpath + "\\Board.csv");
+                                                    RepinCounter++;
+                                                }
+                                                catch (Exception ex)
+                                                {
+
+                                                }
+
+                                                //kept here
+                                                int delay = RandomNumberGenerator.GenerateRandom(minDelayBoards, maxDelayBoards);
+                                                GlobusLogHelper.log.Info(" => [ Delay for " + delay + " Seconds ]");
+                                                Thread.Sleep(delay * 1000);
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+                                            counter++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        GlobusLogHelper.log.Info(" => [ PROCESS COMPLETED " + " For " + objPinInUser.Username + " In " + BoardName + "]");
+                                        GlobusLogHelper.log.Info("-----------------------------------------------------------------------------");
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GlobusLogHelper.log.Info("  => [ You already have a board with that name. " + objPinInUser.Username + " ]");
+                    }
                 }
             }
             catch (Exception ex)
@@ -654,7 +681,8 @@ namespace BoardManager
         }
 
         public List<string> GetBoardPinsNew(string BoardId, string BoardUrl, int PageCount, ref PinInterestUser objPinInUser)
-        {           
+        {
+            List<string> lstPopularPins = new List<string>();
             try
             {
                 //Log("[ " + DateTime.Now + " ] => [ Start Getting Popular Pins For this User " + objPinInUser.Username + " ]");

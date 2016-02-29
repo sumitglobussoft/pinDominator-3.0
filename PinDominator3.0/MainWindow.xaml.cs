@@ -1,5 +1,6 @@
 ﻿using BaseLib;
 using CommentManager;
+using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using Globussoft;
 using log4net.Config;
@@ -44,12 +45,12 @@ namespace PinDominator3
         {
             XmlConfigurator.Configure();
             InitializeComponent();
+            AppearanceManager.Current.AccentColor = Colors.Red;
             CopyDatabase();
             UploadAccount objUploadAccount = new UploadAccount();
             objUploadAccount.AccounLoad();
             mainFormReference = this;
-
-
+           
             Thread Obj_CheckVersion = new Thread(CheckVersion);
             Obj_CheckVersion.SetApartmentState(ApartmentState.STA);
             Obj_CheckVersion.Start();
@@ -207,7 +208,8 @@ namespace PinDominator3
                     {
                         if (ex.Message.Contains("Could not find a part of the path"))
                         {
-
+                            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\PinDominator3.0");
+                            File.Copy(startBanner, localBanner);
                         }
                     }
                 }
@@ -224,7 +226,8 @@ namespace PinDominator3
                     {
                         if (ex.Message.Contains("Could not find a part of the path"))
                         {
-
+                            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\PinDominator3.0");
+                            File.Copy(logopath, localAppLogo);
                         }
                     }
                 }
