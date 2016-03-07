@@ -1,0 +1,22 @@
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.dll
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.pdb
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\bin\Debug\ChilkatDotNet2.dll
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\bin\Debug\log4net.dll
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\bin\Debug\System.Data.SQLite.dll
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.dll
+D:\PinDominator3.0_mvvm\PinDominator 3.0 Github code\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.pdb
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.dll
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.pdb
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\ChilkatDotNet2.dll
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\log4net.dll
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\System.Data.SQLite.dll
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\bin\Debug\System.Data.SQLite.xml
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.dll
+D:\Dominator\Pin Dominator 3.0\pinDominator-3.0 22.12.2015\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.pdb
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.dll
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\bin\Debug\BaseLib.pdb
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\bin\Debug\ChilkatDotNet2.dll
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\bin\Debug\log4net.dll
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\bin\Debug\System.Data.SQLite.dll
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.dll
+D:\PinDominator3.0_mvvm\pinDominator-3.0_28.12.2015\pinDominator-3.0\BaseLib\obj\Debug\BaseLib.pdb

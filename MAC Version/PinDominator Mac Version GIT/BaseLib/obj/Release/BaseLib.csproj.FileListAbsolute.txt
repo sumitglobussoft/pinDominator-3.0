@@ -1,0 +1,17 @@
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\BaseLib.dll
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\BaseLib.pdb
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\ChilkatDotNet2.dll
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\System.Data.SQLite.dll
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\System.Data.SQLite.xml
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\obj\Release\BaseLib.dll
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\obj\Release\BaseLib.pdb
+C:\Users\GLB-280\Documents\Visual Studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\bin\Release\log4net.dll
+C:\Users\GLB-280\Documents\visual studio 2013\Projects\PinDominator3.0\PD3.0From_Ajay_Sir\PinDominator3.0\BaseLib\obj\Release\BaseLib.csprojResolveAssemblyReference.cache
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\bin\Release\BaseLib.dll
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\bin\Release\BaseLib.pdb
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\bin\Release\ChilkatDotNet2.dll
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\bin\Release\log4net.dll
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\bin\Release\System.Data.SQLite.dll
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\obj\Release\BaseLib.dll
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\obj\Release\BaseLib.pdb
+D:\PinDominator3.0_mvvm\PinDominator3.0\BaseLib\obj\Release\BaseLib.csprojResolveAssemblyReference.cache

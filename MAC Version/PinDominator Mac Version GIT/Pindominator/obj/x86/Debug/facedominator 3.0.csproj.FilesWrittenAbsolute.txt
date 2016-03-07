@@ -1,0 +1,12 @@
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/obj/x86/Debug/facedominator.gtk-gui.gui.stetic
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/facedominator.exe.config
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/facedominator.exe.mdb
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/facedominator.exe
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/obj/x86/Debug/facedominator.exe
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/obj/x86/Debug/facedominator.exe.mdb
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/System.Data.SQLite.dll
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/System.Web.dll
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/BaseLibFB.dll
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/BaseLibFB.dll.mdb
+/Users/gbs-ios/Desktop/ajay/ajay/FD3.0_MACVer/facedominator/bin/Debug/ChilkatDotNet2.dll

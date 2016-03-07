@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{5967A188-1739-4EED-BDDC-BD2763D06B6A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>facedominator</RootNamespace>
+    <AssemblyName>facedominator</AssemblyName>
+    <ReleaseVersion>3.0</ReleaseVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="gtk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\LibsTextFile\32BitDll\System.Data.SQLite.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\GlobusFileHelper.cs" />
+    <Compile Include="Classes\DataBaseHandler.cs" />
+    <Compile Include="Classes\AccountManager.cs" />
+    <Compile Include="Classes\DataBaseQuery.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="frmAddAccounts.cs" />
+    <Compile Include="frmLicensing.cs" />
+    <Compile Include="Classes\LicenseManager.cs" />
+    <Compile Include="gtk-gui\PinDominator.MainWindow.cs" />
+    <Compile Include="gtk-gui\PinDominator.frmLicensing.cs" />
+    <Compile Include="gtk-gui\PinDominator.frmAddAccounts.cs" />
+    <Compile Include="frmAddBoard.cs" />
+    <Compile Include="gtk-gui\PinDominator.frmAddBoard.cs" />
+    <Compile Include="frmUploadUnFollowList.cs" />
+    <Compile Include="gtk-gui\PinDominator.frmUploadUnFollowList.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="captcha.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="help_button.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseLib\BaseLib.csproj">
+      <Project>{85977246-DE21-44CC-B798-EE7CACEF001F}</Project>
+      <Name>BaseLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AccountManager\AccountManager.csproj">
+      <Project>{97B6243E-F112-41D1-96DA-EF48B2B236C2}</Project>
+      <Name>AccountManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BoardManager\BoardManager.csproj">
+      <Project>{9630BE0C-1318-4A3A-94F4-F272EFE11C6E}</Project>
+      <Name>BoardManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommentManager\CommentManager.csproj">
+      <Project>{D88AF0B6-342B-43FD-9168-079D0EFA84DB}</Project>
+      <Name>CommentManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FollowManagers\FollowManagers.csproj">
+      <Project>{489664E5-C483-4E79-AEB9-D9069F8155F7}</Project>
+      <Name>FollowManagers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LikeManager\LikeManager.csproj">
+      <Project>{C9886EB5-090F-49E2-B590-2EF21C6BE100}</Project>
+      <Name>LikeManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManageAccountManager\ManageAccountManager.csproj">
+      <Project>{A41158FB-7046-40E1-9C3C-2049853059FC}</Project>
+      <Name>ManageAccountManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinsManager\PinsManager.csproj">
+      <Project>{29824913-C16F-4D23-8386-6B80486BABD4}</Project>
+      <Name>PinsManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScraperManagers\ScraperManagers.csproj">
+      <Project>{B8CC0EDB-FAC2-4678-A454-CD3E6A575ED2}</Project>
+      <Name>ScraperManagers</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

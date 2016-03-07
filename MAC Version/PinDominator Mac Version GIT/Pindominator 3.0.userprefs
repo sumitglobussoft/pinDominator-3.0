@@ -1,0 +1,122 @@
+﻿<Properties StartupItem="Pindominator\Pindominator 3.0.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pindominator\MainWindow.cs">
+    <Files>
+      <File FileName="Pindominator\frmAddAccounts.cs" Line="1" Column="1" />
+      <File FileName="Pindominator\MainWindow.cs" Line="94" Column="44" />
+      <File FileName="BoardManager\BoardsManager.cs" Line="200" Column="48" />
+      <File FileName="FollowManagers\UnFollowManager.cs" Line="187" Column="59" />
+      <File FileName="LikeManager\LikeManagers.cs" Line="21" Column="56" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\Classes\LicenseManager.cs" line="92" column="10" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\frmLicensing.cs" line="123" column="4" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="644" column="3" />
+      <Breakpoint enabled="false" file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="773" column="4" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="680" column="4" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="926" column="3" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\BaseLib\QueryExecuter.cs" line="37" column="10" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\frmAddAccounts.cs" line="35" column="4" />
+      <Breakpoint file="D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\frmAddAccounts.cs" line="130" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\BoardManager.cs" line="72" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\BoardManager.cs" line="456" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\BoardManager.cs" line="432" column="11" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="1199" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="189" column="6" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="197" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="258" column="8" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\BoardManager.cs" line="439" column="8" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="324" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="396" column="8" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\BoardManager.cs" line="349" column="9" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\Add Users To Board.cs" line="111" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2605" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2876" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="95" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="266" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="315" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="168" column="1" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6318" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2119" column="7" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\CommentByKeyword Manager.cs" line="190" column="8" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\CommentByKeyword Manager.cs" line="216" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2381" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\CommentByKeyword Manager.cs" line="67" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\CommentByKeyword Manager.cs" line="128" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2688" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LikeManager.cs" line="56" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LikeManager.cs" line="152" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="3270" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="71" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\PinScrapeManager.cs" line="262" column="3" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2627" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2647" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LikeManager.cs" line="256" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="2842" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LikeByKeywordManager.cs" line="77" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LikeByKeywordManager.cs" line="210" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4191" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\UnFollowManager.cs" line="63" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\UnFollowManager.cs" line="123" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\UnFollowManager.cs" line="196" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\FollowByKeyword.cs" line="271" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\FollowByKeyword.cs" line="443" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\FollowByKeyword.cs" line="236" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\FollowByKeyword.cs" line="439" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\FollowByKeyword.cs" line="168" column="14" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\RepinManager.cs" line="264" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4937" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4958" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4973" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="5003" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\AddNewPinManager.cs" line="228" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6016" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6055" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6115" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6151" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="6358" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\AddNewPinManager.cs" line="391" column="8" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\AddNewPinManager.cs" line="504" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="222" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="246" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="5530" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="256" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="273" column="5" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="455" column="7" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\EditPinDescriptionManager.cs" line="413" column="1" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\UnFollowManager.cs" line="356" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\frmAddAccounts.cs" line="130" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4768" column="4" />
+      <Breakpoint file="d:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\BaseLib\Utils.cs" line="171" column="12" />
+      <Breakpoint file="d:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\BaseLib\Utils.cs" line="180" column="6" />
+      <Breakpoint file="d:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\BaseLib\Utils.cs" line="175" column="11" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4775" column="7" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\BoardManager\BoardsManager.cs" line="295" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\LicenseManager.cs" line="242" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="3164" column="4" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\Classes\GlobusFileHelper.cs" line="117" column="3" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="176" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="341" column="11" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="359" column="18" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="499" column="1" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="264" column="46" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="289" column="31" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="308" column="32" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="501" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\ScraperManagers\ScraperManager.cs" line="519" column="34" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\FollowManagers\UnFollowManager.cs" line="213" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\FollowManagers\FollowByKeywordManager.cs" line="249" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\FollowManagers\FollowByKeywordManager.cs" line="73" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\FollowManagers\FollowByKeywordManager.cs" line="134" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\MainWindow.cs" line="4062" column="4" />
+      <Breakpoint file="d:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\BaseLib\clsSettingDB.cs" line="512" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\FollowManagers\UnFollowManager.cs" line="267" column="15" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\CommentManager\CommentManagers.cs" line="230" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\PinsManager\RePinManager.cs" line="794" column="10" />
+      <Breakpoint file="D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\PinsManager\RePinManager.cs" line="867" column="12" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

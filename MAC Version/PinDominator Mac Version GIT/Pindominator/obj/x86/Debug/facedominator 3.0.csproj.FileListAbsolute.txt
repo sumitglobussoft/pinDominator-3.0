@@ -1,0 +1,2 @@
+C:\Users\GLB-112\Desktop\FD3.0_MACVer 2\FD3.0_MACVer 2\facedominator\obj\x86\Debug\facedominator 3.0.csprojResolveAssemblyReference.cache
+C:\Users\GLB-112\Desktop\FD3.0_MACVer 2\FD3.0_MACVer 2\facedominator\obj\x86\Debug\facedominator.exe

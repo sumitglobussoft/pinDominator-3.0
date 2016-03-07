@@ -375,9 +375,10 @@ namespace PinsManager
                                     link = Utils.Utils.getBetween(getPinPageSource, "serving_link\":", ", \"is_promoted").Replace("\"", "").Trim();
                                     link = link.Replace(":", "%3A").Replace("/", "%2F").Replace("?", "%3F").Replace("=", "%3D").Replace("&", "%26");
                                 }
-                                if (getPinPageSource.Contains("board_id"))
+                                if (getPinPageSource.Contains("board")) //("board_id")
                                 {
-                                    BoardId = Utils.Utils.getBetween(getPinPageSource, "board\", \"id\":", ",").Replace("\"", "").Trim();
+                                   // BoardId = Utils.Utils.getBetween(getPinPageSource, "board\", \"id\":", ",").Replace("\"", "").Trim();
+                                    BoardId = Utils.Utils.getBetween(getPinPageSource, "board\", \"id\":", "\",").Replace("\"", "").Trim();//"board", "id":
                                 }
                                 #endregion
 

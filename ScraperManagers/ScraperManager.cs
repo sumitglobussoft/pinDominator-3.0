@@ -327,26 +327,28 @@ namespace ScraperManagers
                                 }
                                 followers = followers.Distinct().ToList();
 
-                                foreach (string lstdata in followers)
+                                if (followers.Count >= MaxCountScraper)
                                 {
-                                    lstFollower.Add(lstdata);
-                                    #region AccountReport
-
-                                    string module = "Scraper";
-                                    string status = "Followers";
-                                    qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
-                                    objScraperDelegate();
-
-                                    #endregion
-                                    if (lstFollower.Count >= MaxCountScraper)
+                                    foreach (string lstdata in followers)
                                     {
-                                        return ClGlobul.lstTotalUserScraped; 
-                                    }
-                                }
-                                ClGlobul.lstTotalUserScraped = lstFollower.Distinct().ToList();
-                               
-                                Thread.Sleep(1000);
+                                        lstFollower.Add(lstdata);
+                                        #region AccountReport
 
+                                        string module = "Scraper";
+                                        string status = "Followers";
+                                        qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
+                                        objScraperDelegate();
+
+                                        #endregion
+                                        if (lstFollower.Count >= MaxCountScraper)
+                                        {
+                                            return ClGlobul.lstTotalUserScraped;
+                                        }
+                                    }
+                                    ClGlobul.lstTotalUserScraped = lstFollower.Distinct().ToList();
+
+                                    Thread.Sleep(1000);
+                                }
                             }
                             else
                             {
@@ -532,29 +534,32 @@ namespace ScraperManagers
 
 
                                 followings = followings.Distinct().ToList();
-                                foreach (string lstdata in followings)
+                                if (followings.Count >= MaxCountScraper)
                                 {
-                                    lstFollowing.Add(lstdata);
-                                    #region AccountReport
-
-                                    string module = "Scraper";
-                                    string status = "Following";
-                                    qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
-                                    objScraperDelegate();
-
-                                    #endregion
-                                    if (lstFollowing.Count >= MaxCountScraper)
+                                    foreach (string lstdata in followings)
                                     {
-                                        break;
+                                        lstFollowing.Add(lstdata);
+                                        #region AccountReport
+
+                                        string module = "Scraper";
+                                        string status = "Following";
+                                        qm.insertAccReportScrapeUser(module, lstdata, status, DateTime.Now);
+                                        objScraperDelegate();
+
+                                        #endregion
+                                        if (lstFollowing.Count >= MaxCountScraper)
+                                        {
+                                            break;
+                                        }
                                     }
+                                    ClGlobul.lstTotalUserScraped = lstFollowing.Distinct().ToList();
+                                    if (ClGlobul.lstTotalUserScraped.Count >= MaxCountScraper)
+                                    {
+                                        return ClGlobul.lstTotalUserScraped;
+                                    }
+
+                                    Thread.Sleep(1000);
                                 }
-                                ClGlobul.lstTotalUserScraped = lstFollowing.Distinct().ToList();
-                                if (ClGlobul.lstTotalUserScraped.Count >= MaxCountScraper)
-                                {
-                                    return ClGlobul.lstTotalUserScraped;
-                                }
-                              
-                                Thread.Sleep(1000);
                             }
                             else
                             {

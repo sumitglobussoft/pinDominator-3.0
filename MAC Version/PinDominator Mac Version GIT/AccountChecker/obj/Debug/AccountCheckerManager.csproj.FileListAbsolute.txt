@@ -1,0 +1,9 @@
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\AccountChecker.dll
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\AccountChecker.pdb
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\BaseLib.dll
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\log4net.dll
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\System.Data.SQLite.dll
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\bin\Debug\BaseLib.pdb
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\obj\Debug\AccountCheckerManager.csprojResolveAssemblyReference.cache
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\obj\Debug\AccountChecker.dll
+D:\PD3.0_MACBackup_10_2\PD3.0_MACBackup_10_2\PD3.0_MACVer\AccountChecker\obj\Debug\AccountChecker.pdb

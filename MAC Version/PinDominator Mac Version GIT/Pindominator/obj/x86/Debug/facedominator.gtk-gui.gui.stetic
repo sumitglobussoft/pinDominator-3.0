@@ -1,0 +1,2859 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Debug/facedominator.exe" internal="true" />
+  </import>
+  <icon-factory>
+    <icon-set id="Account">
+      <source>
+        <property name="Image">file:./account.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="groups">
+      <source>
+        <property name="Image">file:./groups.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="friends">
+      <source>
+        <property name="Image">file:./friends.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="events">
+      <source>
+        <property name="Image">file:./events.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="pages">
+      <source>
+        <property name="Image">file:./pages.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="wall">
+      <source>
+        <property name="Image">file:./fb wall.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="message">
+      <source>
+        <property name="Image">file:./msg.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="photo">
+      <source>
+        <property name="Image">file:./photos.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="scraper">
+      <source>
+        <property name="Image">file:./spider_icon.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="campaigns">
+      <source>
+        <property name="Image">file:./campaigns.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="proxy">
+      <source>
+        <property name="Image">file:./proxies.png</property>
+      </source>
+    </icon-set>
+    <icon-set id="help_button">
+      <source>
+        <property name="Image">file:./help_button.png</property>
+      </source>
+    </icon-set>
+  </icon-factory>
+  <widget class="Gtk.Window" id="facedominator.MainWindow" design-size="1084 650">
+    <action-group name="Default">
+      <action id="GroupAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes"> Group</property>
+        <property name="ShortLabel" translatable="yes">Group</property>
+      </action>
+      <action id="GroupInviterAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Inviter</property>
+        <property name="ShortLabel" translatable="yes">Group Inviter</property>
+      </action>
+      <action id="GroupScraperByKeywordAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Scraper By Keyword</property>
+        <property name="ShortLabel" translatable="yes">Group Scraper By Keyword</property>
+      </action>
+      <action id="FanPageAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">FanPage</property>
+        <property name="ShortLabel" translatable="yes">FanPage</property>
+      </action>
+      <action id="PagesAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Pages</property>
+        <property name="ShortLabel" translatable="yes">Pages</property>
+      </action>
+      <action id="FriendsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">  Friends</property>
+        <property name="ShortLabel" translatable="yes">Friends</property>
+      </action>
+      <action id="EventsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Events</property>
+        <property name="ShortLabel" translatable="yes">Events</property>
+      </action>
+      <action id="okAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Manager</property>
+        <property name="ShortLabel" translatable="yes">Group Manager</property>
+        <property name="StockId">gtk-ok</property>
+        <signal name="Activated" handler="OnOkActionActivated" after="yes" />
+      </action>
+      <action id="FanPageLikerAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">FanPageLiker</property>
+        <property name="ShortLabel" translatable="yes">FanPageLiker</property>
+      </action>
+      <action id="okAction4">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">FriendsManager</property>
+        <property name="ShortLabel" translatable="yes">FriendsManager</property>
+        <property name="StockId">gtk-ok</property>
+        <signal name="Activated" handler="OnOkAction2Activated" />
+      </action>
+      <action id="PagesAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes"> Pages</property>
+        <property name="ShortLabel" translatable="yes">Pages</property>
+      </action>
+      <action id="okAction3">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">FanPage Manager</property>
+        <property name="ShortLabel" translatable="yes">FanPage Manager</property>
+        <property name="StockId">gtk-ok</property>
+        <signal name="Activated" handler="OnOkAction3Activated" />
+      </action>
+      <action id="Action2">
+        <property name="Type">Action</property>
+        <property name="Accelerator">f</property>
+        <property name="Label" translatable="yes">  </property>
+        <property name="ShortLabel" translatable="yes">  </property>
+        <property name="StockId">icon1</property>
+        <property name="Tooltip" translatable="yes">Group Manager</property>
+        <signal name="Activated" handler="OnYesActionActivated" />
+      </action>
+      <action id="icon2Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon2</property>
+        <property name="Tooltip" translatable="yes">Friends Manager</property>
+        <signal name="Activated" handler="OnFriendsAction1Activated" />
+      </action>
+      <action id="icon3Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon3</property>
+        <property name="Tooltip" translatable="yes">Events Manager</property>
+        <signal name="Activated" handler="OnEventActionActivated" />
+      </action>
+      <action id="icon4Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon4</property>
+        <property name="Tooltip" translatable="yes">Fan Page Manager</property>
+        <signal name="Activated" handler="OnPagesAction2Activated" />
+      </action>
+      <action id="okAction5">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Event Manager</property>
+        <property name="ShortLabel" translatable="yes">Event Manager</property>
+        <property name="StockId">gtk-ok</property>
+        <signal name="Activated" handler="OnOkEventManagerActivated" />
+      </action>
+      <action id="InstagramAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Instagram</property>
+        <property name="ShortLabel" translatable="yes">Instagram</property>
+      </action>
+      <action id="yesAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Comment Liker</property>
+        <property name="ShortLabel" translatable="yes">Instagram Manager</property>
+        <property name="StockId">gtk-yes</property>
+        <signal name="Activated" handler="OnActionInstagramManagerActivated" />
+      </action>
+      <action id="icon6Action1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon6</property>
+        <property name="Tooltip" translatable="yes">Instagram Manager</property>
+        <signal name="Activated" handler="OnActionInstagramMgrActivated" />
+      </action>
+      <action id="Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+      </action>
+      <action id="InstagramFollowAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">InstagramFollow</property>
+        <property name="ShortLabel" translatable="yes">InstagramFollow</property>
+      </action>
+      <action id="newAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">In</property>
+        <property name="ShortLabel" translatable="yes">In</property>
+        <property name="StockId">gtk-new</property>
+      </action>
+      <action id="yesAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Follow/DownLoad Images</property>
+        <property name="ShortLabel" translatable="yes">Instagram Follower</property>
+        <property name="StockId">gtk-yes</property>
+        <signal name="Activated" handler="OnInstagramFollowerActivated" />
+      </action>
+      <action id="YouTubeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">YouTube</property>
+        <property name="ShortLabel" translatable="yes">YouTube</property>
+      </action>
+      <action id="newAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">YouTube Downloader</property>
+        <property name="ShortLabel" translatable="yes">YouTube Downloader</property>
+        <property name="StockId">gtk-new</property>
+      </action>
+      <action id="addActionYouTubeDownloader">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">YouTube Downloader</property>
+        <property name="ShortLabel" translatable="yes">YouTube Downloader</property>
+        <property name="StockId">gtk-add</property>
+        <signal name="Activated" handler="OnAddActionYouTubeDownloaderActivated" />
+      </action>
+      <action id="icon8Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon8</property>
+        <property name="Tooltip" translatable="yes">YouTube Url DownLoader</property>
+        <signal name="Activated" handler="OnLeaveFullscreenActionActivated" />
+      </action>
+      <action id="icon6Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon6</property>
+        <property name="Tooltip" translatable="yes">Instagram Follower</property>
+        <signal name="Activated" handler="OnYesInstagramFollowerActivated" />
+      </action>
+      <action id="yesUnfollowerInstagram">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">UnFollow</property>
+        <property name="ShortLabel" translatable="yes">UnFollow</property>
+        <property name="StockId">gtk-yes</property>
+        <signal name="Activated" handler="OnYesUnfollowerInstagramActivated" />
+      </action>
+      <action id="Action1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+      </action>
+      <action id="jumpToAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-jump-to</property>
+      </action>
+      <action id="icon7Action">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">icon7</property>
+        <property name="Tooltip" translatable="yes">Instagram UnFollow</property>
+        <signal name="Activated" handler="OnJmpUnfollowInstagramActivated" />
+      </action>
+      <action id="WallAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">  Wall</property>
+        <property name="ShortLabel" translatable="yes">Wall</property>
+      </action>
+      <action id="WallPosterAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Wall Poster</property>
+        <property name="ShortLabel" translatable="yes">Wall Poster</property>
+      </action>
+      <action id="WallPostLikerAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Wall Post Liker</property>
+        <property name="ShortLabel" translatable="yes">Wall Post Liker</property>
+      </action>
+      <action id="MessageAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes"> Message</property>
+        <property name="ShortLabel" translatable="yes">Message</property>
+      </action>
+      <action id="MessageReplyAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Message Reply</property>
+        <property name="ShortLabel" translatable="yes">Message Reply</property>
+      </action>
+      <action id="GroupInviterAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Inviter</property>
+        <property name="ShortLabel" translatable="yes">Group Inviter</property>
+      </action>
+      <action id="PhotosAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Photos</property>
+        <property name="ShortLabel" translatable="yes">Photos</property>
+      </action>
+      <action id="TagPhotoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Tag Photo</property>
+        <property name="ShortLabel" translatable="yes">Tag Photo</property>
+      </action>
+      <action id="DownloadPhotoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Download Photo</property>
+        <property name="ShortLabel" translatable="yes">Download Photo</property>
+      </action>
+      <action id="ScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Scraper</property>
+        <property name="ShortLabel" translatable="yes">Scraper</property>
+      </action>
+      <action id="FansScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Fans Scraper</property>
+        <property name="ShortLabel" translatable="yes">Fans Scraper</property>
+      </action>
+      <action id="EventScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Event Scraper</property>
+        <property name="ShortLabel" translatable="yes">Event Scraper</property>
+      </action>
+      <action id="GroupMemberScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Member Scraper</property>
+        <property name="ShortLabel" translatable="yes">Group Member Scraper</property>
+      </action>
+      <action id="FriendsScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Friends Scraper </property>
+        <property name="ShortLabel" translatable="yes">Friends Scraper </property>
+      </action>
+      <action id="CustomeAudinceScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Custome Audince Scraper</property>
+        <property name="ShortLabel" translatable="yes">Custome Audince Scraper</property>
+      </action>
+      <action id="CampaignsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Campaigns</property>
+        <property name="ShortLabel" translatable="yes">Campaigns</property>
+      </action>
+      <action id="ProxyAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Proxy</property>
+        <property name="ShortLabel" translatable="yes">Proxy</property>
+      </action>
+      <action id="ProxyCheckerAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Proxy Checker</property>
+        <property name="ShortLabel" translatable="yes">Proxy Checker</property>
+      </action>
+      <action id="HelpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="AccountAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Account</property>
+        <property name="ShortLabel" translatable="yes">Account</property>
+      </action>
+      <action id="AccountAction5">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Account</property>
+        <property name="ShortLabel" translatable="yes">Account</property>
+      </action>
+      <action id="AddSingleAccountAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add Single Account</property>
+        <property name="ShortLabel" translatable="yes">Account Manager</property>
+        <signal name="Activated" handler="OnAddSingleAccountActionActivated" />
+      </action>
+      <action id="yesAction2">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-yes</property>
+      </action>
+      <action id="AccountsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Accounts</property>
+        <property name="ShortLabel" translatable="yes">Accounts</property>
+        <property name="StockId">Account</property>
+        <signal name="Activated" handler="OnAccountsActionActivated" />
+      </action>
+      <action id="GroupAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">  Group </property>
+        <property name="ShortLabel" translatable="yes">Group</property>
+        <property name="StockId">groups</property>
+        <signal name="Activated" handler="OnGroupAction1Activated" />
+      </action>
+      <action id="FriendsAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Friends </property>
+        <property name="ShortLabel" translatable="yes">Friends</property>
+        <property name="StockId">friends</property>
+        <signal name="Activated" handler="OnFriendsAction1Activated" />
+      </action>
+      <action id="EventsAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Events</property>
+        <property name="ShortLabel" translatable="yes">Events</property>
+        <property name="StockId">events</property>
+        <signal name="Activated" handler="OnEventsAction1Activated" />
+      </action>
+      <action id="PagesAction2">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Pages</property>
+        <property name="ShortLabel" translatable="yes">Pages</property>
+        <property name="StockId">pages</property>
+        <signal name="Activated" handler="OnPagesAction2Activated" />
+      </action>
+      <action id="WallAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">    Wall    </property>
+        <property name="ShortLabel" translatable="yes">Wall</property>
+        <property name="StockId">wall</property>
+      </action>
+      <action id="MessageAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">  Message  </property>
+        <property name="ShortLabel" translatable="yes">  Message</property>
+        <property name="StockId">message</property>
+      </action>
+      <action id="PhotosAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Photos</property>
+        <property name="ShortLabel" translatable="yes"> Photos</property>
+        <property name="StockId">photo</property>
+      </action>
+      <action id="ScraperAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Scraper</property>
+        <property name="ShortLabel" translatable="yes">  Scraper  </property>
+        <property name="StockId">scraper</property>
+      </action>
+      <action id="CampaignsAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Campaigns</property>
+        <property name="ShortLabel" translatable="yes"> Campaigns</property>
+        <property name="StockId">campaigns</property>
+      </action>
+      <action id="ProxyAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes"> Proxy </property>
+        <property name="ShortLabel" translatable="yes"> Proxy</property>
+        <property name="StockId">proxy</property>
+      </action>
+      <action id="HelpAction1">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Primary&gt;&lt;Mod2&gt;z</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes"> Help</property>
+        <property name="StockId">help_button</property>
+      </action>
+      <action id="missingImageAction12">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-missing-image</property>
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="WidthRequest">1083</property>
+    <property name="HeightRequest">650</property>
+    <property name="Title" translatable="yes">FaceDominator 3.0</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <property name="AllowShrink">True</property>
+    <property name="DefaultWidth">1083</property>
+    <property name="DefaultHeight">650</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="WidthRequest">50</property>
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Label" id="lblUploadAccountManager">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Load Account    :</property>
+          </widget>
+          <packing>
+            <property name="X">150</property>
+            <property name="Y">157</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadAccount">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Accounts  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadAccountClicked" />
+          </widget>
+          <packing>
+            <property name="X">440</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtEntryUploadAccount">
+            <property name="MemberName" />
+            <property name="Sensitive">False</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">False</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">260</property>
+            <property name="Y">151</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="gtkTreeview">
+            <property name="MemberName" />
+            <property name="WidthRequest">1080</property>
+            <property name="HeightRequest">275</property>
+            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">In</property>
+            <signal name="ResizeChecked" handler="OnGtkTreeviewResizeChecked" />
+            <child>
+              <widget class="Gtk.TreeView" id="treeViewAccountManager">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Events">ButtonPressMask</property>
+                <property name="ExtensionEvents">All</property>
+                <property name="ShowScrollbars">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">194</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="lstLoggerComman">
+            <property name="MemberName" />
+            <property name="WidthRequest">1080</property>
+            <property name="HeightRequest">170</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="txtViewLoggerCommon">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">470</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnClearAccountsAccountManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Clear Accounts   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnClearAccountsAccountManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">565</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnAddAccount">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Add Single Account </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnAddAccountClicked" />
+          </widget>
+          <packing>
+            <property name="X">690</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <widget class="Gtk.Toolbar" id="toolbar2">
+            <property name="MemberName" />
+            <property name="WidthRequest">1080</property>
+            <property name="HeightRequest">60</property>
+            <property name="CanDefault">True</property>
+            <property name="HasDefault">True</property>
+            <property name="ShowArrow">False</property>
+            <property name="ButtonStyle">Both</property>
+            <property name="IconSize">Menu</property>
+            <node name="toolbar2" type="Toolbar">
+              <node type="Separator" />
+              <node type="Toolitem" action="AccountsAction" />
+              <node type="Separator" />
+              <node type="Toolitem" action="GroupAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="FriendsAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="EventsAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="PagesAction2" />
+              <node type="Separator" />
+              <node type="Toolitem" action="WallAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="MessageAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="PhotosAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="ScraperAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="CampaignsAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="ProxyAction1" />
+              <node type="Separator" />
+              <node type="Toolitem" action="HelpAction1" />
+            </node>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chk_Accounts_Account">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Account Settings</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkAccountsAccountClicked" />
+          </widget>
+          <packing>
+            <property name="X">10</property>
+            <property name="Y">154</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.frmGroupManager" design-size="891 620">
+    <action-group name="Default">
+      <action id="GroupInviterAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Inviter</property>
+        <property name="ShortLabel" translatable="yes">     Group Inviter    </property>
+      </action>
+      <action id="JoinGroupAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Join Group</property>
+        <property name="ShortLabel" translatable="yes">         Join Group        </property>
+        <signal name="Activated" handler="OnJoinGroupActionActivated" />
+      </action>
+      <action id="GroupScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Group Scraper</property>
+        <property name="ShortLabel" translatable="yes">       Group Scraper       </property>
+        <signal name="Activated" handler="OnGroupScraperActionActivated" />
+      </action>
+      <action id="PostTextAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">     Post Text     </property>
+        <property name="ShortLabel" translatable="yes">            Post Text           </property>
+        <signal name="Activated" handler="OnPostTextActionActivated" />
+      </action>
+      <action id="PostImageAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Post Image</property>
+        <property name="ShortLabel" translatable="yes">           Post Image        </property>
+        <signal name="Activated" handler="OnPostImageActionActivated" />
+      </action>
+      <action id="PostVideoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Post Video</property>
+        <property name="ShortLabel" translatable="yes">               Post Video          </property>
+        <signal name="Activated" handler="OnPostVideoActionActivated" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">GroupManager</property>
+    <property name="Icon">stock:gtk-properties Menu</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Fixed" id="fixed3">
+            <property name="MemberName" />
+            <property name="HasWindow">False</property>
+          </widget>
+          <packing>
+            <property name="X">504</property>
+            <property name="Y">268</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GroupManagerLogger">
+            <property name="MemberName" />
+            <property name="WidthRequest">890</property>
+            <property name="HeightRequest">140</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="textviewGroupManagerLogger">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Y">470</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnProcessStart">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">    Start     ▶   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnProcessStartClicked" />
+          </widget>
+          <packing>
+            <property name="X">30</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnProcessStop">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">     Stop   ■    </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnProcessStopClicked" />
+          </widget>
+          <packing>
+            <property name="X">149</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_GroupLoadUrl">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load Video urls text file you want to post.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">    Load Video Url   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnGroupLoadUrlClicked" />
+          </widget>
+          <packing>
+            <property name="X">745</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadImageGroupManager">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load pictures in folder you want to post.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">   Load Pictures   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadImageGroupManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">600</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadMessageGroupManager">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load text message  file you want to post.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Message  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadMessageGroupManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">465</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadKeyword">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please upload keywords you want to search as groups.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Keyword  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadKeywordClicked" />
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnGroupInviterLoadEmails">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load emails text file ..</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Emails   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnGroupInviterLoadEmailsClicked" />
+          </widget>
+          <packing>
+            <property name="X">190</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnLoadUrl">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load facebook group urls text file.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Group Url    </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadUrlClicked" />
+          </widget>
+          <packing>
+            <property name="X">28</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_GroupScraperByKeyword">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Group Scraper </property>
+            <property name="Active">True</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkGroupScraperByKeywordClicked" />
+          </widget>
+          <packing>
+            <property name="X">300</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_PostTextMessageinGroup">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Text</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostTextMessageinGroupClicked" />
+          </widget>
+          <packing>
+            <property name="X">470</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_PostImageInGroup">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Image</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostImageInGroupClicked" />
+          </widget>
+          <packing>
+            <property name="X">610</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_PostVideoOnGroup">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Video</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostVideoOnGroupClicked" />
+          </widget>
+          <packing>
+            <property name="X">750</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_RequestSendUsingGroupUrl">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Join Group</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkRequestSendUsingGroupUrlClicked" />
+          </widget>
+          <packing>
+            <property name="X">160</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rhk_GroupInviter">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Group Inviter</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRadiobutton1Clicked" />
+          </widget>
+          <packing>
+            <property name="X">29</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkEnterSingleMessage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Item</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkEnterSingleMessageClicked" />
+          </widget>
+          <packing>
+            <property name="X">530</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtGroupEnterSingleMessages">
+            <property name="MemberName" />
+            <property name="WidthRequest">250</property>
+            <property name="HeightRequest">40</property>
+            <property name="Tooltip" translatable="yes">Give only  single url/keyword here.</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">530</property>
+            <property name="Y">190</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ComboBoxEntry" id="cmbGroupManager">
+            <property name="MemberName" />
+            <property name="Sensitive">False</property>
+            <property name="IsTextCombo">True</property>
+            <property name="Items" translatable="yes">Group Inviter
+Group Scraper By Keyword
+Post Image In Group
+Post Text Message in Group
+Post Video On Group
+Join Group Using Url</property>
+            <property name="Active">0</property>
+          </widget>
+          <packing>
+            <property name="X">206</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtEndDelay">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">50</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">337</property>
+            <property name="Y">210</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">To : </property>
+          </widget>
+          <packing>
+            <property name="X">292</property>
+            <property name="Y">210</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtStartDelay">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">30</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">205</property>
+            <property name="Y">210</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txt_Group_GroupInviter_NoOfFriends">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">10</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">205</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Start Process Using : </property>
+          </widget>
+          <packing>
+            <property name="X">38</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Delay : </property>
+          </widget>
+          <packing>
+            <property name="X">115</property>
+            <property name="Y">210</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label5">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Number Of Friends :  </property>
+          </widget>
+          <packing>
+            <property name="X">37</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtThreadInput">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">10</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">205</property>
+            <property name="Y">290</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label3">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Thread   : </property>
+          </widget>
+          <packing>
+            <property name="X">97</property>
+            <property name="Y">290</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chk_LoadSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Image</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkLoadSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">530</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkGroupPostLoadUrlsUseForGroupPost">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">If this is checked it will post on uploaded urls /uncheck  to post randomly on all groups.</property>
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Targeted Group Urls </property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkGroupPostLoadUrlsUseForGroupPostClicked" />
+          </widget>
+          <packing>
+            <property name="X">530</property>
+            <property name="Y">290</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkGroupInviterViaEmails">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Invite Via Emails</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkGroupInviterViaEmailsClicked" />
+          </widget>
+          <packing>
+            <property name="X">700</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_LoadSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Load Single Image</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">700</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkExportDataGroupManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Export Data</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkExportDataGroupManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">700</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="entry1">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">1</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">530</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label6">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">No Of Message Per Account   : </property>
+          </widget>
+          <packing>
+            <property name="X">300</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Toolbar" id="toolbar1">
+            <property name="MemberName" />
+            <property name="WidthRequest">890</property>
+            <property name="ShowArrow">False</property>
+            <property name="ButtonStyle">Text</property>
+            <property name="IconSize">Button</property>
+            <node name="toolbar1" type="Toolbar">
+              <node type="Toolitem" action="GroupInviterAction" />
+              <node type="Toolitem" action="JoinGroupAction" />
+              <node type="Toolitem" action="GroupScraperAction" />
+              <node type="Toolitem" action="PostTextAction" />
+              <node type="Toolitem" action="PostImageAction" />
+              <node type="Toolitem" action="PostVideoAction" />
+            </node>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.FanPage" design-size="910 662">
+    <action-group name="Default">
+      <action id="PageScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">      Page Scraper         </property>
+        <property name="ShortLabel" translatable="yes">                Page Scraper         </property>
+        <signal name="Activated" handler="OnPageScraperActionActivated" />
+      </action>
+      <action id="PageLikerAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">         Page Liker       </property>
+        <property name="ShortLabel" translatable="yes">         Page Liker       </property>
+        <signal name="Activated" handler="OnPageLikerActionActivated" />
+      </action>
+      <action id="PostTextAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">            Post Text         </property>
+        <property name="ShortLabel" translatable="yes">          Post Text         </property>
+        <signal name="Activated" handler="OnPostTextActionActivated" />
+      </action>
+      <action id="PostImagesAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">         Post  Images  </property>
+        <property name="ShortLabel" translatable="yes">         Post  Images  </property>
+        <signal name="Activated" handler="OnPostImagesActionActivated" />
+      </action>
+      <action id="PostVideoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">        Post  Video        </property>
+        <property name="ShortLabel" translatable="yes">          Post  Video        </property>
+        <signal name="Activated" handler="OnPostVideoActionActivated" />
+      </action>
+      <action id="DownloadPictureAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">       Download  Picture     </property>
+        <property name="ShortLabel" translatable="yes">       Download  Picture     </property>
+        <signal name="Activated" handler="OnDownloadPictureActionActivated" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="WidthRequest">910</property>
+    <property name="HeightRequest">630</property>
+    <property name="Title" translatable="yes">FanPage</property>
+    <property name="Icon">stock:gtk-home Menu</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <property name="DefaultWidth">880</property>
+    <property name="DefaultHeight">650</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed4">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="WidthRequest">910</property>
+            <property name="HeightRequest">200</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="textViewLoggerFanPage">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Y">470</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStartProcess">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">          Start     ▶         </property>
+            <property name="UseUnderline">True</property>
+            <property name="BorderWidth">3</property>
+            <signal name="Clicked" handler="OnBtnStartProcessClicked" />
+          </widget>
+          <packing>
+            <property name="X">100</property>
+            <property name="Y">400</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStopProcess">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">           Stop   ■        </property>
+            <property name="UseUnderline">True</property>
+            <property name="BorderWidth">3</property>
+            <signal name="Clicked" handler="OnBtnStopProcessClicked" />
+          </widget>
+          <packing>
+            <property name="X">279</property>
+            <property name="Y">400</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label6">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Thread: </property>
+          </widget>
+          <packing>
+            <property name="X">256</property>
+            <property name="Y">333</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtThreadInput">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">10</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">332</property>
+            <property name="Y">330</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">No of Post Per URL : </property>
+          </widget>
+          <packing>
+            <property name="X">20</property>
+            <property name="Y">333</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="Txt_NoofPostPerURLPageManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">1</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">163</property>
+            <property name="Y">330</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayFrom">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">30</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">164</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Delay :</property>
+          </widget>
+          <packing>
+            <property name="X">95</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label5">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">To : </property>
+          </widget>
+          <packing>
+            <property name="X">262</property>
+            <property name="Y">253</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayTo">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">50</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">329</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ComboBoxEntry" id="cmbSelectInputFanPage">
+            <property name="MemberName" />
+            <property name="Sensitive">False</property>
+            <property name="IsTextCombo">True</property>
+            <property name="Items" translatable="yes">Fan Page Scraper By Keyword
+Fan Page Liker
+Fan Page Post Simple Message
+Fan Page Post Pictures
+Fan Page Post Video
+Download FanPage Pictures</property>
+            <property name="Active">0</property>
+          </widget>
+          <packing>
+            <property name="X">165</property>
+            <property name="Y">180</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Start Process Using  : </property>
+          </widget>
+          <packing>
+            <property name="X">16</property>
+            <property name="Y">184</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_downloadFanPagePictures">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Download Picture</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkDownloadFanPagePicturesClicked" />
+          </widget>
+          <packing>
+            <property name="X">700</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_PostVideoUrlsOnFanpages">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Video</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostVideoUrlsOnFanpagesClicked" />
+          </widget>
+          <packing>
+            <property name="X">580</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_PostPicturesOnFanpage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Images</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostPicturesOnFanpageClicked" />
+          </widget>
+          <packing>
+            <property name="X">450</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_postSimpleTextMessage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Text </property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkPostSimpleTextMessageClicked" />
+          </widget>
+          <packing>
+            <property name="X">300</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_fanPageLiker">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Page Liker</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkFanPageLikerClicked" />
+          </widget>
+          <packing>
+            <property name="X">200</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_fanPageScraperByKeyword">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Page Scraper</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkFanPageScraperByKeywordClicked" />
+          </widget>
+          <packing>
+            <property name="X">52</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadKeyword">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Load Keyword</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadKeywordClicked" />
+          </widget>
+          <packing>
+            <property name="X">60</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadPicsFanPageManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">    Load Pics Folder    </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadPicsFanPageManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">540</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadMessageFanPage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">   Load Message    </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadMessageFanPageClicked" />
+          </widget>
+          <packing>
+            <property name="X">380</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadUrlFanPage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">   Load FanPage Url  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadUrlClicked" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">200</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="TxtUseSingleItem">
+            <property name="MemberName" />
+            <property name="WidthRequest">260</property>
+            <property name="HeightRequest">50</property>
+            <property name="Tooltip" translatable="yes">Enter Single keyword/Fanpage Url.</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">570</property>
+            <property name="Y">180</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkFanPageManagerSendPicWithMessage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Send  With Text Message</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkFanPageManagerSendPicWithMessageClicked" />
+          </widget>
+          <packing>
+            <property name="X">550</property>
+            <property name="Y">400</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkUseSingleItem">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Item</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseSingleItemClicked" />
+          </widget>
+          <packing>
+            <property name="X">550</property>
+            <property name="Y">140</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chk_UseSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Upload Single Image</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">550</property>
+            <property name="Y">254</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_LoadSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Load Single Image</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">710</property>
+            <property name="Y">250</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_FanPageLoadUrlsMassege">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">   Load Video Urls   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnFanPageLoadUrlsMassegeClicked" />
+          </widget>
+          <packing>
+            <property name="X">710</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkExportDataPageManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Export Data</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkExportDataPageManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">550</property>
+            <property name="Y">330</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Toolbar" id="toolbar1">
+            <property name="MemberName" />
+            <property name="WidthRequest">910</property>
+            <property name="ShowArrow">False</property>
+            <property name="ButtonStyle">Text</property>
+            <node name="toolbar1" type="Toolbar">
+              <node type="Toolitem" action="PageScraperAction" />
+              <node type="Toolitem" action="PageLikerAction" />
+              <node type="Toolitem" action="PostTextAction" />
+              <node type="Toolitem" action="PostImagesAction" />
+              <node type="Toolitem" action="PostVideoAction" />
+              <node type="Toolitem" action="DownloadPictureAction" />
+            </node>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.frmEventManager" design-size="756 492">
+    <action-group name="Default">
+      <action id="EventCreatorAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">                                  Event Creator             </property>
+        <property name="ShortLabel" translatable="yes">                                                                  Event Creator             </property>
+        <signal name="Activated" handler="OnEventCreatorActionActivated" />
+      </action>
+      <action id="EventCreatorAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">                   Event  Creator                    </property>
+        <property name="ShortLabel" translatable="yes">                   Event  Creator                    </property>
+        <signal name="Activated" handler="OnEventCreatorAction1Activated" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">EventManager</property>
+    <property name="Icon">stock:gtk-refresh Menu</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="WidthRequest">750</property>
+            <property name="HeightRequest">150</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="txtViewEventManager">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">304</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ComboBoxEntry" id="cmbEventInput">
+            <property name="MemberName" />
+            <property name="IsTextCombo">True</property>
+            <property name="Items" translatable="yes">Event Creator
+Event Inviter</property>
+          </widget>
+          <packing>
+            <property name="X">175</property>
+            <property name="Y">126</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Delay  :</property>
+          </widget>
+          <packing>
+            <property name="X">101</property>
+            <property name="Y">178</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayFromEventManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">30</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">177</property>
+            <property name="Y">174</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">To : </property>
+          </widget>
+          <packing>
+            <property name="X">254</property>
+            <property name="Y">179</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayToEventManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">50</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">307</property>
+            <property name="Y">173</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtThreadInputEventManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">60</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">10</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">176</property>
+            <property name="Y">210</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtUseSingleEventUrl">
+            <property name="MemberName" />
+            <property name="WidthRequest">250</property>
+            <property name="HeightRequest">50</property>
+            <property name="Tooltip" translatable="yes">Enter Single event Url.</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">456</property>
+            <property name="Y">170</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkUseSingleUrl">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Event Url</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseSingleUrlClicked" />
+          </widget>
+          <packing>
+            <property name="X">457</property>
+            <property name="Y">134</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadDetailsEventCreator">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load event details Ex :  
+Name &lt;Illusion&gt; &lt;:D&gt; Details &lt;Dream&gt; &lt;:D&gt; Where &lt;Mumbai&gt; &lt;:D&gt; When &lt;08/28/2016&gt; &lt;:D&gt; Add a time &lt;22:40 &gt; &lt;:D&gt; Privacy &lt;Public&gt;</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Load Event Details</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadDetailsEventCreatorClicked" />
+          </widget>
+          <packing>
+            <property name="X">176</property>
+            <property name="Y">65</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnProcessStartEventManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Start     ▶   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnProcessStartEventManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">172</property>
+            <property name="Y">256</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_eventInviter">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Event Inviter</property>
+            <property name="Active">True</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkEventInviterClicked" />
+          </widget>
+          <packing>
+            <property name="X">338</property>
+            <property name="Y">21</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_EventCreator">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Event Creator</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkEventCreatorClicked" />
+          </widget>
+          <packing>
+            <property name="X">173</property>
+            <property name="Y">19</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStopProcessEventManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">     Stop   ■    </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnStopProcessEventManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">290</property>
+            <property name="Y">256</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkEvents_EventInviter_SendToAll">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Send All Friends </property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkEventsEventInviterSendToAllClicked" />
+          </widget>
+          <packing>
+            <property name="X">304</property>
+            <property name="Y">211</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Start Process Using  :  </property>
+          </widget>
+          <packing>
+            <property name="X">30</property>
+            <property name="Y">128</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label3">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Thread  : </property>
+          </widget>
+          <packing>
+            <property name="X">94</property>
+            <property name="Y">212</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnUploadUrlEventManager">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Please load event urls in which you want to invite friends.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Event Url   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnUploadUrlEventManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">337</property>
+            <property name="Y">66</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Toolbar" id="toolbar2">
+            <property name="MemberName" />
+            <property name="WidthRequest">750</property>
+            <property name="ShowArrow">False</property>
+            <property name="ButtonStyle">Text</property>
+            <node name="__gtksharp_77_Stetic_Editor_ActionToolbar" type="Toolbar">
+              <node type="Toolitem" action="EventCreatorAction" />
+              <node type="Toolitem" action="EventCreatorAction1" />
+            </node>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.frmFriendManager" design-size="910 630">
+    <action-group name="Default">
+      <action id="AddFriendsViaScraperAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add Friends Via Scraper</property>
+        <property name="ShortLabel" translatable="yes">         Add Friends Via Scraper      </property>
+        <signal name="Activated" handler="OnAddFriendsViaScraperActionActivated" />
+      </action>
+      <action id="AddFriendsViaFanpageUrlsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add Friends Via fanpage Urls</property>
+        <property name="ShortLabel" translatable="yes">    Add Friends Via fanpage Urls      </property>
+        <signal name="Changed" handler="OnAddFriendsViaFanpageUrlsActionChanged" />
+        <signal name="Activated" handler="OnAddFriendsViaFanpageUrlsActionActivated" />
+      </action>
+      <action id="PostTextMessageAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Post Text Message</property>
+        <property name="ShortLabel" translatable="yes">     Post Text Message     </property>
+        <signal name="Activated" handler="OnPostTextMessageActionActivated" />
+      </action>
+      <action id="PostVideoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Post Video</property>
+        <property name="ShortLabel" translatable="yes">        Post Video      </property>
+        <signal name="Activated" handler="OnPostVideoActionActivated" />
+      </action>
+      <action id="PostPictureAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Post Picture</property>
+        <property name="ShortLabel" translatable="yes">           Post Picture        </property>
+        <signal name="Activated" handler="OnPostPictureActionActivated" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="WidthRequest">910</property>
+    <property name="Title" translatable="yes">FriendManager</property>
+    <property name="Icon">stock:gtk-jump-to Menu</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <property name="DefaultWidth">500</property>
+    <property name="DefaultHeight">500</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed2">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="WidthRequest">910</property>
+            <property name="HeightRequest">200</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="txtViewFriendManager">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Y">430</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label5">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">No Of Count  : </property>
+          </widget>
+          <packing>
+            <property name="X">90</property>
+            <property name="Y">294</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txt_noOfFriendsCount">
+            <property name="MemberName" />
+            <property name="WidthRequest">80</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">5</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">220</property>
+            <property name="Y">290</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label3">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Thread : </property>
+          </widget>
+          <packing>
+            <property name="X">310</property>
+            <property name="Y">294</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtThreadInputFriendManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">80</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">10</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">370</property>
+            <property name="Y">290</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayToFriendManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">80</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">50</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">370</property>
+            <property name="Y">220</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">To  :   </property>
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">224</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtDelayFromFriendManager">
+            <property name="MemberName" />
+            <property name="WidthRequest">80</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes">30</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">220</property>
+            <property name="Y">220</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ComboBoxEntry" id="cmbFriendsInput">
+            <property name="MemberName" />
+            <property name="WidthRequest">230</property>
+            <property name="Sensitive">False</property>
+            <property name="IsTextCombo">True</property>
+            <property name="Items" translatable="yes"> Add friends from keyword
+Send Url message on Friends wall
+Send Text message on Friends wall
+Send Picture on Friends wall
+Add Friends via fanpage url</property>
+            <property name="Active">0</property>
+          </widget>
+          <packing>
+            <property name="X">220</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Start Process Using : </property>
+          </widget>
+          <packing>
+            <property name="X">50</property>
+            <property name="Y">154</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Delay   : </property>
+          </widget>
+          <packing>
+            <property name="X">125</property>
+            <property name="Y">224</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_AddFriendsViaScraper">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes"> Add friends Via Scraper</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkAddFriendsViaScraperClicked" />
+          </widget>
+          <packing>
+            <property name="X">50</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnFriendsLoadKeywords">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Upload keywords in text file to send friend request.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Keywords  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnFriendsLoadKeywordsClicked" />
+          </widget>
+          <packing>
+            <property name="X">50</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnLoadProfileUrlFriendManager">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">upload friends profile urls </property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Profile Url  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadProfileUrlFriendManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">340</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnFridendProfileUrl">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Upload messages you want to post with pic/video/post (optional in case of pic/video)</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Message  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnFridendProfileUrlClicked" />
+          </widget>
+          <packing>
+            <property name="X">480</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnFriendsLoadPicture">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Upload folder of pics.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Picture  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnFriendsLoadPictureClicked" />
+          </widget>
+          <packing>
+            <property name="X">770</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_LoadUrlsMessage">
+            <property name="MemberName" />
+            <property name="Tooltip" translatable="yes">Upload video urls you want to post.</property>
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Video Urls  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadUrlsMessageClicked" />
+          </widget>
+          <packing>
+            <property name="X">620</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_SendPicturemessageonFriendswall">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Picture</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkSendPicturemessageonFriendswallClicked" />
+          </widget>
+          <packing>
+            <property name="X">770</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbkSendTextMessage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Text Message</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRadiobutton9Clicked" />
+          </widget>
+          <packing>
+            <property name="X">470</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_SendUrlmessageonFriendswall">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Post Video</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkSendUrlmessageonFriendswallClicked" />
+          </widget>
+          <packing>
+            <property name="X">650</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkUseSingleItem">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Item</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseSingleItemClicked" />
+          </widget>
+          <packing>
+            <property name="X">517</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtUseSingleMessage">
+            <property name="MemberName" />
+            <property name="WidthRequest">350</property>
+            <property name="HeightRequest">70</property>
+            <property name="Tooltip" translatable="yes">Enter single keyword/text message.</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">517</property>
+            <property name="Y">200</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_LoadSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">    Upload Single Image   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">670</property>
+            <property name="Y">300</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStartFriendManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">           Start     ▶         </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnStartFriendManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">50</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStopProcessFriendManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">             Stop   ■           </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnStopProcessFriendManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">270</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkFriendsManagerSendWithTxtMessage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">WithText Message</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkFriendsManagerSendWithTxtMessageClicked" />
+          </widget>
+          <packing>
+            <property name="X">720</property>
+            <property name="Y">150</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chk_ExportDataFriendsManager">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Export Data</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkExportDataFriendsManagerClicked" />
+          </widget>
+          <packing>
+            <property name="X">517</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="rbk_loadFanpageUrls">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Add Friends Via fanpage Urls</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="OnRbkLoadFanpageUrlsClicked" />
+          </widget>
+          <packing>
+            <property name="X">250</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btn_loadFanpageUrls">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">  Load Fanpage Url  </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnLoadFanpageUrlsClicked" />
+          </widget>
+          <packing>
+            <property name="X">190</property>
+            <property name="Y">90</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chkUseUploadedProfileUrls">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Uploaded Profile URL's</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseUploadedProfileUrlsClicked" />
+          </widget>
+          <packing>
+            <property name="X">656</property>
+            <property name="Y">350</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="chk_UseSingleImage">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Single Image </property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnChkUseSingleImageClicked" />
+          </widget>
+          <packing>
+            <property name="X">517</property>
+            <property name="Y">300</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Toolbar" id="toolbar2">
+            <property name="MemberName" />
+            <property name="WidthRequest">910</property>
+            <property name="ShowArrow">False</property>
+            <property name="ButtonStyle">Text</property>
+            <property name="IconSize">Menu</property>
+            <node name="toolbar2" type="Toolbar">
+              <node type="Toolitem" action="AddFriendsViaScraperAction" />
+              <node type="Toolitem" action="AddFriendsViaFanpageUrlsAction" />
+              <node type="Toolitem" action="PostTextMessageAction" />
+              <node type="Toolitem" action="PostVideoAction" />
+              <node type="Toolitem" action="PostPictureAction" />
+            </node>
+          </widget>
+          <packing>
+            <property name="X">1</property>
+            <property name="Y">10</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.frmAddAccounts" design-size="425 321">
+    <property name="MemberName" />
+    <property name="WidthRequest">425</property>
+    <property name="Title" translatable="yes">Add Accounts</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="WidthRequest">420</property>
+        <property name="HeightRequest">250</property>
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Email  : </property>
+          </widget>
+          <packing>
+            <property name="X">50</property>
+            <property name="Y">58</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtInputUserName">
+            <property name="MemberName" />
+            <property name="WidthRequest">200</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">137</property>
+            <property name="Y">51</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label3">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Password  : </property>
+          </widget>
+          <packing>
+            <property name="X">25</property>
+            <property name="Y">99</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtInputPassword">
+            <property name="MemberName" />
+            <property name="WidthRequest">200</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">139</property>
+            <property name="Y">94</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Proxy  : </property>
+          </widget>
+          <packing>
+            <property name="X">49</property>
+            <property name="Y">137</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtInputProxy">
+            <property name="MemberName" />
+            <property name="WidthRequest">200</property>
+            <property name="Tooltip" translatable="yes">Formate -&gt; ProxyIp   : ProxyPort   : ProxyUserName  :  ProxyPassword</property>
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">138</property>
+            <property name="Y">138</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnAddAccounts">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Add Account </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnAddAccountsClicked" />
+          </widget>
+          <packing>
+            <property name="X">136</property>
+            <property name="Y">192</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnClearAccounts">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Clear Account </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnClearAccountsClicked" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">240</property>
+            <property name="Y">191</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label5">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes"> </property>
+          </widget>
+          <packing>
+            <property name="X">67</property>
+            <property name="Y">169</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HButtonBox" id="hbuttonbox1">
+            <property name="MemberName" />
+            <property name="Size">0</property>
+          </widget>
+          <packing>
+            <property name="X">64</property>
+            <property name="Y">240</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="facedominator.frmLicensing" design-size="757 431">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Licensing of Facedominator 3.0</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="WidthRequest">740</property>
+            <property name="HeightRequest">100</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="txtViewLicenseLogger">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Y">300</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblUser">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">UserName   :</property>
+          </widget>
+          <packing>
+            <property name="X">180</property>
+            <property name="Y">42</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtUserName">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">37</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblPasswword">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Password   :</property>
+          </widget>
+          <packing>
+            <property name="X">180</property>
+            <property name="Y">73</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtPassword">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="Visibility">False</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">69</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtTransactionID">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">104</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblTransactionID">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">TransactionID  :</property>
+          </widget>
+          <packing>
+            <property name="X">160</property>
+            <property name="Y">106</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="txtEmail">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="X">320</property>
+            <property name="Y">141</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblEmail">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Email    :</property>
+          </widget>
+          <packing>
+            <property name="X">200</property>
+            <property name="Y">143</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblstatus">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Status</property>
+          </widget>
+          <packing>
+            <property name="X">360</property>
+            <property name="Y">174</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnActivate">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Activate</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnActivateClicked" />
+          </widget>
+          <packing>
+            <property name="X">360</property>
+            <property name="Y">202</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblMacID">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Mac-ID :</property>
+          </widget>
+          <packing>
+            <property name="X">270</property>
+            <property name="Y">14</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btnStart">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">   Start Facedominator   </property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnStartClicked" />
+          </widget>
+          <packing>
+            <property name="X">326</property>
+            <property name="Y">202</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblLicenseStatus">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">License Status   :</property>
+          </widget>
+          <packing>
+            <property name="X">150</property>
+            <property name="Y">167</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>

@@ -1,0 +1,22 @@
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.exe.config
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.exe
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.pdb
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\BaseLib.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\System.Data.SQLite.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\log4net.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\ChilkatDotNet2.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\bin\Debug\BaseLib.pdb
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\obj\x86\Debug\Pindominator 3.0.csprojResolveAssemblyReference.cache
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\obj\x86\Debug\facedominator.exe
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACVer\Pindominator\obj\x86\Debug\facedominator.pdb
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.exe.config
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.exe
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\facedominator.pdb
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\BaseLib.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\System.Data.SQLite.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\log4net.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\ChilkatDotNet2.dll
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\bin\Debug\BaseLib.pdb
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\obj\x86\Debug\Pindominator 3.0.csprojResolveAssemblyReference.cache
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\obj\x86\Debug\facedominator.exe
+D:\MacVersion\PD3.0_MACVer\PD3.0_MACBackup_10_2\PD3.0_MACVer\Pindominator\obj\x86\Debug\facedominator.pdb

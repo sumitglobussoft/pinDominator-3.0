@@ -51,7 +51,7 @@ namespace FollowManagers
         }
 
         string Unfollowuserid = string.Empty;
-        List<string> lstNonFollowing = new List<string>();
+    
         List<string> lstFollowers = new List<string>();
         List<string> lstFollowings = new List<string>();
         List<string> followings = new List<string>();
@@ -216,7 +216,7 @@ namespace FollowManagers
                 catch (Exception ex)
                 { };
                 string ScreenName = objPinUser.ScreenName; //ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
-
+                List<string> lstNonFollowing = new List<string>();
                 if (!chkUploadUnFollowList)
                 {
                     if (!chkNoOFDays_UnFollow)
@@ -392,35 +392,45 @@ namespace FollowManagers
 
                     string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
                     string newHomePageUrl = redirectDomain + "." + "pinterest.com";
+                    string checkalreadyFollowed = objPinUserManager.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/" + UnfollowuserName.Replace(" ", "") + "/"));
+                    if (checkalreadyFollowed.Contains("buttonText\">Unfollow"))
+                    {
+                        // return "Unfollow";
 
-                    // string PostData = "source_url=%2F" + UnfollowuserName + "%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + Unfollowuserid.Trim() + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EUserProfilePage(resource%3DUserResource(username%3D" + UnfollowuserName + "%2C+invite_code%3Dnull))%3EUserProfileHeader(resource%3DUserResource(username%3D" + UnfollowuserName + "%2C+invite_code%3Dnull))%3EUserFollowButton(follow_text%3DFollow%2C+unfollow_text%3DUnfollow%2C+followed%3Dtrue%2C+user_id%3D2" + Unfollowuserid.Trim() + "%2C+memo%3D%5Bobject+Object%5D%2C+text%3DUnfollow%2C+color%3Ddim%2C+disabled%3Dfalse%2C+is_me%3Dfalse%2C+follow_class%3Dprimary%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow)";
-                    string PostData = "source_url=%2F" + UnfollowuserName + "%2Ffollowing%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + Unfollowuserid.Trim() + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserProfilePage%3EUserProfileContent%3EUserProfileFollowingGrid%3EGrid%3EGridItems%3EUser%3EUserFollowButton(user_id%3D" + Unfollowuserid.Trim() + "%2C+follow_class%3Ddefault%2C+followed%3Dtrue%2C+class_name%3DgridItem%2C+log_element_type%3D62%2C+text%3DUnfollow%2C+color%3Ddim%2C+disabled%3Dfalse%2C+follow_text%3DFollow%2C+unfollow_text%3DUnfollow%2C+is_me%3Dfalse%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow)";
-                    string PageUrl = redirectDomain + ".pinterest.com/resource/UserFollowResource/delete/";
-                    try
-                    {
-                        UnFollowPageSource = objPinUserManager.globusHttpHelper.postFormDataProxyPin(new Uri(PageUrl), PostData, newHomePageUrl);// newHomePageUrl + objPinUserManager.Username
-                    }
-                    catch(Exception ex)
-                    {
-                        GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
-                    }
+                        // string PostData = "source_url=%2F" + UnfollowuserName + "%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + Unfollowuserid.Trim() + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EUserProfilePage(resource%3DUserResource(username%3D" + UnfollowuserName + "%2C+invite_code%3Dnull))%3EUserProfileHeader(resource%3DUserResource(username%3D" + UnfollowuserName + "%2C+invite_code%3Dnull))%3EUserFollowButton(follow_text%3DFollow%2C+unfollow_text%3DUnfollow%2C+followed%3Dtrue%2C+user_id%3D2" + Unfollowuserid.Trim() + "%2C+memo%3D%5Bobject+Object%5D%2C+text%3DUnfollow%2C+color%3Ddim%2C+disabled%3Dfalse%2C+is_me%3Dfalse%2C+follow_class%3Dprimary%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow)";
+                        string PostData = "source_url=%2F" + UnfollowuserName + "%2Ffollowing%2F&data=%7B%22options%22%3A%7B%22user_id%22%3A%22" + Unfollowuserid.Trim() + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserProfilePage%3EUserProfileContent%3EUserProfileFollowingGrid%3EGrid%3EGridItems%3EUser%3EUserFollowButton(user_id%3D" + Unfollowuserid.Trim() + "%2C+follow_class%3Ddefault%2C+followed%3Dtrue%2C+class_name%3DgridItem%2C+log_element_type%3D62%2C+text%3DUnfollow%2C+color%3Ddim%2C+disabled%3Dfalse%2C+follow_text%3DFollow%2C+unfollow_text%3DUnfollow%2C+is_me%3Dfalse%2C+follow_ga_category%3Duser_follow%2C+unfollow_ga_category%3Duser_unfollow)";
+                        string PageUrl = redirectDomain + ".pinterest.com/resource/UserFollowResource/delete/";
+                        try
+                        {
+                            UnFollowPageSource = objPinUserManager.globusHttpHelper.postFormDataProxyPin(new Uri(PageUrl), PostData, newHomePageUrl);// newHomePageUrl + objPinUserManager.Username
+                        }
+                        catch (Exception ex)
+                        {
+                            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                        }
 
 
-                    if (!UnFollowPageSource.Contains("<div>Uh oh! Something went wrong"))
-                    {
-                        GlobusLogHelper.log.Info(" => [ Successfully UnFollow For this User " + objPinUserManager.Username + " ]");
-                        return true;
+                        if (!UnFollowPageSource.Contains("<div>Uh oh! Something went wrong"))
+                        {
+                            GlobusLogHelper.log.Info(" => [ Successfully UnFollow For this User " + objPinUserManager.Username + " ]");
+                            return true;
+                        }
+                        else if (UnFollowPageSource.Contains("We're unable to complete this request. Your account is currently in read-only mode to protect your pins. You must reset your password to continue pinning."))
+                        {
+                            GlobusLogHelper.log.Info(" => [ UnFollow Process Failed For this User " + objPinUserManager.Username + "--> ]");
+                            GlobusLogHelper.log.Info(" => [ We're unable to complete this request. Your account is currently in read-only mode to protect your pins. ]");
+                            GlobusLogHelper.log.Info(" => [ You must reset your password to continue pinning. ]");
+                            return false;
+                        }
+                        else
+                        {
+                            GlobusLogHelper.log.Info(" => [ UnFollow Process Failed For this User " + objPinUserManager.Username + " ]");
+                            return false;
+                        }
                     }
-                    else if (UnFollowPageSource.Contains("We're unable to complete this request. Your account is currently in read-only mode to protect your pins. You must reset your password to continue pinning."))
+                    else 
                     {
-                        GlobusLogHelper.log.Info(" => [ UnFollow Process Failed For this User " + objPinUserManager.Username + "--> ]");
-                        GlobusLogHelper.log.Info(" => [ We're unable to complete this request. Your account is currently in read-only mode to protect your pins. ]");
-                        GlobusLogHelper.log.Info(" => [ You must reset your password to continue pinning. ]");
-                        return false;
-                    }
-                    else
-                    {
-                        GlobusLogHelper.log.Info(" => [ UnFollow Process Failed For this User " + objPinUserManager.Username + " ]");
+                        GlobusLogHelper.log.Info("[ " + DateTime.Now + " => [ " + UnfollowuserName + " Is Not Follow Before With " + objPinUserManager.Username + " ]");
                         return false;
                     }
                 }
