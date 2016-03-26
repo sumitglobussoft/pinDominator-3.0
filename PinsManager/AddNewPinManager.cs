@@ -681,7 +681,7 @@ namespace PinsManager
                 GlobusHttpHelper objGlobusHttpHelper = new GlobusHttpHelper();
                 GlobusLogHelper.log.Info(" => [ Start Getting BoardId For Board " + BoardName + " ]");
 
-                string ScreenName = ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
+                string ScreenName = objPinUser.ScreenName; //ObjAccountManager.Getscreen_NameRepin(ref objPinUser);
 
 
                 if (!BoardName.Contains("http:"))
@@ -729,7 +729,8 @@ namespace PinsManager
                         string FirstTokenSubString = BoardPage.Substring(FirstPointToken);
 
                         int SecondPointToken = FirstTokenSubString.IndexOf(",");
-                        BoardId = FirstTokenSubString.Substring(0, SecondPointToken).Replace("var board = ", string.Empty).Replace("value=", string.Empty).Replace("'", string.Empty).Replace("board_id\": \"", string.Empty).Replace("\"", string.Empty).Trim();
+                      //  BoardId = FirstTokenSubString.Substring(0, SecondPointToken).Replace("var board = ", string.Empty).Replace("value=", string.Empty).Replace("'", string.Empty).Replace("board_id\": \"", string.Empty).Replace("\"", string.Empty).Trim();
+                        BoardId = Utils.Utils.getBetween(BoardPage, "board_id\":\"", "\",");
                     }
                     catch { };
                 }

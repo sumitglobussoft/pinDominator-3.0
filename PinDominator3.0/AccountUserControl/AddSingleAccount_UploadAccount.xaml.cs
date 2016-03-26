@@ -1,6 +1,6 @@
 ﻿using BaseLib;
 using FirstFloor.ModernUI.Windows.Controls;
-using PinDominator3.Pages.PageAccount;
+using PinDominator.Pages.PageAccount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.AccountUserControl
+namespace PinDominator.AccountUserControl
 {
     /// <summary>
     /// Interaction logic for AddSingleAccount_UploadAccount.xaml

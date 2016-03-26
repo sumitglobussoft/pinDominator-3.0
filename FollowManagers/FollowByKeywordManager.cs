@@ -34,9 +34,32 @@ namespace FollowManagers
         public bool rdbMultipleUserFollowByKeyword = false;
         public string SingleKeyword_FollowByKeyword = string.Empty;
 
+        public int MinValue = 5;
+        public int MaxValue = 10;
+
         string[] array = null;
         List<string> Pins = new List<string>();
-        
+
+        #region UserContol_Follow By Keyword
+        public bool ChkboxFollowCertainAmtofValue = false;
+
+        public bool chkBoard = false;
+        public bool chkPin = false;
+        public bool chkLike = false;
+        public bool chkFollower = false;
+        public bool chkFollowing = false;
+
+        public int minValueBoard = 10;
+        public int maxValueBoard = 50;
+        public int minValuePin = 10;
+        public int maxValuePin = 50;
+        public int minValueLike = 10;
+        public int maxValueLike = 50;
+        public int minValueFollower = 10;
+        public int maxValueFollower = 50;
+        public int minValueFollowing = 10;
+        public int maxValueFollowing = 50;
+        #endregion
 
         public int minDelayFollowByKeyword
         {
@@ -381,7 +404,12 @@ namespace FollowManagers
 
                 string UserUrl = string.Empty;
                 string UserPins = string.Empty;
-
+                string Board = string.Empty;
+                string Pins = string.Empty;
+                string Like = string.Empty;
+                string Follower = string.Empty;
+                string Following = string.Empty;
+            
 
                 for (int i = 0; i <= Count; i++)
                 {
@@ -412,11 +440,148 @@ namespace FollowManagers
 
                                         string PinUrl = item.Substring(FirstPinPoint, SecondPinPoint - FirstPinPoint).Replace("\\", "").Replace("\"", string.Empty).Replace("href=", string.Empty).Replace("/", string.Empty).Trim();
 
-                                        lstUserPins.Add(PinUrl);
+                                        string FollowersUrl = "https://pinterest.com/" + PinUrl;
+                                        string GetResponse = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(FollowersUrl));
+
+                                        #region ChkboxFollowCertainAmtofValue
+
+                                        if (ChkboxFollowCertainAmtofValue == true)
+                                        {
+                                            if (!GetResponse.Contains("<div>Something went wrong!</div>"))
+                                            {
+                                                try
+                                                {
+                                                    try
+                                                    {
+                                                        Board = Utils.Utils.getBetween(GetResponse, "pinterestapp:boards\" content=\"", "\" data-app>");
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        Board = "NA";
+                                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                    }
+
+
+                                                    try
+                                                    {
+                                                        Pins = Utils.Utils.getBetween(GetResponse, "pinterestapp:pins\" content=\"", "\" data-app>");
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+
+                                                        Pins = "NA";
+                                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                    }
+                                                    try
+                                                    {
+                                                        Like = Utils.Utils.getBetween(GetResponse, "like_count\":", ",\"");
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+
+                                                        Like = "NA";
+                                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                    }
+
+                                                    try
+                                                    {
+                                                        Follower = Utils.Utils.getBetween(GetResponse, "pinterestapp:followers\" content=\"", "\" data-app>");
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        Follower = "NA";
+                                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                    }
+                                                    try
+                                                    {
+                                                        Following = Utils.Utils.getBetween(GetResponse, "pinterestapp:following\" content=\"", "\" data-app>");
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        Following = "NA";
+                                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                    }
+
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+                                                }
+
+                                                if (chkBoard == true)
+                                                {
+                                                    if ((minValueBoard <= int.Parse(Board)) && (int.Parse(Board) <= maxValueBoard))
+                                                    {
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                if (chkPin == true)
+                                                {
+                                                    if ((minValuePin <= int.Parse(Pins)) && (int.Parse(Pins) <= maxValuePin))
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                if (chkLike == true)
+                                                {
+                                                    if ((minValueLike <= int.Parse(Like)) && (int.Parse(Like) <= maxValueLike))
+                                                    {
+                                                      
+                                                    }
+                                                    else
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                if (chkFollower == true)
+                                                {
+                                                    if ((minValueFollower <= int.Parse(Follower)) && (int.Parse(Follower) <= maxValueFollower))
+                                                    {
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                if (chkFollowing == true)
+                                                {
+                                                    if ((minValueFollowing <= int.Parse(Following)) && (int.Parse(Following) <= maxValueFollowing))
+                                                    {
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                lstUserPins.Add(PinUrl);
+                                               
+                                            }
+                                        }
+
+                                        #endregion ChkboxFollowCertainAmtofValue
+                                        else
+                                        {
+                                            lstUserPins.Add(PinUrl);
+                                        }
+
+                                        if (lstUserPins.Count == NoOfUserFollowByKeyword)
+                                        {
+                                            break;
+                                        }
                                     }
                                     catch (Exception ex)
                                     {
-
+                                        GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
                                     }
                                 }
                             }
@@ -427,6 +592,7 @@ namespace FollowManagers
                         GlobusLogHelper.log.Info(" => [ Sorry No More Pages ]");
                         break;
                     }
+               
 
                     lstUserPins = lstUserPins.Distinct().ToList();
                     lstUserPins.Reverse();

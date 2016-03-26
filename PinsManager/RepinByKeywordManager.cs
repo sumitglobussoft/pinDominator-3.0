@@ -451,8 +451,8 @@ namespace PinsManager
                             }
                             else
                             {
-                                //http://pinterest.com/resource/SearchResource/get/?source_url=%2Fsearch%2Fpins%2F%3Fq%3Dhairstyle&data=%7B%22options%22%3A%7B%22query%22%3A%22hairstyle%22%2C%22bookmarks%22%3A%5B%22b28xMDB8MDQ0NWZiOTBjNzNiODlkOTQ1ZTk3ZjY0ZTBhYjU0YjM0ZDYyNDg3NjU3ZWQ3OGJmZjI4ZTliZGRmODBlMzJlNQ%3D%3D%22%5D%2C%22show_scope_selector%22%3Atrue%2C%22scope%22%3A%22pins%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22fc93456%22%7D%2C%22module%22%3A%7B%22name%22%3A%22GridItems%22%2C%22options%22%3A%7B%22scrollable%22%3Atrue%2C%22show_grid_footer%22%3Atrue%2C%22centered%22%3Atrue%2C%22reflow_all%22%3Atrue%2C%22virtualize%22%3Atrue%2C%22item_options%22%3A%7B%22show_pinner%22%3Atrue%2C%22show_pinned_from%22%3Afalse%2C%22show_board%22%3Atrue%7D%2C%22layout%22%3A%22variable_height%22%7D%7D%2C%22append%22%3Atrue%2C%22error_strategy%22%3A2%7D&_=1375699543906
-                                UserUrl = "http://pinterest.com/resource/SearchResource/get/?source_url=%2Fsearch%2Fpins%2F%3Fq%3D" + keyword + "&data=%7B%22options%22%3A%7B%22query%22%3A%22" + keyword + "%22%2C%22bookmarks%22%3A%5B%22" + Uri.EscapeDataString(bookmark) + "%22%5D%2C%22show_scope_selector%22%3Atrue%2C%22scope%22%3A%22pins%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + objPinUser.App_version + "%22%7D%2C%22module%22%3A%7B%22name%22%3A%22GridItems%22%2C%22options%22%3A%7B%22scrollable%22%3Atrue%2C%22show_grid_footer%22%3Atrue%2C%22centered%22%3Atrue%2C%22reflow_all%22%3Atrue%2C%22virtualize%22%3Atrue%2C%22item_options%22%3A%7B%22show_pinner%22%3Atrue%2C%22show_pinned_from%22%3Afalse%2C%22show_board%22%3Atrue%7D%2C%22layout%22%3A%22variable_height%22%7D%7D%2C%22append%22%3Atrue%2C%22error_strategy%22%3A" + i + "%7D&_=" + DateTime.Now.Ticks;
+                                //http://pinterest.com/resource/SearchResource/get/?source_url=%2Fsearch%2Fpins%2F%3Fq%3D" + keyword + "&data=%7B%22options%22%3A%7B%22query%22%3A%22" + keyword + "%22%2C%22bookmarks%22%3A%5B%22" + Uri.EscapeDataString(bookmark) + "%22%5D%2C%22show_scope_selector%22%3Atrue%2C%22scope%22%3A%22pins%22%7D%2C%22context%22%3A%7B%22app_version%22%3A%22" + objPinUser.App_version + "%22%7D%2C%22module%22%3A%7B%22name%22%3A%22GridItems%22%2C%22options%22%3A%7B%22scrollable%22%3Atrue%2C%22show_grid_footer%22%3Atrue%2C%22centered%22%3Atrue%2C%22reflow_all%22%3Atrue%2C%22virtualize%22%3Atrue%2C%22item_options%22%3A%7B%22show_pinner%22%3Atrue%2C%22show_pinned_from%22%3Afalse%2C%22show_board%22%3Atrue%7D%2C%22layout%22%3A%22variable_height%22%7D%7D%2C%22append%22%3Atrue%2C%22error_strategy%22%3A" + i + "%7D&_=" + DateTime.Now.Ticks;
+                                UserUrl = "https://pinterest.com/resource/SearchResource/get/?source_url=%2Fsearch%2Fpins%2F%3F0%3D" + keyword + "%257Crecentsearch%257C1%26q%3D" + keyword + "%26rs%3Drs%26remove_refine%3D" + keyword + "%257Ctyped&data=%7B%22options%22%3A%7B%22layout%22%3Anull%2C%22places%22%3Afalse%2C%22constraint_string%22%3Anull%2C%22show_scope_selector%22%3Atrue%2C%22query%22%3A%22" + keyword + "%22%2C%22scope%22%3A%22pins%22%2C%22bookmarks%22%3A%5B%22" + Uri.EscapeDataString(bookmark) + "%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&_=" + DateTime.Now.Ticks;                                                                     
                             }
 
                             try
@@ -471,17 +471,37 @@ namespace PinsManager
 
                                 string Datavalue = bookmarksDataArr[bookmarksDataArr.Count() - 1];
 
-                                bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5);
+                                bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5).Replace("\"","").Replace("=","");
 
                             }
 
                             List<string> lst = System.Text.RegularExpressions.Regex.Split(UserPageSource, "pin_id").ToList();
+                            if (lst.Count == 1)
+                            {
+                                lst = Regex.Split(UserPageSource, "v3").ToList();
+                            }
                             List<string> templst = new List<string>();
                             foreach (string item in lst)
                             {
-                                if (!item.StartsWith("\": \"") || item.Contains("$") || item.Contains("?{pin}"))
+                                //if (!item.StartsWith("\": \"") || item.Contains("$") || item.Contains("?{pin}"))
+                                //{
+                                //    continue;
+                                //}
+                                if (!item.Contains("request_identifie"))
                                 {
-                                    continue;
+                                    if (item.Contains("/pins/"))
+                                    {
+                                        string PinNo = Utils.Utils.getBetween(item, "pins/", "/comments");
+                                        lstUserPins.Add(PinNo);
+                                    }
+                                    if (!item.Contains("/pins/"))
+                                    {
+                                        if (item.Contains("\":\""))
+                                        {
+                                            string PinId = Utils.Utils.getBetween(item, "\":\"", "\",");
+                                            lstUserPins.Add(PinId);
+                                        }
+                                    }
                                 }
 
                                 if (item.Contains("id\": \"pinItButton"))// && item.Contains("/repins/"))

@@ -20,9 +20,9 @@ using System.Threading;
 using FirstFloor.ModernUI.Windows.Controls;
 using InviteManager;
 using System.Data;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 
-namespace PinDominator3.Pages.PageInvite
+namespace PinDominator.Pages.PageInvite
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

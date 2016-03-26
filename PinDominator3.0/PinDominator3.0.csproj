@@ -8,7 +8,7 @@
     <ProjectGuid>{3CAE5199-C891-4F24-B8A0-57967D10076E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PinDominator3</RootNamespace>
+    <RootNamespace>PinDominator</RootNamespace>
     <AssemblyName>PinDominator3</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -95,6 +95,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomUserControl\UserControl_FollowByKeyword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomUserControl\UserControl_FollowByUsername_DivideData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -128,6 +132,9 @@
     <Compile Include="CustomUserControl\UserControl_CommentByKeyword_DivideData.xaml.cs">
       <DependentUpon>UserControl_CommentByKeyword_DivideData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControl\UserControl_FollowByKeyword.xaml.cs">
+      <DependentUpon>UserControl_FollowByKeyword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomUserControl\UserControl_FollowByUsername_DivideData.xaml.cs">
       <DependentUpon>UserControl_FollowByUsername_DivideData.xaml</DependentUpon>
     </Compile>
@@ -144,12 +151,16 @@
       <DependentUpon>UserControl_UnFollow_UploadUnFollowList.xaml</DependentUpon>
     </Compile>
     <Compile Include="LicenseManager.cs" />
+    <Compile Include="Licensing.cs" />
     <Compile Include="LicensingWindow.xaml.cs">
       <DependentUpon>LicensingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NewLicensingWindow.xaml.cs">
+      <DependentUpon>NewLicensingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageLoader.cs" />
     <Compile Include="Pages\PageAccount\AccountCreator.xaml.cs">
@@ -244,6 +255,10 @@
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="NewLicensingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\PageAccount\AccountCreator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

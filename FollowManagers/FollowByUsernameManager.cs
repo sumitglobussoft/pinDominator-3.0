@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -519,6 +520,13 @@ namespace FollowManagers
                    UserUrl = "http://pinterest.com/" + UserUrl + "/";
                }
                UserUrl = UserUrl + "follow/";
+
+               //string checkalreadyFollowed = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/" + Username.Replace(" ", "") + "/"));
+               //if (checkalreadyFollowed.Contains("buttonText\">Unfollow"))
+               //{
+               //    return "Unfollow";
+               //}
+
                string UserName = UserUrl.Replace("http://pinterest.com/", string.Empty).Replace("follow", string.Empty).Replace("/", string.Empty);
                string Referer = "http://pinterest.com/search/people/?q=" + UserName;
                string FollowPageSource = string.Empty;
@@ -599,6 +607,9 @@ namespace FollowManagers
                List<string>TotalScraperFollowers=new List<string>();
                GlobusLogHelper.log.Info(" => [ Scraping Followers ] ");
                objPinUser.globusHttpHelper = new GlobusHttpHelper();
+               string Checking = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
+               string redirectDomain = GlobusHttpHelper.valueURl.Split('.')[0];
+               string newHomePageUrl = redirectDomain + "." + "pinterest.com";
                for (int i = 1; i <= 100; i++)
                {
                    try
@@ -610,14 +621,17 @@ namespace FollowManagers
                            FollowUrl = "http://www.pinterest.com/" + UserName + "/followers/";
                            FollowerPageSource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri(FollowUrl), referer, string.Empty, "");
                            referer = FollowUrl;
+
                        }
                        else
                        {
                            //FollowUrl = "https://www.pinterest.com/resource/UserFollowersResource/get/?source_url=%2Fashantiluther%2Ffollowers%2F&data=%7B%22options%22%3A%7B%22username%22%3A%22" + UserName + "%22%7D%2C%22context%22%3A%7B%7D%7D&_=" + DateTime.Now.Ticks;
                            FollowUrl = "https://www.pinterest.com/resource/UserFollowersResource/get/?source_url=%2F" + UserName + "%2Ffollowers%2F&data=%7B%22options%22%3A%7B%22username%22%3A%22" + UserName + "%22%2C%22bookmarks%22%3A%5B%22" + bookmark + "%3D%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserProfilePage%3EUserInfoBar(tab%3Dfollowers%2C+spinner%3D%5Bobject+Object%5D%2C+resource%3DUserResource(username%3DSimplyBags%2C+invite_code%3Dnull))&_=";
+                         //FollowUrl = "https://in.pinterest.com/resource/UserFollowersResource/get/?source_url=%2Fimaginationtree%2Ffollowers%2F&data=%7B%22options%22%3A%7B%22username%22%3A%22imaginationtree%22%2C%22bookmarks%22%3A%5B%22Pz9Nakl5TXpvME1qVTROekU0TkRVNU1qRTJPREV6TWpBNk9USXlNek0zTURVM09EYzNPRFkwTXpVd05WOUZ8ZTcyMzU3ZTEwYmU5YmE1MWZhZDQ0MGQwZjM2NmU2YzQwNDUzZWVkYWEyODRlOTg5OTdkNjFiZTBlMzIxNmViOA%3D%3D%22%5D%7D%2C%22context%22%3A%7B%7D%7D&module_path=App%3EUserProfilePage%3EUserInfoBar(tab%3Dfollowers%2C+spinner%3D%5Bobject+Object%5D%2C+resource%3DUserResource(username%3Dimaginationtree%2C+invite_code%3Dnull))&_=1458110524247 HTTP/1.1
+
                            try
                            {
-                               FollowerPageSource = objPinUser.globusHttpHelper.getHtmlfromUrlProxy(new Uri(FollowUrl), referer, "", 80, string.Empty, "", "");
+                               FollowerPageSource = objPinUser.globusHttpHelper.getHtmlfromUrlProxy(new Uri(FollowUrl), "http://www.pinterest.com/", "", 80, string.Empty, "", "");
                            }
                            catch
                            {
@@ -640,8 +654,9 @@ namespace FollowManagers
                                int startindex = DataString.IndexOf("\": \"");
                                int endindex = DataString.IndexOf("\", \"");
 
-                               AppVersion = DataString.Substring(startindex, endindex - startindex).Replace("\": \"", "");
+                               //AppVersion = DataString.Substring(startindex, endindex - startindex).Replace("\": \"", "");
                            }
+                           AppVersion = Utils.Utils.getBetween(FollowerPageSource, "app_version\":\"", "\",");
                        }
 
                        ///get bookmarks value from page 
@@ -656,7 +671,7 @@ namespace FollowManagers
                            else
                                Datavalue = bookmarksDataArr[bookmarksDataArr.Count() - 1];
 
-                           bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5);
+                           bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5).Replace("==", "").Replace("\"","");
                        }
 
                        try
@@ -669,6 +684,12 @@ namespace FollowManagers
                                {                               
                                    lst = System.Text.RegularExpressions.Regex.Split(FollowerPageSource, "href").ToList();
                                }
+
+                               if (arraydata.Count() == 1)
+                               {
+                                   arraydata = Regex.Split(FollowerPageSource,"{\"username");
+                               }
+
                                foreach (string item in arraydata)
                                {
                                    if (item.Contains("class=\"userWrapper") || item.Contains("class=\\\"userWrapper"))
@@ -713,6 +734,18 @@ namespace FollowManagers
                                            }
                                        }
                                        catch (Exception ex)
+                                       {
+                                           GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+                                       }
+                                   }
+                                   else if (item.Contains("\":"))
+                                   {
+                                       try
+                                       {
+                                           User = Utils.Utils.getBetween(item,"\":\"","\",");
+                                           Followers.Add(User);
+                                       }
+                                       catch(Exception ex)
                                        {
                                            GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                                        }
@@ -765,7 +798,7 @@ namespace FollowManagers
            {
                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
            }
-           GlobusLogHelper.log.Info(" => [ Total  Followers : " + lstTotalUserScraped.Count + " ]");
+           GlobusLogHelper.log.Info(" => [ Total  Followers : " + objPinUser.lstUserFollowers.Count + " ]");
           
            return objPinUser.lstUserFollowers;
        }

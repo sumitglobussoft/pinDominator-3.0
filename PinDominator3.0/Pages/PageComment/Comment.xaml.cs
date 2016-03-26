@@ -20,11 +20,11 @@ using FirstFloor.ModernUI.Windows.Controls;
 using CommentManager;
 using System.Text.RegularExpressions;
 using System.Data;
-using PinDominator3.CustomUserControl;
-using PinDominator3.Classes;
+using PinDominator.CustomUserControl;
+using PinDominator.Classes;
 using System.Diagnostics;
 
-namespace PinDominator3.Pages.PageComment
+namespace PinDominator.Pages.PageComment
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

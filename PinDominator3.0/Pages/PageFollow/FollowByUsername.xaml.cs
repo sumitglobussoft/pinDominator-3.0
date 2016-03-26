@@ -20,10 +20,10 @@ using FirstFloor.ModernUI.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Threading;
 using FollowManagers;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System.Data;
 
-namespace PinDominator3.Pages.PageFollow
+namespace PinDominator.Pages.PageFollow
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

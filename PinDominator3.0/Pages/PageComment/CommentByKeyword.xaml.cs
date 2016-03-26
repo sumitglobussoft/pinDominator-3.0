@@ -19,12 +19,12 @@ using BasePD;
 using System.Text.RegularExpressions;
 using System.Threading;
 using CommentManager;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System.Data;
 using System.Diagnostics;
-using PinDominator3.Classes;
+using PinDominator.Classes;
 
-namespace PinDominator3.Pages.PageComment
+namespace PinDominator.Pages.PageComment
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

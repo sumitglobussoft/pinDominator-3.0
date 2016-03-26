@@ -21,7 +21,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using PinsManager;
 using System.Data;
 
-namespace PinDominator3.Pages.PagePin
+namespace PinDominator.Pages.PagePin
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

@@ -2,7 +2,7 @@
 using BasePD;
 using FirstFloor.ModernUI.Windows.Controls;
 using FollowManagers;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageFollow
+namespace PinDominator.Pages.PageFollow
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

@@ -21,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageScraper
+namespace PinDominator.Pages.PageScraper
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

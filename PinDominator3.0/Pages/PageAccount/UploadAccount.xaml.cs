@@ -25,12 +25,12 @@ using System.Windows.Shapes;
 using FirstFloor.ModernUI.Windows.Controls;
 
 using AccountManager;
-using PinDominator3.AccountUserControl;
-using PinDominator3.Classes;
+using PinDominator.AccountUserControl;
+using PinDominator.Classes;
 using WpfAnimatedGif;
 using System.Data.SQLite;
 
-namespace PinDominator3.Pages.PageAccount
+namespace PinDominator.Pages.PageAccount
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageProxy
+namespace PinDominator.Pages.PageProxy
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

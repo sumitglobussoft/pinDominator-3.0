@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageAccount
+namespace PinDominator.Pages.PageAccount
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

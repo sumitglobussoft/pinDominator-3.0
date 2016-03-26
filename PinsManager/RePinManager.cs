@@ -298,23 +298,24 @@ namespace PinsManager
                 //string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                 if (objPinUser.Boards.Count > 0 || objPinUser.Boards.Count == 0) 
                 {
-                    Random Boardrnd = new Random();
+                  //  Random Boardrnd = new Random();
                     int BoardNum = 0;
 
-                    try
-                    {
-                        BoardNum = Boardrnd.Next(0, objPinUser.Boards.Count - 1);
-                    }
-                    catch (Exception ex)
-                    {
-                        // GlobusFileHelper.AppendStringToTextfileNewLine("Error --> StartRepinMultiThreaded() 1--> " + ex.Message, ApplicationData.ErrorLogFile);
-                    }
+                    //try
+                    //{
+                    //    BoardNum = Boardrnd.Next(0, objPinUser.Boards.Count - 1);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    // GlobusFileHelper.AppendStringToTextfileNewLine("Error --> StartRepinMultiThreaded() 1--> " + ex.Message, ApplicationData.ErrorLogFile);
+                    //}
 
                     string BoardNumber = string.Empty;
                     try
                     {
-                        BoardNum = Boardrnd.Next(0, objPinUser.Boards.Count - 1);
-                        BoardNumber = objPinUser.Boards[BoardNum];
+                        Random Boardrnd = new Random();
+                        BoardNum = Boardrnd.Next(0, objPinUser.lstBoardId.Count - 1);
+                        BoardNumber = objPinUser.lstBoardId[BoardNum];
                     }
                     catch (Exception ex)
                     {
@@ -447,8 +448,8 @@ namespace PinsManager
                                                     try
                                                     {
                                                         Random rndBoard = new Random();
-                                                        int NumBoard = rndBoard.Next(0, objPinUser.Boards.Count - 1);
-                                                        BoardNumber = objPinUser.Boards[NumBoard];
+                                                        int NumBoard = rndBoard.Next(0, objPinUser.lstBoardId.Count - 1);  //objPinUser.Boards.Count - 1
+                                                        BoardNumber = objPinUser.lstBoardId[NumBoard];
                                                     }
                                                     catch (Exception ex)
                                                     {
@@ -464,19 +465,22 @@ namespace PinsManager
                                                         }
                                                         catch { };
                                                     }
+
                                                     if (arrBoardName == null)
                                                     {
                                                         try
                                                         {
-                                                            arrBoardName = Regex.Split(oneTimePagesource, "board\", \"id\"");
+                                                            arrBoardName = Regex.Split(oneTimePagesource, "\"board\",\"id\":\"");
                                                         }
                                                         catch { };
                                                     }
+                                                    
                                                     foreach (var itemBoardName in arrBoardName)
                                                     {
+                                                        //string checklogin = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com"));
                                                         try
                                                         {
-                                                            if (itemBoardName.Contains(BoardNumber))//&&itemBoardName.Contains("board\", \"id\""))
+                                                            if (itemBoardName.Contains(BoardNumber))          //&&itemBoardName.Contains("board\", \"id\""))
                                                             {
                                                                 BoardName = Utils.Utils.getBetween(itemBoardName, "name", "}").Replace(":", "").Replace("\"", "").Trim();
                                                             }
@@ -949,8 +953,9 @@ namespace PinsManager
                                 int startindex = DataString.IndexOf("\": \"");
                                 int endindex = DataString.IndexOf("\", \"");
 
-                                AppVersion = DataString.Substring(startindex, endindex - startindex).Replace("\": \"", "");
+                                //AppVersion = DataString.Substring(startindex, endindex - startindex).Replace("\": \"", "");
                             }
+                            AppVersion = Utils.Utils.getBetween(FollowerPageSource, "app_version\":\"", "\",");
                         }
 
                         ///get bookmarks value from page 
@@ -965,7 +970,7 @@ namespace PinsManager
                             else
                                 Datavalue = bookmarksDataArr[bookmarksDataArr.Count() - 1];
 
-                            bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5);
+                            bookmark = Datavalue.Substring(Datavalue.IndexOf(": [\"") + 4, Datavalue.IndexOf("]") - Datavalue.IndexOf(": [\"") - 5).Replace("==", "").Replace("\"", ""); 
                         }
 
 

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.setting
+namespace PinDominator.Pages.setting
 {
     /// <summary>
     /// Interaction logic for Appearance.xaml

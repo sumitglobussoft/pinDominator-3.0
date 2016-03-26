@@ -14,6 +14,7 @@ namespace BaseLib
         //LikeByKeyword
         public static List<string> lstLikeByKeyword = new List<string>();
 
+        public static List<string> lstCmboBox_FollowByKeyword = new List<string>();
 
         //ManageAccount
         public static List<string> lstEmailManageAcc = new List<string>();

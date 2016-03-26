@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PinDominator3.Classes
+namespace PinDominator.Classes
 {
     public class AccountViewModel
     {

@@ -3,8 +3,8 @@ using BasePD;
 using FirstFloor.ModernUI.Windows.Controls;
 using Globussoft;
 using LikeManager;
-using PinDominator3.Classes;
-using PinDominator3.CustomUserControl;
+using PinDominator.Classes;
+using PinDominator.CustomUserControl;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageLike
+namespace PinDominator.Pages.PageLike
 {
     /// <summary>
     /// Interaction logic for LikeByKeyword.xaml

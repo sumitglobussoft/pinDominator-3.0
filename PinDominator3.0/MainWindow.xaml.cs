@@ -4,7 +4,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using Globussoft;
 using log4net.Config;
-using PinDominator3.Pages.PageAccount;
+using PinDominator.Pages.PageAccount;
 using PinsManager;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace PinDominator3
+namespace PinDominator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

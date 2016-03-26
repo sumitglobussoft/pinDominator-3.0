@@ -10,22 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PinDominator3.Pages.PageAccount;
-using PinDominator3.Pages.PageBlog;
-using PinDominator3.Pages.Pageboard;
-using PinDominator3.Pages.PageComment;
-using PinDominator3.Pages.PageFollow;
-using PinDominator3.Pages.PageInvite;
-using PinDominator3.Pages.PageLike;
-using PinDominator3.Pages.PageMessage;
-using PinDominator3.Pages.PagePin;
-using PinDominator3.Pages.PageProxy;
-using PinDominator3.Pages.PageScraper;
-using PinDominator3.Pages.setting;
+using PinDominator.Pages.PageAccount;
+using PinDominator.Pages.PageBlog;
+using PinDominator.Pages.Pageboard;
+using PinDominator.Pages.PageComment;
+using PinDominator.Pages.PageFollow;
+using PinDominator.Pages.PageInvite;
+using PinDominator.Pages.PageLike;
+using PinDominator.Pages.PageMessage;
+using PinDominator.Pages.PagePin;
+using PinDominator.Pages.PageProxy;
+using PinDominator.Pages.PageScraper;
+using PinDominator.Pages.setting;
 
 
 
-namespace PinDominator3
+namespace PinDominator
 {
     /// <summary>
     /// Loads lorem ipsum content regardless the given uri.

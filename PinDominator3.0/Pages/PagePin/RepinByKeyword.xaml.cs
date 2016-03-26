@@ -2,8 +2,8 @@
 using BasePD;
 using FirstFloor.ModernUI.Windows.Controls;
 using Globussoft;
-using PinDominator3.Classes;
-using PinDominator3.CustomUserControl;
+using PinDominator.Classes;
+using PinDominator.CustomUserControl;
 using PinsManager;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PagePin
+namespace PinDominator.Pages.PagePin
 {
     /// <summary>
     /// Interaction logic for RepinByKeyword.xaml

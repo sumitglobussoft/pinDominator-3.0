@@ -19,12 +19,12 @@ using BasePD;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Text.RegularExpressions;
 using PinsManager;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System.Data;
-using PinDominator3.Classes;
+using PinDominator.Classes;
 using System.Diagnostics;
 
-namespace PinDominator3.Pages.PagePin
+namespace PinDominator.Pages.PagePin
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

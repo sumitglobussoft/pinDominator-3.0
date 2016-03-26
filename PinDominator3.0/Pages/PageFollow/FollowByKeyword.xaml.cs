@@ -20,9 +20,9 @@ using FirstFloor.ModernUI.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 
-namespace PinDominator3.Pages.PageFollow
+namespace PinDominator.Pages.PageFollow
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml
@@ -498,6 +498,141 @@ namespace PinDominator3.Pages.PageFollow
                         GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        private void ChkFollowCertainAmtofValue_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ChkFollowCertainAmtofValue.IsChecked == true)
+                {
+                    objFollowByKeywordManager.ChkboxFollowCertainAmtofValue = true;
+                }
+                UserControl_FollowByKeyword obj = new UserControl_FollowByKeyword();
+                var window = new ModernDialog
+                {
+                    Content = obj
+                };
+                window.ShowInTaskbar = true;
+                window.MinWidth = 500;
+                window.MinHeight = 500;
+                Button customButton = new Button() { Content = "SAVE" };
+                Button customButton1 = new Button() { Content = "CLOSE" };
+                customButton1.Click += (ss, ee) => { closeEvent(); window.Close(); };
+                customButton.Click += (ss, ee) => { SaveAllData(ref obj); window.Close(); };
+                //customButton.Click += (ss, ee) => { closeEvent(); window.Close(); };
+                window.Buttons = new Button[] { customButton, customButton1 };
+                window.ShowDialog();              
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error :" + ex.StackTrace);
+            }
+        }
+
+        public void SaveAllData(ref UserControl_FollowByKeyword obj)
+        {
+            try 
+            {
+                string countBoard = string.Empty;
+                string countPin = string.Empty;
+                string countLike = string.Empty;
+                string countFollower = string.Empty;
+                string countFollowing = string.Empty;
+
+                MessageBoxButton btnC = MessageBoxButton.YesNo;
+                var result = ModernDialog.ShowMessage("Are you sure want to save ?", "Message Box", btnC);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                   countBoard = obj.txtCount_Board.Text;
+                   countPin = obj.txtCount_Pin.Text;
+                   countLike = obj.txtCount_Like.Text;
+                   countFollower = obj.txtCount_Follower.Text;
+                   countFollowing = obj.txtCount_Following.Text;
+
+                    string[] Board = Regex.Split(countBoard,"-").ToArray();
+                    objFollowByKeywordManager.minValueBoard = int.Parse(Board[0]);
+                    objFollowByKeywordManager.maxValueBoard = int.Parse(Board[1]);
+
+                    string[] Pins = Regex.Split(countPin, "-").ToArray();
+                    objFollowByKeywordManager.minValuePin = int.Parse(Pins[0]);
+                    objFollowByKeywordManager.maxValuePin = int.Parse(Pins[1]);
+
+                    string[] Like = Regex.Split(countLike, "-").ToArray();
+                    objFollowByKeywordManager.minValueLike = int.Parse(Like[0]);
+                    objFollowByKeywordManager.maxValueLike = int.Parse(Like[1]);
+
+                    string[] Follower = Regex.Split(countFollower, "-").ToArray();
+                    objFollowByKeywordManager.minValueFollower = int.Parse(Follower[0]);
+                    objFollowByKeywordManager.maxValueFollower = int.Parse(Follower[1]);
+
+                    string[] Following = Regex.Split(countFollowing, "-").ToArray();
+                    objFollowByKeywordManager.minValueFollowing = int.Parse(Following[0]);
+                    objFollowByKeywordManager.maxValueFollowing = int.Parse(Following[1]);
+
+                    if (obj.chkBoard.IsChecked == true)
+                    {
+                        objFollowByKeywordManager.chkBoard = true;
+                    }
+                    else if (obj.chkBoard.IsChecked == false)
+                    {
+                        objFollowByKeywordManager.chkBoard = false;
+                    }
+
+                    if (obj.chkPin.IsChecked == true)
+                    {
+                        objFollowByKeywordManager.chkPin = true;
+                    }
+                    else if (obj.chkPin.IsChecked == false)
+                    {
+                        objFollowByKeywordManager.chkPin = false;
+                    }
+
+                    if (obj.chkLike.IsChecked == true)
+                    {
+                        objFollowByKeywordManager.chkLike = true;
+                    }
+                    else if (obj.chkLike.IsChecked == false)
+                    {
+                        objFollowByKeywordManager.chkLike = false;
+                    }
+
+                    if (obj.chkFollower.IsChecked == true)
+                    {
+                        objFollowByKeywordManager.chkFollower = true;
+                    }
+                    else if (obj.chkFollower.IsChecked == false)
+                    {
+                        objFollowByKeywordManager.chkFollower = false;
+                    }
+
+                    if (obj.chkFollowing.IsChecked == true)
+                    {
+                        objFollowByKeywordManager.chkFollowing = true;
+                    }
+                    else if (obj.chkFollowing.IsChecked == false)
+                    {
+                        objFollowByKeywordManager.chkFollowing = false;
+                    }
+                }   
+            }
+            catch(Exception ex)
+            {
+                GlobusLogHelper.log.Error(" Error ==>" + ex.Message);
+            }
+        }
+
+        private void ChkFollowCertainAmtofValue_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                objFollowByKeywordManager.ChkboxFollowCertainAmtofValue = false; 
             }
             catch (Exception ex)
             {

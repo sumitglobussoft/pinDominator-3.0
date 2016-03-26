@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
-namespace PinDominator3.Pages.Pageboard
+namespace PinDominator.Pages.Pageboard
 {
     public  static class CSVUtilities
     {

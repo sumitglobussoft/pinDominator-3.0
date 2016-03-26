@@ -949,8 +949,7 @@ namespace Globussoft
         {
             setExpect100Continue();
             gRequest = (HttpWebRequest)WebRequest.Create(url);
-            //gRequest.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.24) Gecko/20111103 Firefox/3.6.24";
-
+     
             if (!string.IsNullOrEmpty(AccountUserAgent))
             {
                 gRequest.UserAgent = AccountUserAgent;
@@ -959,19 +958,18 @@ namespace Globussoft
             {
                 gRequest.UserAgent = UserAgent;
             }
+          
+
+        
             //gRequest.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.24) Gecko/20111103 Firefox/3.6.24";
             //gRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
             //gRequest.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.7";
             ////gRequest.Headers["Cache-Control"] = "max-age=0";
             //gRequest.Headers["Accept-Language"] = "en-us,en;q=0.5";
-            gRequest.Timeout = Timeout;
+           // gRequest.Timeout = Timeout;
             ////gRequest.Connection = "keep-alive";
             //gRequest.Referer = Refrer;
             //gRequest.KeepAlive = true;
-
-            //gRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            //gRequest.Headers["X-NEW-APP"] = "1";
 
             //if (gCookies != null)
             //{

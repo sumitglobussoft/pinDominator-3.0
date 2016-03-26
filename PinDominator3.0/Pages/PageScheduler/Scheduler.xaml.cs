@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.Pages.PageScheduler
+namespace PinDominator.Pages.PageScheduler
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.AccountUserControl
+namespace PinDominator.AccountUserControl
 {
     /// <summary>
     /// Interaction logic for AddNewUserAgen_UploadAccount.xaml

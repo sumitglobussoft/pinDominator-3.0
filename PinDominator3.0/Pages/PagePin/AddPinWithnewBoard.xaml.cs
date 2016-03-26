@@ -20,10 +20,10 @@ using BasePD;
 using PinsManager;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Data;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 
 
-namespace PinDominator3.Pages.PagePin
+namespace PinDominator.Pages.PagePin
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

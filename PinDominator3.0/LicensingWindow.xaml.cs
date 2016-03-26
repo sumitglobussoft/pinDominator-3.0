@@ -1,5 +1,5 @@
 ﻿using BaseLib;
-using PinDominator3;
+using PinDominator;
 using FirstFloor.ModernUI.Windows.Controls;
 using LicensingManager;
 using System;
@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace facedominator
+namespace PinDominator
 {
     /// <summary>
     /// Interaction logic for LicensingWindow.xaml

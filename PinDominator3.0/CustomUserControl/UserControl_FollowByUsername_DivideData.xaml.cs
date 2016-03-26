@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PinDominator3.CustomUserControl
+namespace PinDominator.CustomUserControl
 {
     /// <summary>
     /// Interaction logic for UserControl_FollowByUsername_DivideData.xaml

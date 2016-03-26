@@ -21,9 +21,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data;
 using System.Collections;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 
-namespace PinDominator3.Pages.Pageboard
+namespace PinDominator.Pages.Pageboard
 {
 
     /// <summary>

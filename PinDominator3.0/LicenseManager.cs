@@ -8,7 +8,7 @@ using System.Collections;
 using System.Data;
 using System.Net.NetworkInformation;
 using BaseLib;
-using PinDominator3;
+using PinDominator;
 using System.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using BasePD;

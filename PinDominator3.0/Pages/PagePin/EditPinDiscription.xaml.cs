@@ -20,11 +20,11 @@ using PinsManager;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System.Diagnostics;
-using PinDominator3.Classes;
+using PinDominator.Classes;
 
-namespace PinDominator3.Pages.PagePin
+namespace PinDominator.Pages.PagePin
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

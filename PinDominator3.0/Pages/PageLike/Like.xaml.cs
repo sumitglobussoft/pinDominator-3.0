@@ -20,13 +20,13 @@ using BasePD;
 using LikeManager;
 using System.Text.RegularExpressions;
 using FirstFloor.ModernUI.Windows.Controls;
-using PinDominator3.CustomUserControl;
+using PinDominator.CustomUserControl;
 using System.Data;
 using System.Diagnostics;
-using PinDominator3.Classes;
+using PinDominator.Classes;
 
 
-namespace PinDominator3.Pages.PageLike
+namespace PinDominator.Pages.PageLike
 {
     /// <summary>
     /// Interaction logic for MessageReply.xaml

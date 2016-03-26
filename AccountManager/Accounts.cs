@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Data;
 using System.Threading;
 using BasePD;
+using System.IO;
 
 
 namespace AccountManager
@@ -40,9 +41,9 @@ namespace AccountManager
         public List<string> Boards = new List<string>();
         public List<string> SourceUrl = new List<string>();
         public static List<string> BoardNames = new List<string>();
-        public static List<string> lstBoardNames = new List<string>();
+        //public static List<string> lstBoardNames = new List<string>();
         public static List<string> lstBoardUrls = new List<string>();
-        public static List<string> lstBoardId = new List<string>();
+       // public static List<string> lstBoardId = new List<string>();
         public static bool NextThread = false;
 
         public static string ScreenName = string.Empty;
@@ -58,12 +59,44 @@ namespace AccountManager
         QueryExecuter QME = new QueryExecuter();
 
         public static bool inviteStart = true;
-           
+
+        public string ProductKeyfilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\PinDominator3.0\\ProductKey.txt";
+        public static bool checkFirstTimeLicense = false;
 
         #endregion
 
         
         #region Login
+
+
+        public bool checkLoginTimeLicenseStatus()
+        {
+            bool checkDetails = false;
+            LicensingCheckLoginTime objLicensingCheckLoginTime = new LicensingCheckLoginTime();
+            string licensekey = string.Empty;
+            try
+            {
+                string[] ss = File.ReadLines(ProductKeyfilePath).ToArray();
+                licensekey = ss[0];
+            }
+            catch (Exception ex)
+            {
+                GlobusLogHelper.log.Error(ex.StackTrace);
+            }
+            Dictionary<string, string> LicenseDetails = objLicensingCheckLoginTime.checkLicense(licensekey);
+            string LicenseStatus = LicenseDetails["status"];
+            if (LicenseStatus.Contains("Invalid"))
+            {
+                // GlobusLogHelper.log.Info(" Please Re-Start The Software !");
+                return checkDetails;
+            }
+            else
+            {
+
+                return checkDetails = true;
+            }
+            return checkDetails = true;
+        }
 
         public bool LoginPinterestAccount(ref PinInterestUser objPinUser)
         {
@@ -151,301 +184,312 @@ namespace AccountManager
 
         }
 
-        public bool LoginPinterestAccount1(ref PinInterestUser objPinUser, string Username, string Password, string proxyAddress, string proxyPort, string proxyUsername, string proxyPassword, string ss)
-        {
-            try
-            {
-                lock (this)
-                {
-                    GlobusHttpHelper globusHttpHelper=new GlobusHttpHelper();
-                    string Name = string.Empty;
-                    string ProxyAddress = proxyAddress;
-                    string ProxyPort = proxyPort;
-                    string ProxyUsername = proxyUsername;
-                    string ProxyPassword = proxyPassword;
-                    string AfterLoginPageSource = string.Empty;
-                    try
-                    {
+        //public bool LoginPinterestAccount1(ref PinInterestUser objPinUser, string Username, string Password, string proxyAddress, string proxyPort, string proxyUsername, string proxyPassword, string ss)
+        //{
+        //    try
+        //    {
+        //        lock (this)
+        //        {
+        //            GlobusHttpHelper globusHttpHelper=new GlobusHttpHelper();
+        //            string Name = string.Empty;
+        //            string ProxyAddress = proxyAddress;
+        //            string ProxyPort = proxyPort;
+        //            string ProxyUsername = proxyUsername;
+        //            string ProxyPassword = proxyPassword;
+        //            string AfterLoginPageSource = string.Empty;
+        //            try
+        //            {
 
-                        string PinPage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/"), ProxyAddress, 80, proxyUsername, proxyPassword);
+        //                string PinPage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/"), ProxyAddress, 80, proxyUsername, proxyPassword);
 
-                        string _MainSourcePage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/resource/NoopResource/get/?source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EHomePage()%3EUnauthHomePage(signup_email%3Dnull%2C+tab%3Dfollowing%2C+cmp%3Dnull%2C+resource%3DInspiredWallResource())&_=1424169081757"), proxyAddress, 80, proxyUsername, proxyPassword);
+        //                string _MainSourcePage = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com/resource/NoopResource/get/?source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3EHomePage()%3EUnauthHomePage(signup_email%3Dnull%2C+tab%3Dfollowing%2C+cmp%3Dnull%2C+resource%3DInspiredWallResource())&_=1424169081757"), proxyAddress, 80, proxyUsername, proxyPassword);
             
-                        ///Get App Version 
-                        if (PinPage.Contains("app_version"))
-                        {
-                            try
-                            {
-                                string[] ArrAppVersion = System.Text.RegularExpressions.Regex.Split(PinPage, "app_version");
-                                if (ArrAppVersion.Count() > 0)
-                                {
-                                    string DataString = ArrAppVersion[ArrAppVersion.Count() - 1];
+        //                Get App Version 
+        //                if (PinPage.Contains("app_version"))
+        //                {
+        //                    try
+        //                    {
+        //                        string[] ArrAppVersion = System.Text.RegularExpressions.Regex.Split(PinPage, "app_version");
+        //                        if (ArrAppVersion.Count() > 0)
+        //                        {
+        //                            string DataString = ArrAppVersion[ArrAppVersion.Count() - 1];
 
-                                    int startindex = DataString.IndexOf("\"");
-                                    string start = DataString.Substring(startindex).Replace("\": \"", "").Replace("}", string.Empty).Replace("\"", string.Empty);
-                                    int endindex = start.IndexOf(",");
+        //                            int startindex = DataString.IndexOf("\"");
+        //                            string start = DataString.Substring(startindex).Replace("\": \"", "").Replace("}", string.Empty).Replace("\"", string.Empty);
+        //                            int endindex = start.IndexOf(",");
 
-                                    App_version = start.Substring(0, endindex);
-                                    if (!string.IsNullOrEmpty(App_version))
-                                    {
-                                        objPinUser.App_version = App_version;
-                                    }
-                                }
-                            }
-                            catch { };
-                        }
-                        else
-                        {
-                            ///App version is not available in page source 
-                        }
+        //                            App_version = start.Substring(0, endindex);
+        //                            if (!string.IsNullOrEmpty(App_version))
+        //                            {
+        //                                objPinUser.App_version = App_version;
+        //                            }
+        //                        }
+        //                    }
+        //                    catch { };
+        //                }
+        //                else
+        //                {
+        //                    App version is not available in page source 
+        //                }
 
 
-                        string referer = "https://www.pinterest.com/";
-                        string login = string.Empty;
-                        try
-                        {
+        //                string referer = "https://www.pinterest.com/";
+        //                string login = string.Empty;
+        //                try
+        //                {
 
-                            string PostData1 = "source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%22username_or_email%22%3A%22" + Uri.EscapeDataString(Username) + "%22%2C%22password%22%3A%22" + Uri.EscapeDataString(Password) + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3ELoginPage()%3ELogin()%3EButton(text%3DLog+In%2C+size%3Dlarge%2C+class_name%3Dprimary%2C+type%3Dsubmit)";
+        //                    string PostData1 = "source_url=%2Flogin%2F%3Fnext%3Dhttps%253A%252F%252Fwww.pinterest.com%252F%26prev%3Dhttps%253A%252F%252Fwww.pinterest.com%252F&data=%7B%22options%22%3A%7B%22username_or_email%22%3A%22" + Uri.EscapeDataString(Username) + "%22%2C%22password%22%3A%22" + Uri.EscapeDataString(Password) + "%22%7D%2C%22context%22%3A%7B%7D%7D&module_path=App()%3ELoginPage()%3ELogin()%3EButton(text%3DLog+In%2C+size%3Dlarge%2C+class_name%3Dprimary%2C+type%3Dsubmit)";
 
-                            login = globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/UserSessionResource/create/"), PostData1, referer, proxyAddress, 80, proxyUsername, proxyPassword);
-                        }
-                        catch { };
+        //                    login = globusHttpHelper.postFormDataProxy(new Uri("https://www.pinterest.com/resource/UserSessionResource/create/"), PostData1, referer, proxyAddress, 80, proxyUsername, proxyPassword);
+        //                }
+        //                catch { };
                        
-                        try
-                        {
-                            AfterLoginPageSource = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com"), proxyAddress, 80, proxyUsername, proxyPassword);
-                        }
-                        catch (Exception ex)
-                        {
-                        }
+        //                try
+        //                {
+        //                    AfterLoginPageSource = globusHttpHelper.getHtmlfromUrlProxy(new Uri("https://www.pinterest.com"), proxyAddress, 80, proxyUsername, proxyPassword);
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                }
 
-                        if (AfterLoginPageSource.Contains("Logout") || AfterLoginPageSource.Contains("pinHolder") || AfterLoginPageSource.Contains("header1\": \"What are you interested in?") || AfterLoginPageSource.Contains("\"error\": null") || login.Contains("\"error\": null"))
-                        {
-                            objPinUser.globusHttpHelper = globusHttpHelper;
-                            //GlobusLogHelper.log.Info("[ " + DateTime.Now + " ] => [ Successfully Login for " + Username + " ]");
-                            this.LoggedIn = true;
+        //                if (AfterLoginPageSource.Contains("Logout") || AfterLoginPageSource.Contains("pinHolder") || AfterLoginPageSource.Contains("header1\": \"What are you interested in?") || AfterLoginPageSource.Contains("\"error\": null") || login.Contains("\"error\": null"))
+        //                {
+        //                    objPinUser.globusHttpHelper = globusHttpHelper;
+        //                    GlobusLogHelper.log.Info("[ " + DateTime.Now + " ] => [ Successfully Login for " + Username + " ]");
+        //                    this.LoggedIn = true;
 
-                        }
-                        else
-                        {
-                            //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
-                            this.LoggedIn = false;
-                            return false;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
-                        this.LoggedIn = false;
-                        return false;
-                    }
+        //                }
+        //                else
+        //                {
+        //                    GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+        //                    this.LoggedIn = false;
+        //                    return false;
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                GlobusLogHelper.log.Info(" => [ Login Failed for " + Username + " ]");
+        //                this.LoggedIn = false;
+        //                return false;
+        //            }
 
-                    try
-                    {
-                        List<string> listFollowersFromDatabse = new List<string>();
-                        try
-                        {
-                            string screen_Name = Getscreen_Name(ref objPinUser);
-                            DataSet ds = QME.getFollower(screen_Name);
+        //            try
+        //            {
+        //                List<string> listFollowersFromDatabse = new List<string>();
+        //                try
+        //                {
+        //                    string screen_Name = Getscreen_Name(ref objPinUser);
+        //                    DataSet ds = QME.getFollower(screen_Name);
                          
-                            foreach (System.Data.DataRow dRow in ds.Tables[0].Rows)
-                            {
-                                try
-                                {
-                                    listFollowersFromDatabse.Add(dRow["FollwerName"].ToString());
-                                }
-                                catch (Exception ex)
-                                { }
-                            }
-                        }
-                        catch { }
+        //                    foreach (System.Data.DataRow dRow in ds.Tables[0].Rows)
+        //                    {
+        //                        try
+        //                        {
+        //                            listFollowersFromDatabse.Add(dRow["FollwerName"].ToString());
+        //                        }
+        //                        catch (Exception ex)
+        //                        { }
+        //                    }
+        //                }
+        //                catch { }
 
-                        try
-                        {                            
-                            string screen_Name = Getscreen_Name(ref objPinUser);
-                            objPinUser.ScreenName = screen_Name;
-                            //Get current followers list from website
-                            List<string> FollowersName = GetRefrshFollowerName(screen_Name, ref objPinUser);
+        //                try
+        //                {                            
+        //                    string screen_Name = Getscreen_Name(ref objPinUser);
+        //                    objPinUser.ScreenName = screen_Name;
+        //                    Get current followers list from website
+        //                    List<string> FollowersName = GetRefrshFollowerName(screen_Name, ref objPinUser);
 
-                            //FollowersName.RemoveAt(0);
+        //                    FollowersName.RemoveAt(0);
 
-                            if (FollowersName != null)
-                            {
-                                FollowersName = FollowersName.Distinct().ToList();
-                            }
-                            if (FollowersName.Contains(screen_Name))
-                            {
-                                FollowersName.Remove(screen_Name);
-                            }
-                            //listFollowersFromDatabse.Add("gunde");
-                            List<string> listUnfollowers = listFollowersFromDatabse.Except(FollowersName).ToList();
+        //                    if (FollowersName != null)
+        //                    {
+        //                        FollowersName = FollowersName.Distinct().ToList();
+        //                    }
+        //                    if (FollowersName.Contains(screen_Name))
+        //                    {
+        //                        FollowersName.Remove(screen_Name);
+        //                    }
+        //                    listFollowersFromDatabse.Add("gunde");
+        //                    List<string> listUnfollowers = listFollowersFromDatabse.Except(FollowersName).ToList();
 
-                            //GlobusLogHelper.log.Info(listUnfollowers.Count + " users Unfollowed Account : " + screen_Name);
+        //                    GlobusLogHelper.log.Info(listUnfollowers.Count + " users Unfollowed Account : " + screen_Name);
 
-                            string UnfollowersList = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PInterestUnfollowersList.csv";
+        //                    string UnfollowersList = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PInterestUnfollowersList.csv";
 
-                            //write unfollowers list to csv
-                            if (!System.IO.File.Exists(UnfollowersList))                                                             //*     CSV Header     *//
-                            {
-                                try
-                                {
-                                    string dataFormat = "Account_ScreenName" + "," + "UnfollowerUsername";
-                                    GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
-                                }
-                                catch (Exception ex) { };
-                            }
+        //                    write unfollowers list to csv
+        //                    if (!System.IO.File.Exists(UnfollowersList))                                                             //*     CSV Header     *//
+        //                    {
+        //                        try
+        //                        {
+        //                            string dataFormat = "Account_ScreenName" + "," + "UnfollowerUsername";
+        //                            GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
+        //                        }
+        //                        catch (Exception ex) { };
+        //                    }
 
-                            foreach (string unfollower in listUnfollowers)
-                            {
-                                try
-                                {
-                                    string dataFormat = screen_Name + "," + unfollower;
-                                    GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
+        //                    foreach (string unfollower in listUnfollowers)
+        //                    {
+        //                        try
+        //                        {
+        //                            string dataFormat = screen_Name + "," + unfollower;
+        //                            GlobusFileHelper.AppendStringToTextfileNewLine(dataFormat, UnfollowersList); //dataFormat
 
-                                    //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " written to file " + UnfollowersList);
-                                }
-                                catch (Exception ex) 
-                                { };
+        //                            GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " written to file " + UnfollowersList);
+        //                        }
+        //                        catch (Exception ex) 
+        //                        { };
 
-                                try
-                                {
-                                    QueryExecuter.deleteFollower(screen_Name, unfollower);                                  
-                                    //GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " deleted from Databse");
-                                }
-                                catch (Exception ex)
-                                { }
-                            }
+        //                        try
+        //                        {
+        //                            QueryExecuter.deleteFollower(screen_Name, unfollower);                                  
+        //                            GlobusLogHelper.log.Info("Unfollower : " + unfollower + " for Account : " + screen_Name + " deleted from Databse");
+        //                        }
+        //                        catch (Exception ex)
+        //                        { }
+        //                    }
 
-                            List<string> listNewFollowers = FollowersName.Except(listFollowersFromDatabse).ToList();
+        //                    List<string> listNewFollowers = FollowersName.Except(listFollowersFromDatabse).ToList();
 
-                            //GlobusLogHelper.log.Info(listNewFollowers.Count + " NEW Followers for Account : " + screen_Name + "");
+        //                    GlobusLogHelper.log.Info(listNewFollowers.Count + " NEW Followers for Account : " + screen_Name + "");
 
-                            foreach (string follName_item in listNewFollowers)
-                            {
-                                try
-                                {
-                                    QueryExecuter.insertFollowerName(screen_Name, follName_item);                                    
-                                    //GlobusLogHelper.log.Info("New follower : " + follName_item + " for Account : " + screen_Name + " added to Databse");
-                                }
-                                catch { }
-                            }
+        //                    foreach (string follName_item in listNewFollowers)
+        //                    {
+        //                        try
+        //                        {
+        //                            QueryExecuter.insertFollowerName(screen_Name, follName_item);                                    
+        //                            GlobusLogHelper.log.Info("New follower : " + follName_item + " for Account : " + screen_Name + " added to Databse");
+        //                        }
+        //                        catch { }
+        //                    }
 
-                            string follower = GetFollowercount(screen_Name, ref objPinUser);
-                            string following = GetFollowingCount(screen_Name, ref objPinUser);
-                            string BOARDS = GetBoard(screen_Name, ref objPinUser);
+        //                    string follower = GetFollowercount(screen_Name, ref objPinUser);
+        //                    string following = GetFollowingCount(screen_Name, ref objPinUser);
+        //                    string BOARDS = GetBoard(screen_Name, ref objPinUser);
 
-                            string followingCount = getBetween(following, "value'>", "</span>");
+        //                    string followingCount = getBetween(following, "value'>", "</span>");
 
-                            string BoardsName = string.Empty;
-                            List<string> BOARDSNAMES = new List<string>();
-                            if (inviteStart)
-                            {
-                                BOARDSNAMES = GetAllBoardNames_new1(screen_Name);
-                                foreach (var itemBoardNames in BOARDSNAMES)
-                                {
-                                    try
-                                    {
-                                        lstBoardNames.Add(itemBoardNames.ToLower().Replace(" ", "-"));
-                                    }
-                                    catch(Exception ex)
-                                    { };
-                                }
-                            }
-                            inviteStart = true;
+        //                    string BoardsName = string.Empty;
+        //                    List<string> BOARDSNAMES = new List<string>();
+        //                    if (inviteStart)
+        //                    {
+        //                        BOARDSNAMES = GetAllBoardNames_new1(screen_Name, ref objPinUser);
+        //                        foreach (var itemBoardNames in BOARDSNAMES)
+        //                        {
+        //                            try
+        //                            {
+        //                                lstBoardNames.Add(itemBoardNames.ToLower().Replace(" ", "-"));
+        //                            }
+        //                            catch(Exception ex)
+        //                            { };
+        //                        }
+        //                    }
+        //                    inviteStart = true;
 
-                            try
-                            {
-                                foreach (string item_BoardNames in BOARDSNAMES)
-                                {                                
-                                    BoardsName += item_BoardNames + (":").ToString();
-                                }
-                            }
-                            catch(Exception ex) 
-                            { };
+        //                    try
+        //                    {
+        //                        foreach (string item_BoardNames in BOARDSNAMES)
+        //                        {                                
+        //                            BoardsName += item_BoardNames + (":").ToString();
+        //                        }
+        //                    }
+        //                    catch(Exception ex) 
+        //                    { };
 
-                            try
-                            {
-                               //// QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, screen_Name, Username);                              
-                                //objUploadAccount.AccounLoad();
-                                objDelegateAccountLoad();
-                            }
-                            catch(Exception ex)
-                            { };
-                        }
+        //                    try
+        //                    {
+        //                       // QueryExecuter.updatetb_emails(follower, followingCount, BOARDS, BoardsName, screen_Name, Username);                              
+        //                        objUploadAccount.AccounLoad();
+        //                        objDelegateAccountLoad();
+        //                    }
+        //                    catch(Exception ex)
+        //                    { };
+        //                }
 
-                        catch(Exception ex)
-                        { };
+        //                catch(Exception ex)
+        //                { };
 
-                        string[] ArrData = System.Text.RegularExpressions.Regex.Split(AfterLoginPageSource, "username");
+        //                string[] ArrData = System.Text.RegularExpressions.Regex.Split(AfterLoginPageSource, "username");
 
-                        foreach (var item in ArrData)
-                        {
-                            try
-                            {
-                                if (item.Contains("{\"page_info"))
-                                {
-                                    continue;
-                                }
-                                if (!item.StartsWith("\": null,") && !item.StartsWith("{\"request_identifier\""))
-                                {
-                                    int startindex = item.IndexOf(":");
-                                    int endindex = item.IndexOf("\", \"");
+        //                foreach (var item in ArrData)
+        //                {
+        //                    try
+        //                    {
+        //                        if (item.Contains("{\"page_info"))
+        //                        {
+        //                            continue;
+        //                        }
+        //                        if (!item.StartsWith("\": null,") && !item.StartsWith("{\"request_identifier\""))
+        //                        {
+        //                            int startindex = item.IndexOf(":");
+        //                            int endindex = item.IndexOf("\", \"");
 
-                                    this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
-                                    break;
-                                }
-                                if (item.Contains("locale"))// && item.Contains("P.currentUser.set"))
-                                {
-                                    int startindex = item.IndexOf(":");
-                                    int endindex = item.IndexOf("\", \"");
+        //                            this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
+        //                            break;
+        //                        }
+        //                        if (item.Contains("locale"))// && item.Contains("P.currentUser.set"))
+        //                        {
+        //                            int startindex = item.IndexOf(":");
+        //                            int endindex = item.IndexOf("\", \"");
 
-                                    this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
-                                    break;
-                                }
-                                else if (item.Contains("name\": \"AuthHomePage"))
-                                {
-                                    int startindex = item.IndexOf(":");
-                                    int endindex = item.IndexOf("\", \"");
+        //                            this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
+        //                            break;
+        //                        }
+        //                        else if (item.Contains("name\": \"AuthHomePage"))
+        //                        {
+        //                            int startindex = item.IndexOf(":");
+        //                            int endindex = item.IndexOf("\", \"");
 
-                                    this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("\"", string.Empty).Trim();
-                                }
-                            }
-                            catch (Exception ex)
-                            { }
-                        }
-                        if (ArrData.Count() == 2 && string.IsNullOrEmpty(Name))
-                        {
-                            try
-                            {
-                                int startindex = ArrData[1].IndexOf(":");
-                                int endindex = ArrData[1].IndexOf("\", \"");
+        //                            this.Name = item.Substring(startindex + 1, endindex - startindex).Replace("\"", string.Empty).Trim();
+        //                        }
+        //                    }
+        //                    catch (Exception ex)
+        //                    { }
+        //                }
+        //                if (ArrData.Count() == 2 && string.IsNullOrEmpty(Name))
+        //                {
+        //                    try
+        //                    {
+        //                        int startindex = ArrData[1].IndexOf(":");
+        //                        int endindex = ArrData[1].IndexOf("\", \"");
 
-                                this.Name = ArrData[1].Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
-                            }
-                            catch { };
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Name = string.Empty;
-                    }
-                }
-                if (this.LoggedIn)
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
+        //                        this.Name = ArrData[1].Substring(startindex + 1, endindex - startindex).Replace("id=\"UserNav\"", string.Empty).Replace("a ", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty).Replace("'", string.Empty).Replace("href=", string.Empty).Replace("\"", string.Empty).Replace("/", string.Empty).Trim();
+        //                    }
+        //                    catch { };
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                this.Name = string.Empty;
+        //            }
+        //        }
+        //        if (this.LoggedIn)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-            return false;
-        }
+        //    }
+        //    return false;
+        //}
 
         public bool LoginPinterestAccount1forlee(ref PinInterestUser objPinUser, string Username, string Password, string proxyAddress, string proxyPort, string proxyUsername, string proxyPassword, string ss)
         {
             try
             {
+                if (!checkFirstTimeLicense)
+                {
+                    bool checkValideLicense = checkLoginTimeLicenseStatus();
+                    if (!checkValideLicense)
+                    {
+                        GlobusLogHelper.log.Debug("-----------------------------------------------------");
+                        GlobusLogHelper.log.Info(" Please Re-Start The Software !");
+                        return false;
+                    }
+                }
+
                 lock (this)
                 {
                     GlobusHttpHelper globusHttpHelper = new GlobusHttpHelper();
@@ -659,18 +703,20 @@ namespace AccountManager
 
                             //Globals.followingCountLogin = int.Parse(PinterestAccountManager.getBetween(following, "value'>", "</span>"));
 
-                            string followingCount = getBetween(following, "value'>", "</span>");
+                            string followingCount = following;
                             string BOARDS = string.Empty;
                             string BoardsName = string.Empty;
                             List<string> BOARDSNAMES = new List<string>();
+                            List<string> lstBoardNamesNew = new List<string>();
                             if (inviteStart)
                             {
-                                BOARDSNAMES = GetAllBoardNames_new1(objPinUser.ScreenName);
+                                BOARDSNAMES = GetAllBoardNames_new1(objPinUser.ScreenName, ref objPinUser);
 
                                 foreach (var itemBoardNames in BOARDSNAMES)
                                 {
-                                    lstBoardNames.Add(itemBoardNames.ToLower().Replace(" ", "-"));
+                                    lstBoardNamesNew.Add(itemBoardNames.ToLower().Replace(" ", "-"));
                                 }
+                                objPinUser.Boards = lstBoardNamesNew;
                             }
                             inviteStart = true;
                             
@@ -779,7 +825,8 @@ namespace AccountManager
                 string ScreenName = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://www.pinterest.com/settings/"), "", "", "");
                 int StartIndex = ScreenName.IndexOf("username\":");
                 int EndIndex = ScreenName.IndexOf(",");//username": "prabhat18", "email_commen
-                FindScreenName = ScreenName.Substring(StartIndex, EndIndex).Replace(":", string.Empty).Replace("email_commen", string.Empty).Replace("\"", "").Replace("username", string.Empty).Replace(",", string.Empty).Replace("email_com", string.Empty).Replace(" ", "@").Trim();
+                //FindScreenName = ScreenName.Substring(StartIndex, EndIndex).Replace(":", string.Empty).Replace("email_commen", string.Empty).Replace("\"", "").Replace("username", string.Empty).Replace(",", string.Empty).Replace("email_com", string.Empty).Replace(" ", "@").Trim();
+                FindScreenName = Utils.Utils.getBetween(ScreenName,"username\":\"","\",");
                 string[] arr = System.Text.RegularExpressions.Regex.Split(FindScreenName, "@");
                 if (arr.Count() == 3)
                 {
@@ -922,7 +969,7 @@ namespace AccountManager
                 string pagesource = objPinUser.globusHttpHelper.getHtmlfromUrl(new Uri("https://pinterest.com/" + screen_Name), "", "", "");
                 int Startindex = pagesource.IndexOf("pinterestapp:followers"); 
                 //string _sorce = pagesource.Substring(Startindex).Replace("pinterestapp:followers", "");
-                string _sorce = getBetween(pagesource, "2\": \"", " followers\",");
+                string _sorce = Utils.Utils.getBetween(pagesource, "follower_count\":", ",\"");
                 int Endindex = _sorce.IndexOf(",");
                 //_sorce = _sorce.Substring(0, Endindex).Replace("\"", "").Replace(":", "").Replace("FollowingLinks\">\n<", string.Empty).Trim();
                 followers = _sorce;
@@ -944,7 +991,8 @@ namespace AccountManager
                 int StartFollowing = followingsource.IndexOf("/following/");
                 string _following = followingsource.Substring(StartFollowing).Replace("/following/", "").Trim();
                 int endFollowing = _following.IndexOf("</a>");
-                _following = _following.Substring(0, endFollowing).Replace("\\n", string.Empty).Replace("\" >", string.Empty).Replace("Following", string.Empty).Replace("\\", string.Empty).Replace("\"", string.Empty).Trim();
+                //_following = _following.Substring(0, endFollowing).Replace("\\n", string.Empty).Replace("\" >", string.Empty).Replace("Following", string.Empty).Replace("\\", string.Empty).Replace("\"", string.Empty).Trim();
+                _following = Utils.Utils.getBetween(followingsource, "following_count\":", ",\"");
                 following = _following;
                 return following;
             }
@@ -976,10 +1024,11 @@ namespace AccountManager
 
         }
 
-        public List<string> GetAllBoardNames_new1(string screenName)
+        public List<string> GetAllBoardNames_new1(string screenName,ref PinInterestUser objPinUser)
         {
-            BaseLib.GlobusRegex rgx = new GlobusRegex();
+            BaseLib.GlobusRegex rgx = new GlobusRegex();         
             Globussoft.GlobusHttpHelper httpHelper = new Globussoft.GlobusHttpHelper();
+            List<string> lstBoardIdNew = new List<string>();
             //GlobusLogHelper.log.Info("[ " + DateTime.Now + " ] => [ Getting All Board Names ]");
 
             string UserUrl = "http://pinterest.com/" + screenName;
@@ -1001,10 +1050,11 @@ namespace AccountManager
                     if (itemdata.Contains("board_id"))
                     {
                         string boardId = getBetween(itemdata, "board_id\":", ",").Replace("\"", "").Trim();
-                        if (!lstBoardId.Contains(boardId))
+                        if (!lstBoardIdNew.Contains(boardId))
                         {
-                            lstBoardId.Add(boardId);
+                            lstBoardIdNew.Add(boardId);                                                      
                         }
+                        objPinUser.lstBoardId = lstBoardIdNew;
                     }
                 }
                 catch (Exception ex)
@@ -1033,19 +1083,20 @@ namespace AccountManager
                                     string BoardUrl = string.Empty;
                                     int startIndex = Dataitem.IndexOf("title");
                                     int LastPoint = Dataitem.IndexOf("<h2");
-                                    string Board = Dataitem.Substring(startIndex, LastPoint).Replace("\\n", string.Empty).Replace("\"", "").Replace("<div class=\\b", string.Empty).Replace("  ", string.Empty).Replace("\"title\"", "").Replace("</div", "");
-                                    BoardUrl = rgx.StripTagsRegex(Board);
-                                    try
-                                    {                                      
-                                        Board = getBetween(BoardUrl, ">>", "<");
-                                        //modified done
-                                        if (Board == "")
-                                        {
-                                            Board = getBetween(BoardUrl, "title=", ">").Replace("\\", "").Trim();
-                                        }
-                                    }
-                                    catch(Exception ex)
-                                    { };
+                                    //string Board = Dataitem.Substring(startIndex, LastPoint).Replace("\\n", string.Empty).Replace("\"", "").Replace("<div class=\\b", string.Empty).Replace("  ", string.Empty).Replace("\"title\"", "").Replace("</div", "");
+                                    string Board = Utils.Utils.getBetween(Dataitem, "<h2 class=\\\"title\\\">", "</h2>");
+                                    //BoardUrl = rgx.StripTagsRegex(Board);
+                                    //try
+                                    //{                                      
+                                    //    Board = getBetween(BoardUrl, ">>", "<");
+                                    //    //modified done
+                                    //    if (Board == "")
+                                    //    {
+                                    //        Board = getBetween(BoardUrl, "title=", ">").Replace("\\", "").Trim();
+                                    //    }
+                                    //}
+                                    //catch(Exception ex)
+                                    //{ };
                                     if (!BoardNames.Contains(Board))
                                     {
                                         BoardNames.Add(Board);
